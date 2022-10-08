@@ -1,5 +1,3 @@
-export * from "./account.model"
-export * from "./transfer.model"
 export * from "./addedDaiToVoting.model"
 export * from "./addedZooToVoting.model"
 export * from "./chosenWinner.model"

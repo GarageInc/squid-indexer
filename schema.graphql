@@ -113,3 +113,17 @@ type WithdrawedZooFromVoting @entity {
   zooNumber: BigInt!
   beneficiary: String
 }
+
+type ZooUnlocked @entity {
+  id: ID!
+  voter: String
+  collection: String
+  amount: BigInt!
+}
+
+type VotedForCollection @entity {
+  id: ID!
+  collection: String
+  voter: String
+  amount: BigInt!
+}

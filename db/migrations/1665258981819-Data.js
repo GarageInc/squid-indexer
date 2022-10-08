@@ -1,5 +1,5 @@
-module.exports = class Data1665254733930 {
-  name = 'Data1665254733930'
+module.exports = class Data1665258981819 {
+  name = 'Data1665258981819'
 
   async up(db) {
     await db.query(`CREATE TABLE "added_dai_to_voting" ("id" character varying NOT NULL, "current_epoch" numeric NOT NULL, "voter" text, "staking_position_id" numeric NOT NULL, "voting_position_id" numeric NOT NULL, "amount" numeric NOT NULL, "votes" numeric NOT NULL, CONSTRAINT "PK_9e1e399cbc921bb8d6aedb65ad5" PRIMARY KEY ("id"))`)
@@ -14,6 +14,8 @@ module.exports = class Data1665254733930 {
     await db.query(`CREATE TABLE "removed_staker_position" ("id" character varying NOT NULL, "current_epoch" numeric NOT NULL, "staker" text, "staking_position_id" numeric NOT NULL, CONSTRAINT "PK_5d7ff26fcdcda8555848634f964" PRIMARY KEY ("id"))`)
     await db.query(`CREATE TABLE "withdrawed_dai_from_voting" ("id" character varying NOT NULL, "current_epoch" numeric NOT NULL, "voter" text, "staking_position_id" numeric NOT NULL, "voting_position_id" numeric NOT NULL, "dai_number" numeric NOT NULL, "beneficiary" text, CONSTRAINT "PK_7d162daaf6e3fc062a71e9c593f" PRIMARY KEY ("id"))`)
     await db.query(`CREATE TABLE "withdrawed_zoo_from_voting" ("id" character varying NOT NULL, "current_epoch" numeric NOT NULL, "voter" text, "staking_position_id" numeric NOT NULL, "voting_position_id" numeric NOT NULL, "zoo_number" numeric NOT NULL, "beneficiary" text, CONSTRAINT "PK_3ac6fcf3a0553b9b24646185c0a" PRIMARY KEY ("id"))`)
+    await db.query(`CREATE TABLE "zoo_unlocked" ("id" character varying NOT NULL, "voter" text, "collection" text, "amount" numeric NOT NULL, CONSTRAINT "PK_eda43cf58859d082d6b31f8a9a8" PRIMARY KEY ("id"))`)
+    await db.query(`CREATE TABLE "voted_for_collection" ("id" character varying NOT NULL, "collection" text, "voter" text, "amount" numeric NOT NULL, CONSTRAINT "PK_386ebfe558440c3b23d2dd3b510" PRIMARY KEY ("id"))`)
   }
 
   async down(db) {
@@ -29,5 +31,7 @@ module.exports = class Data1665254733930 {
     await db.query(`DROP TABLE "removed_staker_position"`)
     await db.query(`DROP TABLE "withdrawed_dai_from_voting"`)
     await db.query(`DROP TABLE "withdrawed_zoo_from_voting"`)
+    await db.query(`DROP TABLE "zoo_unlocked"`)
+    await db.query(`DROP TABLE "voted_for_collection"`)
   }
 }

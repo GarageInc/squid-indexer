@@ -4,7 +4,24 @@ import { TypeormDatabase } from '@subsquid/typeorm-store'
 import { CHAIN_NODE, arenaContract, veModelContract } from './contract'
 import * as arenaAbi from './abi/battle-arena-abi'
 import * as vemodelAbi from './abi/ve-model-abi'
-import { Ctx, liquidateVoted, saveStaked, saveUnStaked, saveVoted } from './transformerts'
+import {
+  Ctx,
+  liquidateVoted,
+  saveAddedDai,
+  saveAddedZoo,
+  saveClaimedStaking,
+  saveClaimedVoting,
+  saveCollectionVoted,
+  savePaired,
+  saveStaked,
+  saveUnStaked,
+  saveVoted,
+  saveWinner,
+  saveWithdrawedDai,
+  saveWithdrawedZoo,
+  saveZooUnlocked,
+} from './transformers'
+import { WithdrawedDaiFromVoting } from './model'
 
 const CreatedStakerPositionT = arenaAbi.events['CreatedStakerPosition(uint256,address,uint256)']
 const CreatedVotingPositionT = arenaAbi.events['CreatedVotingPosition(uint256,address,uint256,uint256,uint256,uint256)']
@@ -33,47 +50,64 @@ interface IArenaEvmEvent {
 }
 
 /*
-AddedDaiToVotingT.topic,
-AddedZooToVotingT.topic,
-WithdrawedDaiFromVotingT.topic,
-WithdrawedZooFromVotingT.topic,
 PairedNftT.topic,
 ChosenWinnerT.topic,
 ClaimedRewardFromStakingT.topic,
 ClaimedRewardFromVotingT.topic,
 */
 
+const FROM = 1887167
+
 const database = new TypeormDatabase()
 const processor = new SubstrateBatchProcessor()
   .setBatchSize(500)
-  .setBlockRange({ from: 1887167 })
+  .setBlockRange({ from: FROM })
   .setDataSource({
     chain: CHAIN_NODE,
     archive: lookupArchive('moonbeam', { release: 'FireSquid' }),
   })
   .setTypesBundle('moonbeam')
   .addEvmLog(arenaContract.address, {
-    range: { from: 1887167 },
     filter: [CreatedStakerPositionT.topic],
   })
   .addEvmLog(arenaContract.address, {
-    range: { from: 1887167 },
     filter: [RemovedStakerPositionT.topic],
   })
   .addEvmLog(arenaContract.address, {
-    range: { from: 1887167 },
     filter: [CreatedVotingPositionT.topic],
   })
   .addEvmLog(arenaContract.address, {
-    range: { from: 1887167 },
     filter: [LiquidatedVotingPositionT.topic],
   })
+  .addEvmLog(arenaContract.address, {
+    filter: [AddedDaiToVotingT.topic],
+  })
+  .addEvmLog(arenaContract.address, {
+    filter: [AddedZooToVotingT.topic],
+  })
+  .addEvmLog(arenaContract.address, {
+    filter: [WithdrawedDaiFromVotingT.topic],
+  })
+  .addEvmLog(arenaContract.address, {
+    filter: [WithdrawedZooFromVotingT.topic],
+  })
+  .addEvmLog(arenaContract.address, {
+    filter: [PairedNftT.topic],
+  })
+  .addEvmLog(arenaContract.address, {
+    filter: [ChosenWinnerT.topic],
+  })
+  .addEvmLog(arenaContract.address, {
+    filter: [ClaimedRewardFromStakingT.topic],
+  })
+  .addEvmLog(arenaContract.address, {
+    filter: [ClaimedRewardFromVotingT.topic],
+  })
+
   .addEvmLog(veModelContract.address, {
-    range: { from: 1887167 },
     filter: [VotedForCollectionT.topic],
   })
   .addEvmLog(veModelContract.address, {
-    range: { from: 1887167 },
     filter: [ZooUnlockedT.topic],
   })
 
@@ -94,6 +128,9 @@ processor.run(database, async (ctx: any) => {
   const claimedStaking = []
   const claimedVoting = []
 
+  const votedCollection = []
+  const zooUnlocked = []
+
   for (const block of ctx.blocks) {
     for (const item of block.items) {
       if (item.name === 'EVM.Log') {
@@ -113,14 +150,63 @@ processor.run(database, async (ctx: any) => {
         if (hasIn(item, LiquidatedVotingPositionT.topic)) {
           liquidatedVoting.push(handler(ctx, block.header, item.event, LiquidatedVotingPositionT))
         }
+
+        if (hasIn(item, AddedDaiToVotingT.topic)) {
+          addedDai.push(handler(ctx, block.header, item.event, AddedDaiToVotingT))
+        }
+        if (hasIn(item, AddedZooToVotingT.topic)) {
+          addedZoo.push(handler(ctx, block.header, item.event, AddedZooToVotingT))
+        }
+        if (hasIn(item, WithdrawedZooFromVotingT.topic)) {
+          withdrawedZoo.push(handler(ctx, block.header, item.event, WithdrawedZooFromVotingT))
+        }
+        if (hasIn(item, WithdrawedDaiFromVotingT.topic)) {
+          withdrawedDai.push(handler(ctx, block.header, item.event, WithdrawedDaiFromVotingT))
+        }
+
+        if (hasIn(item, PairedNftT.topic)) {
+          pairedNft.push(handler(ctx, block.header, item.event, PairedNftT))
+        }
+        if (hasIn(item, ChosenWinnerT.topic)) {
+          chosenWinner.push(handler(ctx, block.header, item.event, ChosenWinnerT))
+        }
+        if (hasIn(item, ClaimedRewardFromStakingT.topic)) {
+          claimedStaking.push(handler(ctx, block.header, item.event, ClaimedRewardFromStakingT))
+        }
+        if (hasIn(item, ClaimedRewardFromVotingT.topic)) {
+          claimedVoting.push(handler(ctx, block.header, item.event, ClaimedRewardFromVotingT))
+        }
+
+        if (hasIn(item, VotedForCollectionT.topic)) {
+          votedCollection.push(handler(ctx, block.header, item.event, VotedForCollectionT))
+        }
+        if (hasIn(item, ZooUnlockedT.topic)) {
+          zooUnlocked.push(handler(ctx, block.header, item.event, ZooUnlockedT))
+        }
       }
     }
   }
 
   await saveStaked(ctx, staked)
   await saveUnStaked(ctx, unstaked)
+
   await saveVoted(ctx, voted)
   await liquidateVoted(ctx, liquidatedVoting)
+
+  await saveAddedDai(ctx, addedDai)
+  await saveAddedZoo(ctx, addedZoo)
+
+  await saveWithdrawedDai(ctx, withdrawedDai)
+  await saveWithdrawedZoo(ctx, withdrawedZoo)
+
+  await saveWinner(ctx, chosenWinner)
+  await savePaired(ctx, pairedNft)
+
+  await saveClaimedVoting(ctx, claimedVoting)
+  await saveClaimedStaking(ctx, claimedStaking)
+
+  await saveCollectionVoted(ctx, votedCollection)
+  await saveZooUnlocked(ctx, zooUnlocked)
 })
 
 function handler(ctx: Ctx, block: SubstrateBlock, event: EvmLogEvent, type: IArenaEvmEvent) {

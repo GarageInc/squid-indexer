@@ -77,10 +77,8 @@ const processor = new SubstrateBatchProcessor()
     filter: [ZooUnlockedT.topic],
   })
 
-console.log('CreatedStakerPositionT', CreatedStakerPositionT.topic, RemovedStakerPositionT.topic)
-
 const hasIn = (item: any, topic: string) =>
-  item.event.args && item.event.args.logs && item.event.args.logs.indexOf(topic) !== -1
+  item.event.args && item.event.args.log && item.event.args.log.topics.indexOf(topic) !== -1
 
 processor.run(database, async (ctx: any) => {
   const staked = []
@@ -99,10 +97,10 @@ processor.run(database, async (ctx: any) => {
   for (const block of ctx.blocks) {
     for (const item of block.items) {
       if (item.name === 'EVM.Log') {
-        console.log(
+        /*console.log(
           '----',
           block.items.filter((i: any) => i.event).map((i: any) => i.event.args?.log?.topics)
-        )
+        )*/
         if (hasIn(item, CreatedStakerPositionT.topic)) {
           staked.push(handler(ctx, block.header, item.event, CreatedStakerPositionT))
         }
@@ -120,7 +118,7 @@ processor.run(database, async (ctx: any) => {
   }
 
   await saveStaked(ctx, staked)
-  await saveUnStaked(ctx, staked)
+  await saveUnStaked(ctx, unstaked)
   await saveVoted(ctx, voted)
   await liquidateVoted(ctx, liquidatedVoting)
 })

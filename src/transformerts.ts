@@ -21,11 +21,13 @@ export async function saveStaked(
       staker: e.staker,
       currentEpoch: BigInt(e.currentEpoch.toString()),
       stakingPositionId: BigInt(e.stakingPositionId.toString()),
+      isDeleted: false,
     })
 
     transfers.add(transfer)
   }
 
+  console.log('-->saveStaked', transfers)
   await ctx.store.save([...transfers])
 }
 
@@ -58,6 +60,7 @@ export async function saveUnStaked(
     transfers.add(transfer)
   }
 
+  console.log('-->saveUnStaked', transfers, created)
   await ctx.store.save([...transfers])
   await ctx.store.save([...created])
 }
@@ -79,6 +82,7 @@ export async function saveVoted(
       daiAmount: BigInt(e.daiAmount.toString()),
       votes: BigInt(e.votes.toString()),
       votingPositionId: BigInt(e.votingPositionId.toString()),
+      isDeleted: false,
     })
 
     transfers.add(transfer)

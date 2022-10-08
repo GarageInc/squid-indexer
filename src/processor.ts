@@ -21,7 +21,6 @@ import {
   saveWithdrawedZoo,
   saveZooUnlocked,
 } from './transformers'
-import { WithdrawedDaiFromVoting } from './model'
 
 const CreatedStakerPositionT = arenaAbi.events['CreatedStakerPosition(uint256,address,uint256)']
 const CreatedVotingPositionT = arenaAbi.events['CreatedVotingPosition(uint256,address,uint256,uint256,uint256,uint256)']

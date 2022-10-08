@@ -1,127 +1,91 @@
-import {lookupArchive} from "@subsquid/archive-registry"
-import * as ss58 from "@subsquid/ss58"
-import {BatchContext, BatchProcessorItem, SubstrateBatchProcessor} from "@subsquid/substrate-processor"
-import {Store, TypeormDatabase} from "@subsquid/typeorm-store"
-import {In} from "typeorm"
-import {Account, Transfer} from "./model"
-import {BalancesTransferEvent} from "./types/events"
+import { lookupArchive } from '@subsquid/archive-registry'
+import {
+  BatchContext,
+  BatchProcessorItem,
+  SubstrateBatchProcessor,
+  EvmLogEvent,
+  SubstrateBlock,
+} from '@subsquid/substrate-processor'
+import { Store, TypeormDatabase } from '@subsquid/typeorm-store'
+import { CHAIN_NODE, arenaContract } from './contract'
+import { CreatedStakerPosition } from './model'
+import * as arenaAbi from './abi/battle-arena-abi'
 
+interface StakerPositionEvent {
+  currentEpoch: bigint
+  staker: string
+  stakingPositionId: bigint
+  id: string
+  timestamp: bigint
+  block: number
+  transactionHash: string
+}
 
+const database = new TypeormDatabase()
 const processor = new SubstrateBatchProcessor()
-    .setBatchSize(500)
-    .setDataSource({
-        // Lookup archive by the network name in the Subsquid registry
-        archive: lookupArchive("kusama", {release: "FireSquid"})
-
-        // Use archive created by archive/docker-compose.yml
-        // archive: 'http://localhost:8888/graphql'
-    })
-    .addEvent('Balances.Transfer', {
-        data: {
-            event: {
-                args: true,
-                extrinsic: {
-                    hash: true,
-                    fee: true
-                }
-            }
-        }
-    } as const)
-
+  .setBatchSize(500)
+  .setBlockRange({ from: 442693 })
+  .setDataSource({
+    chain: CHAIN_NODE,
+    archive: lookupArchive('moonbeam', { release: 'FireSquid' }),
+  })
+  .setTypesBundle('moonbeam')
+  .addEvmLog(arenaContract.address, {
+    range: { from: 1887167 },
+    filter: [arenaAbi.events['CreatedStakerPosition(uint256,address,uint256)'].topic],
+  })
 
 type Item = BatchProcessorItem<typeof processor>
 type Ctx = BatchContext<Store, Item>
 
+processor.run(database, async (ctx) => {
+  const transfersData: StakerPositionEvent[] = []
 
-processor.run(new TypeormDatabase(), async ctx => {
-    let transfersData = getTransfers(ctx)
-
-    let accountIds = new Set<string>()
-    for (let t of transfersData) {
-        accountIds.add(t.from)
-        accountIds.add(t.to)
+  for (const block of ctx.blocks) {
+    for (const item of block.items) {
+      if (item.name === 'EVM.Log') {
+        const transfer = handleTransfer(ctx, block.header, item.event)
+        transfersData.push(transfer)
+      }
     }
+  }
 
-    let accounts = await ctx.store.findBy(Account, {id: In([...accountIds])}).then(accounts => {
-        return new Map(accounts.map(a => [a.id, a]))
-    })
-
-    let transfers: Transfer[] = []
-
-    for (let t of transfersData) {
-        let {id, blockNumber, timestamp, extrinsicHash, amount, fee} = t
-
-        let from = getAccount(accounts, t.from)
-        let to = getAccount(accounts, t.to)
-
-        transfers.push(new Transfer({
-            id,
-            blockNumber,
-            timestamp,
-            extrinsicHash,
-            from,
-            to,
-            amount,
-            fee
-        }))
-    }
-
-    await ctx.store.save(Array.from(accounts.values()))
-    await ctx.store.insert(transfers)
+  await saveTransfers(ctx, transfersData)
 })
 
+function handleTransfer(ctx: Ctx, block: SubstrateBlock, event: EvmLogEvent): StakerPositionEvent {
+  const { staker, stakingPositionId, currentEpoch } = arenaAbi.events[
+    'CreatedStakerPosition(uint256,address,uint256)'
+  ].decode(event.args)
 
-interface TransferEvent {
-    id: string
-    blockNumber: number
-    timestamp: Date
-    extrinsicHash?: string
-    from: string
-    to: string
-    amount: bigint
-    fee?: bigint
+  const transfer: StakerPositionEvent = {
+    id: event.id,
+    timestamp: BigInt(block.timestamp),
+    block: block.height,
+    transactionHash: event.evmTxHash,
+    staker,
+    stakingPositionId: BigInt(stakingPositionId.toString()),
+    currentEpoch: BigInt(currentEpoch.toString()),
+  }
+
+  return transfer
 }
 
+async function saveTransfers(ctx: Ctx, transfersData: StakerPositionEvent[]) {
+  const transfers: Set<CreatedStakerPosition> = new Set()
 
-function getTransfers(ctx: Ctx): TransferEvent[] {
-    let transfers: TransferEvent[] = []
-    for (let block of ctx.blocks) {
-        for (let item of block.items) {
-            if (item.name == "Balances.Transfer") {
-                let e = new BalancesTransferEvent(ctx, item.event)
-                let rec: {from: Uint8Array, to: Uint8Array, amount: bigint}
-                if (e.isV1020) {
-                    let [from, to, amount,] = e.asV1020
-                    rec = {from, to, amount}
-                } else if (e.isV1050) {
-                    let [from, to, amount] = e.asV1050
-                    rec = {from, to, amount}
-                } else {
-                    rec = e.asV9130
-                }
-                transfers.push({
-                    id: item.event.id,
-                    blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp),
-                    extrinsicHash: item.event.extrinsic?.hash,
-                    from: ss58.codec('kusama').encode(rec.from),
-                    to: ss58.codec('kusama').encode(rec.to),
-                    amount: rec.amount,
-                    fee: item.event.extrinsic?.fee || 0n
-                })
-            }
-        }
-    }
-    return transfers
-}
+  for (const transferData of transfersData) {
+    const { staker, stakingPositionId, currentEpoch, id } = transferData
 
+    const transfer = new CreatedStakerPosition({
+      id,
+      staker,
+      stakingPositionId,
+      currentEpoch,
+    })
 
-function getAccount(m: Map<string, Account>, id: string): Account {
-    let acc = m.get(id)
-    if (acc == null) {
-        acc = new Account()
-        acc.id = id
-        m.set(id, acc)
-    }
-    return acc
+    transfers.add(transfer)
+  }
+
+  await ctx.store.save([...transfers])
 }

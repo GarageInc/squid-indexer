@@ -15,3 +15,365 @@ type Transfer @entity {
   amount: BigInt! @index
   fee: BigInt! # fee is calculated at the best effort and may be zero for some old extrinsics
 }
+
+type AddedDaiToVoting @entity {
+  id: ID!
+  currentEpoch: BigInt!
+  voter: String
+  stakingPositionId: BigInt!
+  votingPositionId: BigInt!
+  amount: BigInt!
+  votes: BigInt!
+}
+
+type AddedZooToVoting @entity {
+  id: ID!
+  currentEpoch: BigInt!
+  voter: String
+  stakingPositionId: BigInt!
+  votingPositionId: BigInt!
+  amount: BigInt!
+  votes: BigInt!
+}
+
+type ChosenWinner @entity {
+  id: ID!
+  currentEpoch: BigInt!
+  fighter1: BigInt!
+  fighter2: BigInt!
+  winner: Boolean! # bool
+  pairIndex: BigInt!
+  playedPairsAmount: BigInt!
+}
+
+type ClaimedRewardFromStaking @entity {
+  id: ID!
+  currentEpoch: BigInt!
+  staker: String
+  stakingPositionId: BigInt!
+  beneficiary: String
+  yTokenReward: BigInt!
+  daiReward: BigInt!
+}
+
+type ClaimedRewardFromVoting @entity {
+  id: ID!
+  currentEpoch: BigInt!
+  voter: String
+  stakingPositionId: BigInt!
+  beneficiary: String
+  yTokenReward: BigInt!
+  daiReward: BigInt!
+  votingPositionId: BigInt!
+}
+
+type CreatedStakerPosition @entity {
+  id: ID!
+  currentEpoch: BigInt!
+  staker: String
+  stakingPositionId: BigInt!
+}
+
+type CreatedVotingPosition @entity {
+  id: ID!
+  currentEpoch: BigInt!
+  voter: String
+  stakingPositionId: BigInt!
+  daiAmount: BigInt!
+  votes: BigInt!
+  votingPositionId: BigInt!
+}
+
+type EpochUpdated @entity {
+  id: ID!
+  date: BigInt!
+  newEpoch: BigInt!
+}
+
+type LiquidatedVotingPosition @entity {
+  id: ID!
+  currentEpoch: BigInt!
+  voter: String
+  stakingPositionId: BigInt!
+  beneficiary: String
+  votingPositionId: BigInt!
+  zooReturned: BigInt!
+  daiReceived: BigInt!
+}
+
+type PairedNft @entity {
+  id: ID!
+  currentEpoch: BigInt!
+  fighter1: BigInt!
+  fighter2: BigInt!
+  pairIndex: BigInt!
+}
+
+type RecomputedDaiVotes @entity {
+  id: ID!
+  currentEpoch: BigInt!
+  voter: String
+  stakingPositionId: BigInt!
+  votingPositionId: BigInt!
+  newVotes: BigInt!
+  oldVotes: BigInt!
+}
+
+type RecomputedZooVotes @entity {
+  id: ID!
+  currentEpoch: BigInt!
+  voter: String
+  stakingPositionId: BigInt!
+  votingPositionId: BigInt!
+  newVotes: BigInt!
+  oldVotes: BigInt!
+}
+
+type RemovedStakerPosition @entity {
+  id: ID!
+  currentEpoch: BigInt!
+  staker: String
+  stakingPositionId: BigInt!
+}
+
+type WithdrawedDaiFromVoting @entity {
+  id: ID!
+  currentEpoch: BigInt!
+  voter: String
+  stakingPositionId: BigInt!
+  votingPositionId: BigInt!
+  daiNumber: BigInt!
+  beneficiary: String
+}
+
+type WithdrawedZooFromVoting @entity {
+  id: ID!
+  currentEpoch: BigInt!
+  voter: String
+  stakingPositionId: BigInt!
+  votingPositionId: BigInt!
+  zooNumber: BigInt!
+  beneficiary: String
+}
+type BaseZooFunctionsOwnershipTransferred @entity {
+  id: ID!
+  previousOwner: String
+  newOwner: String
+}
+type ZooGovernanceOwnershipTransferred @entity {
+  id: ID!
+  previousOwner: String
+  newOwner: String
+}
+type NftStakingPositionApproval @entity {
+  id: ID!
+  owner: String
+  approved: String
+  tokenId: BigInt!
+}
+
+type NftStakingPositionApprovalForAll @entity {
+  id: ID!
+  owner: String
+  operator: String
+  approved: Boolean! # bool
+}
+
+type NewContractAllowed @entity {
+  id: ID!
+  token: String
+}
+
+type NftStakingPositionNftBattleArenaSetted @entity {
+  id: ID!
+  nftBattleArena: String
+}
+
+type NftStakingPositionOwnershipTransferred @entity {
+  id: ID!
+  previousOwner: String
+  newOwner: String
+}
+
+type NftStakingPositionTransfer @entity {
+  id: ID!
+  from: String
+  to: String
+  tokenId: BigInt!
+}
+type NftVotingPositionApproval @entity {
+  id: ID!
+  owner: String
+  approved: String
+  tokenId: BigInt!
+}
+
+type NftVotingPositionApprovalForAll @entity {
+  id: ID!
+  owner: String
+  operator: String
+  approved: Boolean! # bool
+}
+
+type NftVotingPositionNftBattleArenaSetted @entity {
+  id: ID!
+  nftBattleArena: String
+}
+
+type NftVotingPositionOwnershipTransferred @entity {
+  id: ID!
+  previousOwner: String
+  newOwner: String
+}
+
+type NftVotingPositionTransfer @entity {
+  id: ID!
+  from: String
+  to: String
+  tokenId: BigInt!
+}
+type NftBattleArenaAddedDaiToVoting @entity {
+  id: ID!
+  currentEpoch: BigInt!
+  voter: String
+  stakingPositionId: BigInt!
+  votingPositionId: BigInt!
+  amount: BigInt!
+  votes: BigInt!
+}
+
+type NftBattleArenaAddedZooToVoting @entity {
+  id: ID!
+  currentEpoch: BigInt!
+  voter: String
+  stakingPositionId: BigInt!
+  votingPositionId: BigInt!
+  amount: BigInt!
+  votes: BigInt!
+}
+
+type NftBattleArenaChosenWinner @entity {
+  id: ID!
+  currentEpoch: BigInt!
+  fighter1: BigInt!
+  fighter2: BigInt!
+  winner: Boolean! # bool
+  pairIndex: BigInt!
+  playedPairsAmount: BigInt!
+}
+
+type NftBattleArenaClaimedRewardFromStaking @entity {
+  id: ID!
+  currentEpoch: BigInt!
+  staker: String
+  stakingPositionId: BigInt!
+  beneficiary: String
+  yTokenReward: BigInt!
+  daiReward: BigInt!
+}
+
+type NftBattleArenaClaimedRewardFromVoting @entity {
+  id: ID!
+  currentEpoch: BigInt!
+  voter: String
+  stakingPositionId: BigInt!
+  beneficiary: String
+  yTokenReward: BigInt!
+  daiReward: BigInt!
+  votingPositionId: BigInt!
+}
+
+type NftBattleArenaCreatedStakerPosition @entity {
+  id: ID!
+  currentEpoch: BigInt!
+  staker: String
+  stakingPositionId: BigInt!
+}
+
+type NftBattleArenaCreatedVotingPosition @entity {
+  id: ID!
+  currentEpoch: BigInt!
+  voter: String
+  stakingPositionId: BigInt!
+  daiAmount: BigInt!
+  votes: BigInt!
+  votingPositionId: BigInt!
+}
+
+type NftBattleArenaEpochUpdated @entity {
+  id: ID!
+  date: BigInt!
+  newEpoch: BigInt!
+}
+
+type NftBattleArenaLiquidatedVotingPosition @entity {
+  id: ID!
+  currentEpoch: BigInt!
+  voter: String
+  stakingPositionId: BigInt!
+  beneficiary: String
+  votingPositionId: BigInt!
+  zooReturned: BigInt!
+  daiReceived: BigInt!
+}
+
+type NftBattleArenaOwnershipTransferred @entity {
+  id: ID!
+  previousOwner: String
+  newOwner: String
+}
+
+type NftBattleArenaPairedNft @entity {
+  id: ID!
+  currentEpoch: BigInt!
+  fighter1: BigInt!
+  fighter2: BigInt!
+  pairIndex: BigInt!
+}
+
+type NftBattleArenaRecomputedDaiVotes @entity {
+  id: ID!
+  currentEpoch: BigInt!
+  voter: String
+  stakingPositionId: BigInt!
+  votingPositionId: BigInt!
+  newVotes: BigInt!
+  oldVotes: BigInt!
+}
+
+type NftBattleArenaRecomputedZooVotes @entity {
+  id: ID!
+  currentEpoch: BigInt!
+  voter: String
+  stakingPositionId: BigInt!
+  votingPositionId: BigInt!
+  newVotes: BigInt!
+  oldVotes: BigInt!
+}
+
+type NftBattleArenaRemovedStakerPosition @entity {
+  id: ID!
+  currentEpoch: BigInt!
+  staker: String
+  stakingPositionId: BigInt!
+}
+
+type NftBattleArenaWithdrawedDaiFromVoting @entity {
+  id: ID!
+  currentEpoch: BigInt!
+  voter: String
+  stakingPositionId: BigInt!
+  votingPositionId: BigInt!
+  daiNumber: BigInt!
+  beneficiary: String
+}
+
+type NftBattleArenaWithdrawedZooFromVoting @entity {
+  id: ID!
+  currentEpoch: BigInt!
+  voter: String
+  stakingPositionId: BigInt!
+  votingPositionId: BigInt!
+  zooNumber: BigInt!
+  beneficiary: String
+}

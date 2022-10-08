@@ -18,4 +18,7 @@ export class CreatedStakerPosition {
 
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
   stakingPositionId!: bigint
+
+  @Column_("bool", {nullable: false})
+  isDeleted!: boolean
 }

@@ -27,4 +27,7 @@ export class CreatedVotingPosition {
 
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
   votingPositionId!: bigint
+
+  @Column_("bool", {nullable: false})
+  isDeleted!: boolean
 }

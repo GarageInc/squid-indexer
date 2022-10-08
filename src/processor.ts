@@ -1,20 +1,47 @@
 import { lookupArchive } from '@subsquid/archive-registry'
-import {
-  BatchContext,
-  BatchProcessorItem,
-  SubstrateBatchProcessor,
-  EvmLogEvent,
-  SubstrateBlock,
-} from '@subsquid/substrate-processor'
-import { Store, TypeormDatabase } from '@subsquid/typeorm-store'
-import { CHAIN_NODE, arenaContract } from './contract'
-import { CreatedStakerPosition } from './model'
+import { SubstrateBatchProcessor, EvmLogEvent, SubstrateBlock } from '@subsquid/substrate-processor'
+import { TypeormDatabase } from '@subsquid/typeorm-store'
+import { CHAIN_NODE, arenaContract, veModelContract } from './contract'
 import * as arenaAbi from './abi/battle-arena-abi'
-import battleArenaAbi from './abi/battle-arena-abi.json'
+import * as vemodelAbi from './abi/ve-model-abi'
+import { Ctx, liquidateVoted, saveStaked, saveUnStaked, saveVoted } from './transformerts'
 
-import { utils } from 'ethers'
+const CreatedStakerPositionT = arenaAbi.events['CreatedStakerPosition(uint256,address,uint256)']
+const CreatedVotingPositionT = arenaAbi.events['CreatedVotingPosition(uint256,address,uint256,uint256,uint256,uint256)']
+const RemovedStakerPositionT = arenaAbi.events['RemovedStakerPosition(uint256,address,uint256)']
+const LiquidatedVotingPositionT =
+  arenaAbi.events['LiquidatedVotingPosition(uint256,address,uint256,address,uint256,uint256,uint256)']
+const AddedZooToVotingT = arenaAbi.events['AddedZooToVoting(uint256,address,uint256,uint256,uint256,uint256)']
+const AddedDaiToVotingT = arenaAbi.events['AddedDaiToVoting(uint256,address,uint256,uint256,uint256,uint256)']
+const WithdrawedDaiFromVotingT =
+  arenaAbi.events['WithdrawedDaiFromVoting(uint256,address,uint256,address,uint256,uint256)']
+const WithdrawedZooFromVotingT =
+  arenaAbi.events['WithdrawedZooFromVoting(uint256,address,uint256,uint256,uint256,address)']
+const PairedNftT = arenaAbi.events['PairedNft(uint256,uint256,uint256,uint256)']
+const ChosenWinnerT = arenaAbi.events['ChosenWinner(uint256,uint256,uint256,bool,uint256,uint256)']
+const ClaimedRewardFromStakingT =
+  arenaAbi.events['ClaimedRewardFromStaking(uint256,address,uint256,address,uint256,uint256)']
+const ClaimedRewardFromVotingT =
+  arenaAbi.events['ClaimedRewardFromVoting(uint256,address,uint256,address,uint256,uint256,uint256)']
 
-const ifaceStaker = new utils.Interface(battleArenaAbi)
+const VotedForCollectionT = vemodelAbi.events['VotedForCollection(address,address,uint256)']
+const ZooUnlockedT = vemodelAbi.events['ZooUnlocked(address,address,uint256)']
+
+interface IArenaEvmEvent {
+  topic: string
+  decode: (data: arenaAbi.EvmLog) => any
+}
+
+/*
+AddedDaiToVotingT.topic,
+AddedZooToVotingT.topic,
+WithdrawedDaiFromVotingT.topic,
+WithdrawedZooFromVotingT.topic,
+PairedNftT.topic,
+ChosenWinnerT.topic,
+ClaimedRewardFromStakingT.topic,
+ClaimedRewardFromVotingT.topic,
+*/
 
 const database = new TypeormDatabase()
 const processor = new SubstrateBatchProcessor()
@@ -27,63 +54,77 @@ const processor = new SubstrateBatchProcessor()
   .setTypesBundle('moonbeam')
   .addEvmLog(arenaContract.address, {
     range: { from: 1887167 },
-    filter: [arenaAbi.events['CreatedStakerPosition(uint256,address,uint256)'].topic],
+    filter: [CreatedStakerPositionT.topic],
+  })
+  .addEvmLog(arenaContract.address, {
+    range: { from: 1887167 },
+    filter: [RemovedStakerPositionT.topic],
+  })
+  .addEvmLog(arenaContract.address, {
+    range: { from: 1887167 },
+    filter: [CreatedVotingPositionT.topic],
+  })
+  .addEvmLog(arenaContract.address, {
+    range: { from: 1887167 },
+    filter: [LiquidatedVotingPositionT.topic],
+  })
+  .addEvmLog(veModelContract.address, {
+    range: { from: 1887167 },
+    filter: [VotedForCollectionT.topic],
+  })
+  .addEvmLog(veModelContract.address, {
+    range: { from: 1887167 },
+    filter: [ZooUnlockedT.topic],
   })
 
-type Item = BatchProcessorItem<typeof processor>
-type Ctx = BatchContext<Store, Item>
+console.log('CreatedStakerPositionT', CreatedStakerPositionT.topic, RemovedStakerPositionT.topic)
 
-console.log(arenaAbi.events['CreatedStakerPosition(uint256,address,uint256)'].topic)
+const hasIn = (item: any, topic: string) =>
+  item.event.args && item.event.args.logs && item.event.args.logs.indexOf(topic) !== -1
 
-processor.run(database, async (ctx) => {
-  const transfersData = []
+processor.run(database, async (ctx: any) => {
+  const staked = []
+  const unstaked = []
+  const voted = []
+  const liquidatedVoting = []
+  const addedDai = []
+  const addedZoo = []
+  const withdrawedDai = []
+  const withdrawedZoo = []
+  const pairedNft = []
+  const chosenWinner = []
+  const claimedStaking = []
+  const claimedVoting = []
 
   for (const block of ctx.blocks) {
     for (const item of block.items) {
-      if (item.name === 'EVM.Log' && item.event.args) {
-        // @ts-ignore
+      if (item.name === 'EVM.Log') {
         console.log(
-          '---',
-          // @ts-ignore
-          block.items
-            // @ts-ignore
-            .filter((i) => i.event)
-            // @ts-ignore
-            .map((i) => i.event)
-            .map((i) => i.args)
+          '----',
+          block.items.filter((i: any) => i.event).map((i: any) => i.event.args?.log?.topics)
         )
-        const transfer = handleTransfer(ctx, block.header, item.event)
-        transfersData.push(transfer)
+        if (hasIn(item, CreatedStakerPositionT.topic)) {
+          staked.push(handler(ctx, block.header, item.event, CreatedStakerPositionT))
+        }
+        if (hasIn(item, RemovedStakerPositionT.topic)) {
+          unstaked.push(handler(ctx, block.header, item.event, RemovedStakerPositionT))
+        }
+        if (hasIn(item, VotedForCollectionT.topic)) {
+          voted.push(handler(ctx, block.header, item.event, VotedForCollectionT))
+        }
+        if (hasIn(item, LiquidatedVotingPositionT.topic)) {
+          liquidatedVoting.push(handler(ctx, block.header, item.event, LiquidatedVotingPositionT))
+        }
       }
     }
   }
 
-  await saveTransfers(ctx, transfersData)
+  await saveStaked(ctx, staked)
+  await saveUnStaked(ctx, staked)
+  await saveVoted(ctx, voted)
+  await liquidateVoted(ctx, liquidatedVoting)
 })
 
-function handleTransfer(ctx: Ctx, block: SubstrateBlock, event: EvmLogEvent) {
-  const e = arenaAbi.events['CreatedStakerPosition(uint256,address,uint256)'].decode(event.args.log)
-  return { e, event }
-}
-
-async function saveTransfers(
-  ctx: Ctx,
-  transfersData: { e: arenaAbi.CreatedStakerPosition0Event; event: EvmLogEvent }[]
-) {
-  const transfers: Set<CreatedStakerPosition> = new Set()
-
-  for (const transferData of transfersData) {
-    const { e, event } = transferData
-
-    const transfer = new CreatedStakerPosition({
-      id: event.id,
-      staker: e.staker,
-      currentEpoch: BigInt(e.currentEpoch.toString()),
-      stakingPositionId: BigInt(e.stakingPositionId.toString()),
-    })
-
-    transfers.add(transfer)
-  }
-
-  await ctx.store.save([...transfers])
+function handler(ctx: Ctx, block: SubstrateBlock, event: EvmLogEvent, type: IArenaEvmEvent) {
+  return { e: type.decode(event.args.log), event }
 }

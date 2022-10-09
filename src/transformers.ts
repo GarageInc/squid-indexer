@@ -16,8 +16,10 @@ import {
 } from './model'
 import * as arenaAbi from './abi/battle-arena-abi'
 import * as vemodelAbi from './abi/ve-model-abi'
+import * as faucetAbi from './abi/battle-faucet-abi'
 import { ZooUnlocked } from './model/generated/zooUnlocked.model'
 import { VotedForCollection } from './model/generated/votedForCollection.model'
+import { FaucetGiven } from './model/generated/faucetGiven.model'
 
 export type Item = BatchProcessorItem<typeof SubstrateBatchProcessor>
 
@@ -371,6 +373,26 @@ export async function saveCollectionVoted(
       amount: BigInt(e.amount.toString()),
       collection: e.collection,
       voter: e.voter,
+    })
+
+    transfers.add(transfer)
+  }
+
+  await ctx.store.save([...transfers])
+}
+
+export async function saveFaucetGiven(
+  ctx: Ctx,
+  transfersData: { e: faucetAbi.tokensGiven0Event; event: EvmLogEvent }[]
+) {
+  const transfers: Set<FaucetGiven> = new Set()
+
+  for (const transferData of transfersData) {
+    const { e, event } = transferData
+
+    const transfer = new FaucetGiven({
+      id: event.id,
+      user: e.user,
     })
 
     transfers.add(transfer)

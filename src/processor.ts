@@ -1,9 +1,10 @@
 import { lookupArchive } from '@subsquid/archive-registry'
 import { SubstrateBatchProcessor, EvmLogEvent, SubstrateBlock } from '@subsquid/substrate-processor'
 import { TypeormDatabase } from '@subsquid/typeorm-store'
-import { CHAIN_NODE, arenaContract, veModelContract } from './contract'
+import { CHAIN_NODE, arenaContract, veModelContract, faucetContract } from './contract'
 import * as arenaAbi from './abi/battle-arena-abi'
 import * as vemodelAbi from './abi/ve-model-abi'
+import * as faucetAbi from './abi/battle-faucet-abi'
 import {
   Ctx,
   liquidateVoted,
@@ -12,6 +13,7 @@ import {
   saveClaimedStaking,
   saveClaimedVoting,
   saveCollectionVoted,
+  saveFaucetGiven,
   savePaired,
   saveStaked,
   saveUnStaked,
@@ -42,6 +44,8 @@ const ClaimedRewardFromVotingT =
 
 const VotedForCollectionT = vemodelAbi.events['VotedForCollection(address,address,uint256)']
 const ZooUnlockedT = vemodelAbi.events['ZooUnlocked(address,address,uint256)']
+
+const TokensGivenT = faucetAbi.events['tokensGiven(address)']
 
 interface IArenaEvmEvent {
   topic: string
@@ -110,6 +114,10 @@ const processor = new SubstrateBatchProcessor()
     filter: [ZooUnlockedT.topic],
   })
 
+  .addEvmLog(faucetContract.address, {
+    filter: [TokensGivenT.topic],
+  })
+
 const hasIn = (item: any, topic: string) =>
   item.event.args && item.event.args.log && item.event.args.log.topics.indexOf(topic) !== -1
 
@@ -129,6 +137,8 @@ processor.run(database, async (ctx: any) => {
 
   const votedCollection = []
   const zooUnlocked = []
+
+  const given = []
 
   for (const block of ctx.blocks) {
     for (const item of block.items) {
@@ -182,6 +192,10 @@ processor.run(database, async (ctx: any) => {
         if (hasIn(item, ZooUnlockedT.topic)) {
           zooUnlocked.push(handler(ctx, block.header, item.event, ZooUnlockedT))
         }
+
+        if (hasIn(item, TokensGivenT.topic)) {
+          given.push(handler(ctx, block.header, item.event, TokensGivenT))
+        }
       }
     }
   }
@@ -206,6 +220,8 @@ processor.run(database, async (ctx: any) => {
 
   await saveCollectionVoted(ctx, votedCollection)
   await saveZooUnlocked(ctx, zooUnlocked)
+
+  await saveFaucetGiven(ctx, given)
 })
 
 function handler(ctx: Ctx, block: SubstrateBlock, event: EvmLogEvent, type: IArenaEvmEvent) {

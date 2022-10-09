@@ -1,4 +1,4 @@
-import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_} from "typeorm"
+import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, Index as Index_} from "typeorm"
 import * as marshal from "./marshal"
 
 @Entity_()
@@ -10,9 +10,11 @@ export class CreatedStakerPosition {
   @PrimaryColumn_()
   id!: string
 
+  @Index_()
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
   currentEpoch!: bigint
 
+  @Index_()
   @Column_("text", {nullable: true})
   staker!: string | undefined | null
 
@@ -21,4 +23,8 @@ export class CreatedStakerPosition {
 
   @Column_("bool", {nullable: false})
   isDeleted!: boolean
+
+  @Index_()
+  @Column_("timestamp with time zone", {nullable: false})
+  timestamp!: Date
 }

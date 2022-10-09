@@ -54,6 +54,14 @@ type ClaimedRewardFromVoting @entity {
   timestamp: DateTime! @index
 }
 
+type Project @entity {
+  id: ID!
+  address: String!
+  name: String! @index
+  symbol: String! @index
+  positions: [CreatedStakerPosition!] @derivedFrom(field: "project")
+}
+
 type CreatedStakerPosition @entity {
   id: ID!
   currentEpoch: BigInt! @index
@@ -61,6 +69,7 @@ type CreatedStakerPosition @entity {
   stakingPositionId: BigInt!
   isDeleted: Boolean!
   timestamp: DateTime! @index
+  project: Project!
 }
 
 type CreatedVotingPosition @entity {

@@ -1,5 +1,6 @@
-import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, Index as Index_} from "typeorm"
+import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, Index as Index_, ManyToOne as ManyToOne_} from "typeorm"
 import * as marshal from "./marshal"
+import {Project} from "./project.model"
 
 @Entity_()
 export class CreatedStakerPosition {
@@ -27,4 +28,8 @@ export class CreatedStakerPosition {
   @Index_()
   @Column_("timestamp with time zone", {nullable: false})
   timestamp!: Date
+
+  @Index_()
+  @ManyToOne_(() => Project, {nullable: true})
+  project!: Project
 }

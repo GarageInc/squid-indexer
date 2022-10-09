@@ -225,5 +225,5 @@ processor.run(database, async (ctx: any) => {
 })
 
 function handler(ctx: Ctx, block: SubstrateBlock, event: EvmLogEvent, type: IArenaEvmEvent) {
-  return { e: type.decode(event.args.log), event }
+  return { e: type.decode(event.args.log), event, block: block }
 }

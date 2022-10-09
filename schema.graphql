@@ -7,6 +7,7 @@ type AddedDaiToVoting @entity {
   amount: BigInt!
   votes: BigInt!
   timestamp: DateTime! @index
+  transactionHash: String!
 }
 
 type AddedZooToVoting @entity {
@@ -18,6 +19,7 @@ type AddedZooToVoting @entity {
   amount: BigInt!
   votes: BigInt!
   timestamp: DateTime! @index
+  transactionHash: String!
 }
 
 type ChosenWinner @entity {
@@ -29,6 +31,7 @@ type ChosenWinner @entity {
   pairIndex: BigInt!
   playedPairsAmount: BigInt!
   timestamp: DateTime! @index
+  transactionHash: String!
 }
 
 type ClaimedRewardFromStaking @entity {
@@ -40,6 +43,7 @@ type ClaimedRewardFromStaking @entity {
   yTokenReward: BigInt!
   daiReward: BigInt!
   timestamp: DateTime! @index
+  transactionHash: String!
 }
 
 type ClaimedRewardFromVoting @entity {
@@ -52,6 +56,7 @@ type ClaimedRewardFromVoting @entity {
   daiReward: BigInt!
   votingPositionId: BigInt!
   timestamp: DateTime! @index
+  transactionHash: String!
 }
 
 type Project @entity {
@@ -70,6 +75,7 @@ type CreatedStakerPosition @entity {
   isDeleted: Boolean!
   timestamp: DateTime! @index
   project: Project!
+  transactionHash: String!
 }
 
 type CreatedVotingPosition @entity {
@@ -82,6 +88,7 @@ type CreatedVotingPosition @entity {
   votingPositionId: BigInt!
   isDeleted: Boolean!
   timestamp: DateTime! @index
+  transactionHash: String!
 }
 
 type LiquidatedVotingPosition @entity {
@@ -94,6 +101,7 @@ type LiquidatedVotingPosition @entity {
   zooReturned: BigInt!
   daiReceived: BigInt!
   timestamp: DateTime! @index
+  transactionHash: String!
 }
 
 type PairedNft @entity {
@@ -103,6 +111,7 @@ type PairedNft @entity {
   fighter2: BigInt! @index
   pairIndex: BigInt!
   timestamp: DateTime! @index
+  transactionHash: String!
 }
 
 type RemovedStakerPosition @entity {
@@ -111,6 +120,7 @@ type RemovedStakerPosition @entity {
   staker: String
   stakingPositionId: BigInt!
   timestamp: DateTime! @index
+  transactionHash: String!
 }
 
 type WithdrawedDaiFromVoting @entity {
@@ -122,6 +132,7 @@ type WithdrawedDaiFromVoting @entity {
   daiNumber: BigInt!
   beneficiary: String
   timestamp: DateTime! @index
+  transactionHash: String!
 }
 
 type WithdrawedZooFromVoting @entity {
@@ -133,6 +144,7 @@ type WithdrawedZooFromVoting @entity {
   zooNumber: BigInt!
   beneficiary: String
   timestamp: DateTime! @index
+  transactionHash: String!
 }
 
 type ZooUnlocked @entity {
@@ -141,6 +153,7 @@ type ZooUnlocked @entity {
   collection: String @index
   amount: BigInt!
   timestamp: DateTime! @index
+  transactionHash: String!
 }
 
 type VotedForCollection @entity {
@@ -149,10 +162,12 @@ type VotedForCollection @entity {
   voter: String @index
   amount: BigInt!
   timestamp: DateTime! @index
+  transactionHash: String!
 }
 
 type FaucetGiven @entity {
   id: ID!
   user: String! @index
   timestamp: DateTime! @index
+  transactionHash: String!
 }

@@ -52,6 +52,7 @@ export async function saveAddedDai(
       amount: BigInt(e.amount.toString()),
       votes: BigInt(e.votes.toString()),
       timestamp: new Date(block.timestamp),
+      transactionHash: event.evmTxHash,
     })
 
     transfers.add(transfer)
@@ -78,6 +79,7 @@ export async function saveAddedZoo(
       amount: BigInt(e.amount.toString()),
       votes: BigInt(e.votes.toString()),
       timestamp: new Date(block.timestamp),
+      transactionHash: event.evmTxHash,
     })
 
     transfers.add(transfer)
@@ -104,6 +106,7 @@ export async function saveWithdrawedZoo(
       zooNumber: BigInt(e.zooNumber.toString()),
       beneficiary: e.beneficiary,
       timestamp: new Date(block.timestamp),
+      transactionHash: event.evmTxHash,
     })
 
     transfers.add(transfer)
@@ -130,6 +133,7 @@ export async function saveWithdrawedDai(
       daiNumber: BigInt(e.daiNumber.toString()),
       beneficiary: e.beneficiary,
       timestamp: new Date(block.timestamp),
+      transactionHash: event.evmTxHash,
     })
 
     transfers.add(transfer)
@@ -154,6 +158,7 @@ export async function savePaired(
       currentEpoch: BigInt(e.currentEpoch.toString()),
       pairIndex: BigInt(e.pairIndex.toString()),
       timestamp: new Date(block.timestamp),
+      transactionHash: event.evmTxHash,
     })
 
     transfers.add(transfer)
@@ -180,6 +185,7 @@ export async function saveWinner(
       currentEpoch: BigInt(e.currentEpoch.toString()),
       pairIndex: BigInt(e.pairIndex.toString()),
       timestamp: new Date(block.timestamp),
+      transactionHash: event.evmTxHash,
     })
 
     transfers.add(transfer)
@@ -206,6 +212,7 @@ export async function saveClaimedStaking(
       yTokenReward: BigInt(e.yTokenReward.toString()),
       daiReward: BigInt(e.daiReward.toString()),
       timestamp: new Date(block.timestamp),
+      transactionHash: event.evmTxHash,
     })
 
     transfers.add(transfer)
@@ -232,6 +239,7 @@ export async function saveClaimedVoting(
       yTokenReward: BigInt(e.yTokenReward.toString()),
       daiReward: BigInt(e.daiReward.toString()),
       timestamp: new Date(block.timestamp),
+      transactionHash: event.evmTxHash,
     })
 
     transfers.add(transfer)
@@ -259,6 +267,7 @@ export async function saveStaked(
       isDeleted: false,
       timestamp: new Date(block.timestamp),
       project: targetProject,
+      transactionHash: event.evmTxHash,
     })
 
     transfers.add(transfer)
@@ -283,6 +292,7 @@ export async function saveUnStaked(
       currentEpoch: BigInt(e.currentEpoch.toString()),
       stakingPositionId: BigInt(e.stakingPositionId.toString()),
       timestamp: new Date(block.timestamp),
+      transactionHash: event.evmTxHash,
     })
 
     const item = await ctx.store.findOneBy(CreatedStakerPosition, {
@@ -320,6 +330,7 @@ export async function saveVoted(
       votingPositionId: BigInt(e.votingPositionId.toString()),
       isDeleted: false,
       timestamp: new Date(block.timestamp),
+      transactionHash: event.evmTxHash,
     })
 
     transfers.add(transfer)
@@ -348,6 +359,7 @@ export async function liquidateVoted(
       zooReturned: BigInt(e.zooReturned.toString()),
       daiReceived: BigInt(e.daiReceived.toString()),
       timestamp: new Date(block.timestamp),
+      transactionHash: event.evmTxHash,
     })
 
     const item = await ctx.store.findOneBy(CreatedVotingPosition, {
@@ -405,6 +417,7 @@ export async function saveCollectionVoted(
       collection: e.collection,
       voter: e.voter,
       timestamp: new Date(block.timestamp),
+      transactionHash: event.evmTxHash,
     })
 
     transfers.add(transfer)
@@ -426,6 +439,7 @@ export async function saveFaucetGiven(
       id: event.id,
       user: e.user,
       timestamp: new Date(block.timestamp),
+      transactionHash: event.evmTxHash,
     })
 
     transfers.add(transfer)

@@ -32,4 +32,7 @@ export class CreatedStakerPosition {
   @Index_()
   @ManyToOne_(() => Project, {nullable: true})
   project!: Project
+
+  @Column_("text", {nullable: false})
+  transactionHash!: string
 }

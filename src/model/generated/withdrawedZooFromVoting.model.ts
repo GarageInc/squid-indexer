@@ -31,4 +31,7 @@ export class WithdrawedZooFromVoting {
   @Index_()
   @Column_("timestamp with time zone", {nullable: false})
   timestamp!: Date
+
+  @Column_("text", {nullable: false})
+  transactionHash!: string
 }

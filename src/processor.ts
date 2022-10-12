@@ -153,8 +153,8 @@ processor.run(database, async (ctx: any) => {
         if (hasIn(item, RemovedStakerPositionT.topic)) {
           unstaked.push(handler(ctx, block.header, item.event, RemovedStakerPositionT))
         }
-        if (hasIn(item, VotedForCollectionT.topic)) {
-          voted.push(handler(ctx, block.header, item.event, VotedForCollectionT))
+        if (hasIn(item, CreatedVotingPositionT.topic)) {
+          voted.push(handler(ctx, block.header, item.event, CreatedVotingPositionT))
         }
         if (hasIn(item, LiquidatedVotingPositionT.topic)) {
           liquidatedVoting.push(handler(ctx, block.header, item.event, LiquidatedVotingPositionT))

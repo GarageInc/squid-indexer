@@ -391,7 +391,7 @@ export async function saveZooUnlocked(
     const transfer = new ZooUnlocked({
       id: event.id,
       amount: BigInt(e.amount.toString()),
-      collection: e.collection,
+      collection: e.collection.toLowerCase(),
       voter: e.voter.toLowerCase(),
       timestamp: new Date(block.timestamp),
     })
@@ -414,7 +414,7 @@ export async function saveCollectionVoted(
     const transfer = new VotedForCollection({
       id: event.id,
       amount: BigInt(e.amount.toString()),
-      collection: e.collection,
+      collection: e.collection.toLowerCase(),
       voter: e.voter.toLowerCase(),
       timestamp: new Date(block.timestamp),
       transactionHash: event.evmTxHash,

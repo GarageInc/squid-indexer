@@ -45,7 +45,7 @@ export async function saveAddedDai(
 
     const transfer = new AddedDaiToVoting({
       id: event.id,
-      voter: e.voter,
+      voter: e.voter.toLowerCase(),
       currentEpoch: BigInt(e.currentEpoch.toString()),
       stakingPositionId: BigInt(e.stakingPositionId.toString()),
       votingPositionId: BigInt(e.votingPositionId.toString()),
@@ -72,7 +72,7 @@ export async function saveAddedZoo(
 
     const transfer = new AddedZooToVoting({
       id: event.id,
-      voter: e.voter,
+      voter: e.voter.toLowerCase(),
       currentEpoch: BigInt(e.currentEpoch.toString()),
       stakingPositionId: BigInt(e.stakingPositionId.toString()),
       votingPositionId: BigInt(e.votingPositionId.toString()),
@@ -99,12 +99,12 @@ export async function saveWithdrawedZoo(
 
     const transfer = new WithdrawedZooFromVoting({
       id: event.id,
-      voter: e.voter,
+      voter: e.voter.toLowerCase(),
       currentEpoch: BigInt(e.currentEpoch.toString()),
       stakingPositionId: BigInt(e.stakingPositionId.toString()),
       votingPositionId: BigInt(e.votingPositionId.toString()),
       zooNumber: BigInt(e.zooNumber.toString()),
-      beneficiary: e.beneficiary,
+      beneficiary: e.beneficiary.toLowerCase(),
       timestamp: new Date(block.timestamp),
       transactionHash: event.evmTxHash,
     })
@@ -126,12 +126,12 @@ export async function saveWithdrawedDai(
 
     const transfer = new WithdrawedDaiFromVoting({
       id: event.id,
-      voter: e.voter,
+      voter: e.voter.toLowerCase(),
       currentEpoch: BigInt(e.currentEpoch.toString()),
       stakingPositionId: BigInt(e.stakingPositionId.toString()),
       votingPositionId: BigInt(e.votingPositionId.toString()),
       daiNumber: BigInt(e.daiNumber.toString()),
-      beneficiary: e.beneficiary,
+      beneficiary: e.beneficiary.toLowerCase(),
       timestamp: new Date(block.timestamp),
       transactionHash: event.evmTxHash,
     })
@@ -206,7 +206,7 @@ export async function saveClaimedStaking(
     const transfer = new ClaimedRewardFromStaking({
       id: event.id,
       currentEpoch: BigInt(e.currentEpoch.toString()),
-      staker: e.staker,
+      staker: e.staker.toLowerCase(),
       beneficiary: e.beneficiary,
       stakingPositionId: BigInt(e.stakingPositionId.toString()),
       yTokenReward: BigInt(e.yTokenReward.toString()),
@@ -232,7 +232,7 @@ export async function saveClaimedVoting(
     const transfer = new ClaimedRewardFromVoting({
       id: event.id,
       currentEpoch: BigInt(e.currentEpoch.toString()),
-      voter: e.voter,
+      voter: e.voter.toLowerCase(),
       beneficiary: e.beneficiary,
       stakingPositionId: BigInt(e.stakingPositionId.toString()),
       votingPositionId: BigInt(e.votingPositionId.toString()),
@@ -261,7 +261,7 @@ export async function saveStaked(
 
     const transfer = new CreatedStakerPosition({
       id: event.id,
-      staker: e.staker,
+      staker: e.staker.toLowerCase(),
       currentEpoch: BigInt(e.currentEpoch.toString()),
       stakingPositionId: BigInt(e.stakingPositionId.toString()),
       isDeleted: false,
@@ -288,7 +288,7 @@ export async function saveUnStaked(
 
     const transfer = new RemovedStakerPosition({
       id: event.id,
-      staker: e.staker,
+      staker: e.staker.toLowerCase(),
       currentEpoch: BigInt(e.currentEpoch.toString()),
       stakingPositionId: BigInt(e.stakingPositionId.toString()),
       timestamp: new Date(block.timestamp),
@@ -322,7 +322,7 @@ export async function saveVoted(
 
     const transfer = new CreatedVotingPosition({
       id: event.id,
-      voter: e.voter,
+      voter: e.voter.toLowerCase(),
       currentEpoch: BigInt(e.currentEpoch.toString()),
       stakingPositionId: BigInt(e.stakingPositionId.toString()),
       daiAmount: BigInt(e.daiAmount.toString()),
@@ -355,7 +355,7 @@ export async function liquidateVoted(
       currentEpoch: BigInt(e.currentEpoch.toString()),
       stakingPositionId: BigInt(e.stakingPositionId.toString()),
       votingPositionId: BigInt(e.votingPositionId.toString()),
-      beneficiary: e.beneficiary,
+      beneficiary: e.beneficiary.toLowerCase(),
       zooReturned: BigInt(e.zooReturned.toString()),
       daiReceived: BigInt(e.daiReceived.toString()),
       timestamp: new Date(block.timestamp),
@@ -392,7 +392,7 @@ export async function saveZooUnlocked(
       id: event.id,
       amount: BigInt(e.amount.toString()),
       collection: e.collection,
-      voter: e.voter,
+      voter: e.voter.toLowerCase(),
       timestamp: new Date(block.timestamp),
     })
 
@@ -415,7 +415,7 @@ export async function saveCollectionVoted(
       id: event.id,
       amount: BigInt(e.amount.toString()),
       collection: e.collection,
-      voter: e.voter,
+      voter: e.voter.toLowerCase(),
       timestamp: new Date(block.timestamp),
       transactionHash: event.evmTxHash,
     })

@@ -64,7 +64,8 @@ type Project @entity {
   address: String!
   name: String! @index
   symbol: String! @index
-  positions: [CreatedStakerPosition!] @derivedFrom(field: "project")
+  positionsStaked: [CreatedStakerPosition!] @derivedFrom(field: "project")
+  positionsVoted: [CreatedVotingPosition!] @derivedFrom(field: "project")
 }
 
 type CreatedStakerPosition @entity {
@@ -89,6 +90,7 @@ type CreatedVotingPosition @entity {
   isDeleted: Boolean!
   timestamp: DateTime! @index
   transactionHash: String!
+  project: Project!
 }
 
 type LiquidatedVotingPosition @entity {

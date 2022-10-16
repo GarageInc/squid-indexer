@@ -1,5 +1,5 @@
-module.exports = class Data1665348468856 {
-  name = 'Data1665348468856'
+module.exports = class Data1665948129832 {
+  name = 'Data1665948129832'
 
   async up(db) {
     await db.query(`CREATE TABLE "added_dai_to_voting" ("id" character varying NOT NULL, "current_epoch" numeric NOT NULL, "voter" text, "staking_position_id" numeric NOT NULL, "voting_position_id" numeric NOT NULL, "amount" numeric NOT NULL, "votes" numeric NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, CONSTRAINT "PK_9e1e399cbc921bb8d6aedb65ad5" PRIMARY KEY ("id"))`)
@@ -30,13 +30,14 @@ module.exports = class Data1665348468856 {
     await db.query(`CREATE INDEX "IDX_f1ff9db18d1ac2b5b6a99bbd6e" ON "created_staker_position" ("staker") `)
     await db.query(`CREATE INDEX "IDX_f98be95299cd02d3ebc94a8adb" ON "created_staker_position" ("timestamp") `)
     await db.query(`CREATE INDEX "IDX_ffae01274ee7c74c16cb8333f3" ON "created_staker_position" ("project_id") `)
-    await db.query(`CREATE TABLE "project" ("id" character varying NOT NULL, "address" text NOT NULL, "name" text NOT NULL, "symbol" text NOT NULL, CONSTRAINT "PK_4d68b1358bb5b766d3e78f32f57" PRIMARY KEY ("id"))`)
-    await db.query(`CREATE INDEX "IDX_dedfea394088ed136ddadeee89" ON "project" ("name") `)
-    await db.query(`CREATE INDEX "IDX_db7dd4fd79923b1749161cfd84" ON "project" ("symbol") `)
-    await db.query(`CREATE TABLE "created_voting_position" ("id" character varying NOT NULL, "current_epoch" numeric NOT NULL, "voter" text, "staking_position_id" numeric NOT NULL, "dai_amount" numeric NOT NULL, "votes" numeric NOT NULL, "voting_position_id" numeric NOT NULL, "is_deleted" boolean NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, CONSTRAINT "PK_9fb98405e3234d450410afc5cdd" PRIMARY KEY ("id"))`)
+    await db.query(`CREATE TABLE "created_voting_position" ("id" character varying NOT NULL, "current_epoch" numeric NOT NULL, "voter" text, "staking_position_id" numeric NOT NULL, "dai_amount" numeric NOT NULL, "votes" numeric NOT NULL, "voting_position_id" numeric NOT NULL, "is_deleted" boolean NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, "project_id" character varying, CONSTRAINT "PK_9fb98405e3234d450410afc5cdd" PRIMARY KEY ("id"))`)
     await db.query(`CREATE INDEX "IDX_7e278884deffa2c0c6789f7073" ON "created_voting_position" ("voter") `)
     await db.query(`CREATE INDEX "IDX_a3d2c1180b23429811339c1c08" ON "created_voting_position" ("staking_position_id") `)
     await db.query(`CREATE INDEX "IDX_f2c64ba2726fbcace5340fa56d" ON "created_voting_position" ("timestamp") `)
+    await db.query(`CREATE INDEX "IDX_70d5c61182c716fadd1458e6d4" ON "created_voting_position" ("project_id") `)
+    await db.query(`CREATE TABLE "project" ("id" character varying NOT NULL, "address" text NOT NULL, "name" text NOT NULL, "symbol" text NOT NULL, CONSTRAINT "PK_4d68b1358bb5b766d3e78f32f57" PRIMARY KEY ("id"))`)
+    await db.query(`CREATE INDEX "IDX_dedfea394088ed136ddadeee89" ON "project" ("name") `)
+    await db.query(`CREATE INDEX "IDX_db7dd4fd79923b1749161cfd84" ON "project" ("symbol") `)
     await db.query(`CREATE TABLE "liquidated_voting_position" ("id" character varying NOT NULL, "current_epoch" numeric NOT NULL, "voter" text, "staking_position_id" numeric NOT NULL, "beneficiary" text, "voting_position_id" numeric NOT NULL, "zoo_returned" numeric NOT NULL, "dai_received" numeric NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, CONSTRAINT "PK_072eff86807e01c0de2278f2597" PRIMARY KEY ("id"))`)
     await db.query(`CREATE INDEX "IDX_bcce8cd12e69e60ad2c11808b9" ON "liquidated_voting_position" ("voter") `)
     await db.query(`CREATE INDEX "IDX_a65006ddef1243fcaa585615e3" ON "liquidated_voting_position" ("staking_position_id") `)
@@ -66,6 +67,7 @@ module.exports = class Data1665348468856 {
     await db.query(`CREATE INDEX "IDX_bd379e63221a02cca9a73825c2" ON "faucet_given" ("user") `)
     await db.query(`CREATE INDEX "IDX_6253037bfa2197d9bedfa3da9d" ON "faucet_given" ("timestamp") `)
     await db.query(`ALTER TABLE "created_staker_position" ADD CONSTRAINT "FK_ffae01274ee7c74c16cb8333f3e" FOREIGN KEY ("project_id") REFERENCES "project"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`)
+    await db.query(`ALTER TABLE "created_voting_position" ADD CONSTRAINT "FK_70d5c61182c716fadd1458e6d40" FOREIGN KEY ("project_id") REFERENCES "project"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`)
   }
 
   async down(db) {
@@ -97,13 +99,14 @@ module.exports = class Data1665348468856 {
     await db.query(`DROP INDEX "public"."IDX_f1ff9db18d1ac2b5b6a99bbd6e"`)
     await db.query(`DROP INDEX "public"."IDX_f98be95299cd02d3ebc94a8adb"`)
     await db.query(`DROP INDEX "public"."IDX_ffae01274ee7c74c16cb8333f3"`)
-    await db.query(`DROP TABLE "project"`)
-    await db.query(`DROP INDEX "public"."IDX_dedfea394088ed136ddadeee89"`)
-    await db.query(`DROP INDEX "public"."IDX_db7dd4fd79923b1749161cfd84"`)
     await db.query(`DROP TABLE "created_voting_position"`)
     await db.query(`DROP INDEX "public"."IDX_7e278884deffa2c0c6789f7073"`)
     await db.query(`DROP INDEX "public"."IDX_a3d2c1180b23429811339c1c08"`)
     await db.query(`DROP INDEX "public"."IDX_f2c64ba2726fbcace5340fa56d"`)
+    await db.query(`DROP INDEX "public"."IDX_70d5c61182c716fadd1458e6d4"`)
+    await db.query(`DROP TABLE "project"`)
+    await db.query(`DROP INDEX "public"."IDX_dedfea394088ed136ddadeee89"`)
+    await db.query(`DROP INDEX "public"."IDX_db7dd4fd79923b1749161cfd84"`)
     await db.query(`DROP TABLE "liquidated_voting_position"`)
     await db.query(`DROP INDEX "public"."IDX_bcce8cd12e69e60ad2c11808b9"`)
     await db.query(`DROP INDEX "public"."IDX_a65006ddef1243fcaa585615e3"`)
@@ -133,5 +136,6 @@ module.exports = class Data1665348468856 {
     await db.query(`DROP INDEX "public"."IDX_bd379e63221a02cca9a73825c2"`)
     await db.query(`DROP INDEX "public"."IDX_6253037bfa2197d9bedfa3da9d"`)
     await db.query(`ALTER TABLE "created_staker_position" DROP CONSTRAINT "FK_ffae01274ee7c74c16cb8333f3e"`)
+    await db.query(`ALTER TABLE "created_voting_position" DROP CONSTRAINT "FK_70d5c61182c716fadd1458e6d40"`)
   }
 }

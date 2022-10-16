@@ -320,6 +320,8 @@ export async function saveVoted(
   for (const transferData of transfersData) {
     const { e, event, block } = transferData
 
+    const targetProject = await getTargetProject(ctx, e.stakingPositionId.toString(), block, event.id)
+
     const transfer = new CreatedVotingPosition({
       id: event.id,
       voter: e.voter.toLowerCase(),
@@ -331,6 +333,7 @@ export async function saveVoted(
       isDeleted: false,
       timestamp: new Date(block.timestamp),
       transactionHash: event.evmTxHash,
+      project: targetProject,
     })
 
     transfers.add(transfer)

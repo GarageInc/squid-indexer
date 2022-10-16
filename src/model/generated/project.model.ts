@@ -1,5 +1,6 @@
 import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, Index as Index_, OneToMany as OneToMany_} from "typeorm"
 import {CreatedStakerPosition} from "./createdStakerPosition.model"
+import {CreatedVotingPosition} from "./createdVotingPosition.model"
 
 @Entity_()
 export class Project {
@@ -22,5 +23,8 @@ export class Project {
   symbol!: string
 
   @OneToMany_(() => CreatedStakerPosition, e => e.project)
-  positions!: CreatedStakerPosition[]
+  positionsStaked!: CreatedStakerPosition[]
+
+  @OneToMany_(() => CreatedVotingPosition, e => e.project)
+  positionsVoted!: CreatedVotingPosition[]
 }

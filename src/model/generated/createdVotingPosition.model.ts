@@ -1,5 +1,6 @@
-import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, Index as Index_} from "typeorm"
+import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, Index as Index_, ManyToOne as ManyToOne_} from "typeorm"
 import * as marshal from "./marshal"
+import {Project} from "./project.model"
 
 @Entity_()
 export class CreatedVotingPosition {
@@ -39,4 +40,8 @@ export class CreatedVotingPosition {
 
   @Column_("text", {nullable: false})
   transactionHash!: string
+
+  @Index_()
+  @ManyToOne_(() => Project, {nullable: true})
+  project!: Project
 }

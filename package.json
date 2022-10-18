@@ -19,7 +19,7 @@
     "db:revert": "npx squid-typeorm-migration revert",
     "db:create": "npx squid-typeorm-migration create",
     "db:generate": "npx squid-typeorm-migration generate",
-    "db:apply": "npx squid-typeorm-migration apply",
+    "db:migrate": "npx squid-typeorm-migration apply",
     "logs": "npx sqd squid logs",
     "processor": "node -r dotenv/config lib/processor.js",
     "gql": "npx squid-graphql-server"

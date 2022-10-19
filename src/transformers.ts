@@ -22,13 +22,15 @@ import {
   WithdrawedZooFromVoting,
 } from './model'
 import * as arenaAbi from './abi/battle-arena-abi'
+import * as stakerAbi from './abi/battle-staker-abi'
 import * as vemodelAbi from './abi/ve-model-abi'
 import * as faucetAbi from './abi/battle-faucet-abi'
 import * as erc721 from './abi/erc721'
 import { ZooUnlocked } from './model/generated/zooUnlocked.model'
 import { VotedForCollection } from './model/generated/votedForCollection.model'
 import { FaucetGiven } from './model/generated/faucetGiven.model'
-import { stakerContract } from './contract'
+import { BATTLE_STAKER_MOONBEAM } from './contract'
+import { BigNumber } from 'ethers'
 
 export type Item = BatchProcessorItem<typeof SubstrateBatchProcessor>
 
@@ -451,7 +453,8 @@ export async function saveFaucetGiven(
   await ctx.store.save([...transfers])
 }
 async function getTargetProject(ctx: Ctx, positionId: string, block: SubstrateBlock, newId: string) {
-  const data = await stakerContract.functions['positions'](positionId)
+  const staker = new stakerAbi.Contract(ctx, { height: block.height }, BATTLE_STAKER_MOONBEAM)
+  const data = await staker.positions(BigNumber.from(positionId))
 
   const { token } = data
 

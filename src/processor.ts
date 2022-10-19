@@ -1,7 +1,7 @@
 import { lookupArchive } from '@subsquid/archive-registry'
 import { SubstrateBatchProcessor, EvmLogEvent, SubstrateBlock } from '@subsquid/substrate-processor'
 import { TypeormDatabase } from '@subsquid/typeorm-store'
-import { CHAIN_NODE, arenaContract, veModelContract, faucetContract } from './contract'
+import { CHAIN_NODE, BATTLE_ARENA_MOONBEAM, VE_MODEL_MOONBEAM, FAUCET_MOONBEAM } from './contract'
 import * as arenaAbi from './abi/battle-arena-abi'
 import * as vemodelAbi from './abi/ve-model-abi'
 import * as faucetAbi from './abi/battle-faucet-abi'
@@ -70,51 +70,51 @@ const processor = new SubstrateBatchProcessor()
     archive: lookupArchive('moonbeam', { release: 'FireSquid' }),
   })
   .setTypesBundle('moonbeam')
-  .addEvmLog(arenaContract.address, {
+  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
     filter: [CreatedStakerPositionT.topic],
   })
-  .addEvmLog(arenaContract.address, {
+  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
     filter: [RemovedStakerPositionT.topic],
   })
-  .addEvmLog(arenaContract.address, {
+  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
     filter: [CreatedVotingPositionT.topic],
   })
-  .addEvmLog(arenaContract.address, {
+  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
     filter: [LiquidatedVotingPositionT.topic],
   })
-  .addEvmLog(arenaContract.address, {
+  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
     filter: [AddedDaiToVotingT.topic],
   })
-  .addEvmLog(arenaContract.address, {
+  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
     filter: [AddedZooToVotingT.topic],
   })
-  .addEvmLog(arenaContract.address, {
+  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
     filter: [WithdrawedDaiFromVotingT.topic],
   })
-  .addEvmLog(arenaContract.address, {
+  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
     filter: [WithdrawedZooFromVotingT.topic],
   })
-  .addEvmLog(arenaContract.address, {
+  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
     filter: [PairedNftT.topic],
   })
-  .addEvmLog(arenaContract.address, {
+  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
     filter: [ChosenWinnerT.topic],
   })
-  .addEvmLog(arenaContract.address, {
+  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
     filter: [ClaimedRewardFromStakingT.topic],
   })
-  .addEvmLog(arenaContract.address, {
+  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
     filter: [ClaimedRewardFromVotingT.topic],
   })
 
-  .addEvmLog(veModelContract.address, {
+  .addEvmLog(VE_MODEL_MOONBEAM, {
     filter: [VotedForCollectionT.topic],
   })
-  .addEvmLog(veModelContract.address, {
+  .addEvmLog(VE_MODEL_MOONBEAM, {
     filter: [ZooUnlockedT.topic],
   })
 
-  .addEvmLog(faucetContract.address, {
+  .addEvmLog(FAUCET_MOONBEAM, {
     filter: [TokensGivenT.topic],
   })
 

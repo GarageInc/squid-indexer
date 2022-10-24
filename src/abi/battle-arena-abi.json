@@ -215,6 +215,13 @@
     "type": "event"
   },
   {
+    "inputs": [{ "internalType": "uint256", "name": "votingPositionId", "type": "uint256" }],
+    "name": "_calculateVotersYTokensExcludingRewards",
+    "outputs": [{ "internalType": "uint256", "name": "yTokens", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "name": "activeStakerPositions",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
@@ -430,6 +437,38 @@
     "inputs": [],
     "name": "getStakerPositionsLength",
     "outputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_xZoo", "type": "address" },
+      { "internalType": "address", "name": "_jackpotA", "type": "address" },
+      { "internalType": "address", "name": "_jackpotB", "type": "address" }
+    ],
+    "name": "init",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "jackpotA",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "jackpotB",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "name": "jackpotRewardsAtEpoch",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -679,6 +718,7 @@
       { "internalType": "uint256", "name": "startEpoch", "type": "uint256" },
       { "internalType": "uint256", "name": "endEpoch", "type": "uint256" },
       { "internalType": "uint256", "name": "lastRewardedEpoch", "type": "uint256" },
+      { "internalType": "uint256", "name": "lastEpochYTokensWereDeductedForRewards", "type": "uint256" },
       { "internalType": "uint256", "name": "yTokensRewardDebt", "type": "uint256" },
       { "internalType": "uint256", "name": "lastEpochOfIncentiveReward", "type": "uint256" }
     ],

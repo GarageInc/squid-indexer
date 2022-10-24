@@ -11,7 +11,6 @@
     "abi:arena": "npx squid-evm-typegen --abi src/abi/battle-arena-abi.json --output src/abi/battle-arena-abi.ts",
     "abi:faucet": "npx squid-evm-typegen --abi src/abi/battle-faucet-abi.json --output src/abi/battle-faucet-abi.ts",
     "abi:staker": "npx squid-evm-typegen --abi src/abi/battle-staker-abi.json --output src/abi/battle-staker-abi.ts",
-    "abi:voter": "npx squid-evm-typegen --abi src/abi/battle-voter-abi.json --output src/abi/battle-voter-abi.ts",
     "abi:ve-model": "npx squid-evm-typegen --abi src/abi/ve-model-abi.json --output src/abi/ve-model-abi.ts",
     "abi:erc721": "npx squid-evm-typegen --abi src/abi/erc721.json --output src/abi/erc721.ts",
     "codegen": "npx squid-typeorm-codegen",

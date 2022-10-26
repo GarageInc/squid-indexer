@@ -20,11 +20,15 @@ import {
   RemovedStakerPosition,
   WithdrawedDaiFromVoting,
   WithdrawedZooFromVoting,
+  XZooClaimed,
+  XZooStaked,
+  XZooWithdrawed,
 } from './model'
 import * as arenaAbi from './abi/battle-arena-abi'
 import * as stakerAbi from './abi/battle-staker-abi'
 import * as vemodelAbi from './abi/ve-model-abi'
 import * as faucetAbi from './abi/battle-faucet-abi'
+import * as xZooAbi from './abi/xZoo'
 import * as erc721 from './abi/erc721'
 import { ZooUnlocked } from './model/generated/zooUnlocked.model'
 import { VotedForCollection } from './model/generated/votedForCollection.model'
@@ -485,4 +489,79 @@ async function getTargetProject(ctx: Ctx, positionId: string, block: SubstrateBl
   return await ctx.store.findOneBy(Project, {
     address: address,
   })
+}
+
+export async function saveXZooStaked(
+  ctx: Ctx,
+  transfersData: { e: xZooAbi.ZooStaked0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+) {
+  const transfers: Set<XZooStaked> = new Set()
+
+  for (const transferData of transfersData) {
+    const { e, event, block } = transferData
+
+    const transfer = new XZooStaked({
+      id: event.id,
+      beneficiary: e.beneficiary,
+      staker: e.staker,
+      amount: BigInt(e.amount.toString()),
+      positionId: BigInt(e.positionId.toString()),
+      timestamp: new Date(block.timestamp),
+      transactionHash: event.evmTxHash,
+    })
+
+    transfers.add(transfer)
+  }
+
+  await ctx.store.save([...transfers])
+}
+
+export async function saveXZooWithdrawn(
+  ctx: Ctx,
+  transfersData: { e: xZooAbi.ZooWithdrawal0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+) {
+  const transfers: Set<XZooWithdrawed> = new Set()
+
+  for (const transferData of transfersData) {
+    const { e, event, block } = transferData
+
+    const transfer = new XZooWithdrawed({
+      id: event.id,
+      beneficiary: e.beneficiary,
+      staker: e.staker,
+      amount: BigInt(e.amount.toString()),
+      positionId: BigInt(e.positionId.toString()),
+      timestamp: new Date(block.timestamp),
+      transactionHash: event.evmTxHash,
+    })
+
+    transfers.add(transfer)
+  }
+
+  await ctx.store.save([...transfers])
+}
+
+export async function saveXZooClaimed(
+  ctx: Ctx,
+  transfersData: { e: xZooAbi.Claimed0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+) {
+  const transfers: Set<XZooClaimed> = new Set()
+
+  for (const transferData of transfersData) {
+    const { e, event, block } = transferData
+
+    const transfer = new XZooClaimed({
+      id: event.id,
+      beneficiary: e.beneficiary,
+      staker: e.staker,
+      amount: BigInt(e.amount.toString()),
+      positionId: BigInt(e.positionId.toString()),
+      timestamp: new Date(block.timestamp),
+      transactionHash: event.evmTxHash,
+    })
+
+    transfers.add(transfer)
+  }
+
+  await ctx.store.save([...transfers])
 }

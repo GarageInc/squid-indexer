@@ -1,5 +1,5 @@
-module.exports = class Data1666159132921 {
-  name = 'Data1666159132921'
+module.exports = class Data1666766362441 {
+  name = 'Data1666766362441'
 
   async up(db) {
     await db.query(`CREATE TABLE "added_dai_to_voting" ("id" character varying NOT NULL, "current_epoch" numeric NOT NULL, "voter" text, "staking_position_id" numeric NOT NULL, "voting_position_id" numeric NOT NULL, "amount" numeric NOT NULL, "votes" numeric NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, CONSTRAINT "PK_9e1e399cbc921bb8d6aedb65ad5" PRIMARY KEY ("id"))`)
@@ -66,6 +66,18 @@ module.exports = class Data1666159132921 {
     await db.query(`CREATE TABLE "faucet_given" ("id" character varying NOT NULL, "user" text NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, CONSTRAINT "PK_5d91630959f17812d63f3a9ef16" PRIMARY KEY ("id"))`)
     await db.query(`CREATE INDEX "IDX_bd379e63221a02cca9a73825c2" ON "faucet_given" ("user") `)
     await db.query(`CREATE INDEX "IDX_6253037bfa2197d9bedfa3da9d" ON "faucet_given" ("timestamp") `)
+    await db.query(`CREATE TABLE "x_zoo_staked" ("id" character varying NOT NULL, "staker" text NOT NULL, "beneficiary" text NOT NULL, "amount" numeric NOT NULL, "position_id" numeric NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, CONSTRAINT "PK_c87b458b90794472cc45cade7ee" PRIMARY KEY ("id"))`)
+    await db.query(`CREATE INDEX "IDX_86e73cca3a595178a77249890e" ON "x_zoo_staked" ("staker") `)
+    await db.query(`CREATE INDEX "IDX_c1e4c9363383cd7053c299619e" ON "x_zoo_staked" ("beneficiary") `)
+    await db.query(`CREATE INDEX "IDX_bdaa1734826fe3f1d647dd0ff1" ON "x_zoo_staked" ("timestamp") `)
+    await db.query(`CREATE TABLE "x_zoo_withdrawed" ("id" character varying NOT NULL, "staker" text NOT NULL, "beneficiary" text NOT NULL, "amount" numeric NOT NULL, "position_id" numeric NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, CONSTRAINT "PK_bd80bcbd540aede7208bae7235f" PRIMARY KEY ("id"))`)
+    await db.query(`CREATE INDEX "IDX_e95f2e2e8b4c21d2f4347f112b" ON "x_zoo_withdrawed" ("staker") `)
+    await db.query(`CREATE INDEX "IDX_49f2d86fec117c8b3564b058a8" ON "x_zoo_withdrawed" ("beneficiary") `)
+    await db.query(`CREATE INDEX "IDX_6cfd2f4bc2f7c24ff7b58fda36" ON "x_zoo_withdrawed" ("timestamp") `)
+    await db.query(`CREATE TABLE "x_zoo_claimed" ("id" character varying NOT NULL, "staker" text NOT NULL, "beneficiary" text NOT NULL, "amount" numeric NOT NULL, "position_id" numeric NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, CONSTRAINT "PK_75b0c6ffac27a9c15f3e7002a54" PRIMARY KEY ("id"))`)
+    await db.query(`CREATE INDEX "IDX_bc8d4304aad80c9c89f32d6b31" ON "x_zoo_claimed" ("staker") `)
+    await db.query(`CREATE INDEX "IDX_8335f0ba0895a2ab1e2eb3cd6f" ON "x_zoo_claimed" ("beneficiary") `)
+    await db.query(`CREATE INDEX "IDX_c7508c82d856525863dba34740" ON "x_zoo_claimed" ("timestamp") `)
     await db.query(`ALTER TABLE "created_staker_position" ADD CONSTRAINT "FK_ffae01274ee7c74c16cb8333f3e" FOREIGN KEY ("project_id") REFERENCES "project"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`)
     await db.query(`ALTER TABLE "created_voting_position" ADD CONSTRAINT "FK_70d5c61182c716fadd1458e6d40" FOREIGN KEY ("project_id") REFERENCES "project"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`)
   }
@@ -135,6 +147,18 @@ module.exports = class Data1666159132921 {
     await db.query(`DROP TABLE "faucet_given"`)
     await db.query(`DROP INDEX "public"."IDX_bd379e63221a02cca9a73825c2"`)
     await db.query(`DROP INDEX "public"."IDX_6253037bfa2197d9bedfa3da9d"`)
+    await db.query(`DROP TABLE "x_zoo_staked"`)
+    await db.query(`DROP INDEX "public"."IDX_86e73cca3a595178a77249890e"`)
+    await db.query(`DROP INDEX "public"."IDX_c1e4c9363383cd7053c299619e"`)
+    await db.query(`DROP INDEX "public"."IDX_bdaa1734826fe3f1d647dd0ff1"`)
+    await db.query(`DROP TABLE "x_zoo_withdrawed"`)
+    await db.query(`DROP INDEX "public"."IDX_e95f2e2e8b4c21d2f4347f112b"`)
+    await db.query(`DROP INDEX "public"."IDX_49f2d86fec117c8b3564b058a8"`)
+    await db.query(`DROP INDEX "public"."IDX_6cfd2f4bc2f7c24ff7b58fda36"`)
+    await db.query(`DROP TABLE "x_zoo_claimed"`)
+    await db.query(`DROP INDEX "public"."IDX_bc8d4304aad80c9c89f32d6b31"`)
+    await db.query(`DROP INDEX "public"."IDX_8335f0ba0895a2ab1e2eb3cd6f"`)
+    await db.query(`DROP INDEX "public"."IDX_c7508c82d856525863dba34740"`)
     await db.query(`ALTER TABLE "created_staker_position" DROP CONSTRAINT "FK_ffae01274ee7c74c16cb8333f3e"`)
     await db.query(`ALTER TABLE "created_voting_position" DROP CONSTRAINT "FK_70d5c61182c716fadd1458e6d40"`)
   }

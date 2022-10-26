@@ -1,10 +1,11 @@
 import { lookupArchive } from '@subsquid/archive-registry'
 import { SubstrateBatchProcessor, EvmLogEvent, SubstrateBlock } from '@subsquid/substrate-processor'
 import { TypeormDatabase } from '@subsquid/typeorm-store'
-import { CHAIN_NODE, BATTLE_ARENA_MOONBEAM, VE_MODEL_MOONBEAM, FAUCET_MOONBEAM } from './contract'
+import { CHAIN_NODE, BATTLE_ARENA_MOONBEAM, VE_MODEL_MOONBEAM, FAUCET_MOONBEAM, X_ZOO_MOONBEAM } from './contract'
 import * as arenaAbi from './abi/battle-arena-abi'
 import * as vemodelAbi from './abi/ve-model-abi'
 import * as faucetAbi from './abi/battle-faucet-abi'
+import * as xZooAbi from './abi/xZoo'
 import {
   Ctx,
   liquidateVoted,
@@ -21,6 +22,9 @@ import {
   saveWinner,
   saveWithdrawedDai,
   saveWithdrawedZoo,
+  saveXZooClaimed,
+  saveXZooStaked,
+  saveXZooWithdrawn,
   saveZooUnlocked,
 } from './transformers'
 
@@ -46,6 +50,10 @@ const VotedForCollectionT = vemodelAbi.events['VotedForCollection(address,addres
 const ZooUnlockedT = vemodelAbi.events['ZooUnlocked(address,address,uint256)']
 
 const TokensGivenT = faucetAbi.events['tokensGiven(address)']
+
+const XZooStakedT = xZooAbi.events['ZooStaked(address,address,uint256,uint256)']
+const xZooWithdrawnT = xZooAbi.events['ZooWithdrawal(address,address,uint256,uint256)']
+const xZooClaimedT = xZooAbi.events['Claimed(address,address,uint256,uint256)']
 
 interface IArenaEvmEvent {
   topic: string
@@ -107,6 +115,7 @@ const processor = new SubstrateBatchProcessor()
     filter: [ClaimedRewardFromVotingT.topic],
   })
 
+processor
   .addEvmLog(VE_MODEL_MOONBEAM, {
     filter: [VotedForCollectionT.topic],
   })
@@ -114,8 +123,19 @@ const processor = new SubstrateBatchProcessor()
     filter: [ZooUnlockedT.topic],
   })
 
-  .addEvmLog(FAUCET_MOONBEAM, {
-    filter: [TokensGivenT.topic],
+processor.addEvmLog(FAUCET_MOONBEAM, {
+  filter: [TokensGivenT.topic],
+})
+
+processor
+  .addEvmLog(X_ZOO_MOONBEAM, {
+    filter: [xZooClaimedT.topic],
+  })
+  .addEvmLog(X_ZOO_MOONBEAM, {
+    filter: [XZooStakedT.topic],
+  })
+  .addEvmLog(X_ZOO_MOONBEAM, {
+    filter: [xZooWithdrawnT.topic],
   })
 
 const hasIn = (item: any, topic: string) =>
@@ -139,6 +159,10 @@ processor.run(database, async (ctx: any) => {
   const zooUnlocked = []
 
   const given = []
+
+  const xZooStakedEvents = []
+  const xZooWithdrawnEvents = []
+  const xZooClaimedEvents = []
 
   for (const block of ctx.blocks) {
     for (const item of block.items) {
@@ -196,9 +220,23 @@ processor.run(database, async (ctx: any) => {
         if (hasIn(item, TokensGivenT.topic)) {
           given.push(handler(ctx, block.header, item.event, TokensGivenT))
         }
+
+        if (hasIn(item, XZooStakedT.topic)) {
+          xZooStakedEvents.push(handler(ctx, block.header, item.event, XZooStakedT))
+        }
+        if (hasIn(item, xZooWithdrawnT.topic)) {
+          xZooWithdrawnEvents.push(handler(ctx, block.header, item.event, xZooWithdrawnT))
+        }
+        if (hasIn(item, xZooClaimedT.topic)) {
+          xZooClaimedEvents.push(handler(ctx, block.header, item.event, xZooClaimedT))
+        }
       }
     }
   }
+
+  await saveXZooClaimed(ctx, xZooClaimedEvents)
+  await saveXZooStaked(ctx, xZooStakedEvents)
+  await saveXZooWithdrawn(ctx, xZooWithdrawnEvents)
 
   await saveStaked(ctx, staked)
   await saveUnStaked(ctx, unstaked)

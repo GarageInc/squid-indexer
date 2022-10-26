@@ -173,3 +173,33 @@ type FaucetGiven @entity {
   timestamp: DateTime! @index
   transactionHash: String!
 }
+
+type XZooStaked @entity {
+  id: ID!
+  staker: String! @index
+  beneficiary: String! @index
+  amount: BigInt!
+  positionId: BigInt!
+  timestamp: DateTime! @index
+  transactionHash: String!
+}
+
+type XZooWithdrawed @entity {
+  id: ID!
+  staker: String! @index
+  beneficiary: String! @index
+  amount: BigInt!
+  positionId: BigInt!
+  timestamp: DateTime! @index
+  transactionHash: String!
+}
+
+type XZooClaimed @entity {
+  id: ID!
+  staker: String! @index
+  beneficiary: String! @index
+  amount: BigInt!
+  positionId: BigInt!
+  timestamp: DateTime! @index
+  transactionHash: String!
+}

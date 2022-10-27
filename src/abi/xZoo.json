@@ -266,7 +266,7 @@
   {
     "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "name": "totalStakedZoo",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [{ "internalType": "int256", "name": "", "type": "int256" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -287,7 +287,10 @@
       { "internalType": "address", "name": "beneficiary", "type": "address" }
     ],
     "name": "unlockAndClaim",
-    "outputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
+    "outputs": [
+      { "internalType": "uint256", "name": "amountOfZoo", "type": "uint256" },
+      { "internalType": "uint256", "name": "rewardsForClaimer", "type": "uint256" }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -297,6 +300,13 @@
       { "internalType": "address", "name": "beneficiary", "type": "address" }
     ],
     "name": "unlockZoo",
+    "outputs": [{ "internalType": "uint256", "name": "amountOfZoo", "type": "uint256" }],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "updateTotalStakedUpdated",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

@@ -10,7 +10,9 @@
       { "internalType": "address", "name": "_teamAddress", "type": "address" },
       { "internalType": "address", "name": "_nftStakingPosition", "type": "address" },
       { "internalType": "address", "name": "_nftVotingPosition", "type": "address" },
-      { "internalType": "address", "name": "_veZoo", "type": "address" }
+      { "internalType": "address", "name": "_veZoo", "type": "address" },
+      { "internalType": "address", "name": "_controller", "type": "address" },
+      { "internalType": "address", "name": "_well", "type": "address" }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
@@ -213,13 +215,6 @@
     ],
     "name": "WithdrawedZooFromVoting",
     "type": "event"
-  },
-  {
-    "inputs": [{ "internalType": "uint256", "name": "votingPositionId", "type": "uint256" }],
-    "name": "_calculateVotersYTokensExcludingRewards",
-    "outputs": [{ "internalType": "uint256", "name": "yTokens", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
   },
   {
     "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
@@ -429,7 +424,10 @@
   {
     "inputs": [{ "internalType": "uint256", "name": "votingPositionId", "type": "uint256" }],
     "name": "getPendingVoterReward",
-    "outputs": [{ "internalType": "uint256", "name": "yTokens", "type": "uint256" }],
+    "outputs": [
+      { "internalType": "uint256", "name": "yTokens", "type": "uint256" },
+      { "internalType": "uint256", "name": "wells", "type": "uint256" }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -642,7 +640,7 @@
       { "internalType": "uint256", "name": "newVotingPositionId", "type": "uint256" }
     ],
     "name": "swapPositionVotes",
-    "outputs": [],
+    "outputs": [{ "internalType": "uint256", "name": "createdVotingId", "type": "uint256" }],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -657,6 +655,13 @@
     "inputs": [],
     "name": "thirdStageDuration",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "tokenController",
+    "outputs": [{ "internalType": "contract ControllerInterface", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -722,6 +727,20 @@
       { "internalType": "uint256", "name": "yTokensRewardDebt", "type": "uint256" },
       { "internalType": "uint256", "name": "lastEpochOfIncentiveReward", "type": "uint256" }
     ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "well",
+    "outputs": [{ "internalType": "contract ERC20", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "name": "wellClaimedByEpoch",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },

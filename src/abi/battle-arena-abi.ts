@@ -389,10 +389,6 @@ export class Contract  {
     }
   }
 
-  async _calculateVotersYTokensExcludingRewards(votingPositionId: ethers.BigNumber): Promise<ethers.BigNumber> {
-    return this.call("_calculateVotersYTokensExcludingRewards", [votingPositionId])
-  }
-
   async activeStakerPositions(arg0: ethers.BigNumber): Promise<ethers.BigNumber> {
     return this.call("activeStakerPositions", [arg0])
   }
@@ -457,7 +453,7 @@ export class Contract  {
     return this.call("getPendingStakerReward", [stakingPositionId])
   }
 
-  async getPendingVoterReward(votingPositionId: ethers.BigNumber): Promise<ethers.BigNumber> {
+  async getPendingVoterReward(votingPositionId: ethers.BigNumber): Promise<([yTokens: ethers.BigNumber, wells: ethers.BigNumber] & {yTokens: ethers.BigNumber, wells: ethers.BigNumber})> {
     return this.call("getPendingVoterReward", [votingPositionId])
   }
 
@@ -541,6 +537,10 @@ export class Contract  {
     return this.call("thirdStageDuration", [])
   }
 
+  async tokenController(): Promise<string> {
+    return this.call("tokenController", [])
+  }
+
   async tokensToShares(tokens: ethers.BigNumber): Promise<ethers.BigNumber> {
     return this.call("tokensToShares", [tokens])
   }
@@ -559,6 +559,14 @@ export class Contract  {
 
   async votingPositionsValues(arg0: ethers.BigNumber): Promise<([stakingPositionId: ethers.BigNumber, startDate: ethers.BigNumber, endDate: ethers.BigNumber, daiInvested: ethers.BigNumber, yTokensNumber: ethers.BigNumber, zooInvested: ethers.BigNumber, daiVotes: ethers.BigNumber, votes: ethers.BigNumber, startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, lastRewardedEpoch: ethers.BigNumber, lastEpochYTokensWereDeductedForRewards: ethers.BigNumber, yTokensRewardDebt: ethers.BigNumber, lastEpochOfIncentiveReward: ethers.BigNumber] & {stakingPositionId: ethers.BigNumber, startDate: ethers.BigNumber, endDate: ethers.BigNumber, daiInvested: ethers.BigNumber, yTokensNumber: ethers.BigNumber, zooInvested: ethers.BigNumber, daiVotes: ethers.BigNumber, votes: ethers.BigNumber, startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, lastRewardedEpoch: ethers.BigNumber, lastEpochYTokensWereDeductedForRewards: ethers.BigNumber, yTokensRewardDebt: ethers.BigNumber, lastEpochOfIncentiveReward: ethers.BigNumber})> {
     return this.call("votingPositionsValues", [arg0])
+  }
+
+  async well(): Promise<string> {
+    return this.call("well", [])
+  }
+
+  async wellClaimedByEpoch(arg0: ethers.BigNumber): Promise<ethers.BigNumber> {
+    return this.call("wellClaimedByEpoch", [arg0])
   }
 
   async xZoo(): Promise<string> {
@@ -642,6 +650,16 @@ function getJsonAbi(): any {
         {
           "internalType": "address",
           "name": "_veZoo",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_controller",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_well",
           "type": "address"
         }
       ],
@@ -1286,25 +1304,6 @@ function getJsonAbi(): any {
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "votingPositionId",
-          "type": "uint256"
-        }
-      ],
-      "name": "_calculateVotersYTokensExcludingRewards",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "yTokens",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
           "name": "",
           "type": "uint256"
         }
@@ -1787,6 +1786,11 @@ function getJsonAbi(): any {
         {
           "internalType": "uint256",
           "name": "yTokens",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "wells",
           "type": "uint256"
         }
       ],
@@ -2286,7 +2290,13 @@ function getJsonAbi(): any {
         }
       ],
       "name": "swapPositionVotes",
-      "outputs": [],
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "createdVotingId",
+          "type": "uint256"
+        }
+      ],
       "stateMutability": "nonpayable",
       "type": "function"
     },
@@ -2311,6 +2321,19 @@ function getJsonAbi(): any {
           "internalType": "uint256",
           "name": "",
           "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "tokenController",
+      "outputs": [
+        {
+          "internalType": "contract ControllerInterface",
+          "name": "",
+          "type": "address"
         }
       ],
       "stateMutability": "view",
@@ -2485,6 +2508,38 @@ function getJsonAbi(): any {
         {
           "internalType": "uint256",
           "name": "lastEpochOfIncentiveReward",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "well",
+      "outputs": [
+        {
+          "internalType": "contract ERC20",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "wellClaimedByEpoch",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
           "type": "uint256"
         }
       ],

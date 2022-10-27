@@ -189,6 +189,10 @@ export const functions = {
     }
   }
   ,
+  "updateTotalStakedUpdated()": {
+    sighash: abi.getSighash("updateTotalStakedUpdated()"),
+  }
+  ,
   "withdrawZoo(uint256,uint256,address)": {
     sighash: abi.getSighash("withdrawZoo(uint256,uint256,address)"),
     decode(input: string): WithdrawZoo0Function {
@@ -949,9 +953,9 @@ function getJsonAbi(): any {
       "name": "totalStakedZoo",
       "outputs": [
         {
-          "internalType": "uint256",
+          "internalType": "int256",
           "name": "",
-          "type": "uint256"
+          "type": "int256"
         }
       ],
       "stateMutability": "view",
@@ -997,7 +1001,12 @@ function getJsonAbi(): any {
       "outputs": [
         {
           "internalType": "uint256",
-          "name": "amount",
+          "name": "amountOfZoo",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "rewardsForClaimer",
           "type": "uint256"
         }
       ],
@@ -1018,6 +1027,19 @@ function getJsonAbi(): any {
         }
       ],
       "name": "unlockZoo",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "amountOfZoo",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "updateTotalStakedUpdated",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"

@@ -206,7 +206,6 @@ type XZooClaimed @entity {
 
 type Stats @entity {
   id: ID!
-  key: String! @index
   value: BigInt!
   updatedAt: DateTime! @index
 }

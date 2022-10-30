@@ -10,10 +10,6 @@ export class Stats {
   @PrimaryColumn_()
   id!: string
 
-  @Index_()
-  @Column_("text", {nullable: false})
-  key!: string
-
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
   value!: bigint
 

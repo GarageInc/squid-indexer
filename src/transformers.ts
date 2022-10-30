@@ -566,11 +566,13 @@ export async function saveXZooClaimed(
     transfers.add(transfer)
   }
 
-  const amount = [...transfers].reduce((acc, item) => {
-    return acc + item.amount
-  }, BigInt(0))
+  if (transfersData.length > 0) {
+    const amount = [...transfers].reduce((acc, item) => {
+      return acc + item.amount
+    }, BigInt(0))
 
-  await saveOrUpdateByKey(ctx, X_ZOO_CLAIMED_TOTAL_KEY, amount)
+    await saveOrUpdateByKey(ctx, X_ZOO_CLAIMED_TOTAL_KEY, amount)
+  }
 
   await ctx.store.save([...transfers])
 }

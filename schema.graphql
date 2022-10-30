@@ -203,3 +203,10 @@ type XZooClaimed @entity {
   timestamp: DateTime! @index
   transactionHash: String!
 }
+
+type Stats @entity {
+  id: ID!
+  key: String! @index
+  value: BigInt!
+  updatedAt: DateTime! @index
+}

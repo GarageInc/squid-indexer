@@ -18,6 +18,7 @@ import {
   PairedNft,
   Project,
   RemovedStakerPosition,
+  Stats,
   WithdrawedDaiFromVoting,
   WithdrawedZooFromVoting,
   XZooClaimed,
@@ -541,6 +542,8 @@ export async function saveXZooWithdrawn(
   await ctx.store.save([...transfers])
 }
 
+const X_ZOO_CLAIMED_TOTAL_KEY = 'X_ZOO_CLAIMED_TOTAL_KEY'
+
 export async function saveXZooClaimed(
   ctx: Ctx,
   transfersData: { e: xZooAbi.Claimed0Event; event: EvmLogEvent; block: SubstrateBlock }[]
@@ -563,5 +566,33 @@ export async function saveXZooClaimed(
     transfers.add(transfer)
   }
 
+  const amount = [...transfers].reduce((acc, item) => {
+    return acc + item.amount
+  }, BigInt(0))
+
+  await saveOrUpdateByKey(ctx, X_ZOO_CLAIMED_TOTAL_KEY, amount)
+
   await ctx.store.save([...transfers])
+}
+
+const saveOrUpdateByKey = async (ctx: Ctx, key: string, amount: bigint) => {
+  const saved = await ctx.store.findOneBy(Stats, {
+    id: key,
+  })
+
+  if (saved) {
+    saved.value += amount
+
+    saved.updatedAt = new Date()
+
+    await ctx.store.save([saved])
+  } else {
+    const newStat = new Stats({
+      id: key,
+      value: amount,
+      updatedAt: new Date(),
+    })
+
+    await ctx.store.save([newStat])
+  }
 }

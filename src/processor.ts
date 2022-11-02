@@ -224,10 +224,10 @@ processor.run(database, async (ctx: any) => {
   for (const block of ctx.blocks) {
     for (const item of block.items) {
       if (item.name === 'EVM.Log') {
-        console.log(
+        /*console.log(
           '---->',
           block.items.map((i: any) => i)
-        )
+        )*/
         if (hasIn(item, CreatedStakerPositionT.topic)) {
           staked.push(handler(ctx, block.header, item.event, CreatedStakerPositionT))
         }

@@ -2,31 +2,24 @@ import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, I
 import * as marshal from "./marshal"
 
 @Entity_()
-export class WithdrawedDaiFromVoting {
-  constructor(props?: Partial<WithdrawedDaiFromVoting>) {
+export class JackpotWinnerChoosed {
+  constructor(props?: Partial<JackpotWinnerChoosed>) {
     Object.assign(this, props)
   }
 
   @PrimaryColumn_()
   id!: string
 
-  @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
-  currentEpoch!: bigint
-
+  @Index_()
   @Column_("text", {nullable: false})
-  voter!: string
+  type!: string
 
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
-  stakingPositionId!: bigint
+  winner!: bigint
 
+  @Index_()
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
-  votingPositionId!: bigint
-
-  @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
-  daiNumber!: bigint
-
-  @Column_("text", {nullable: true})
-  beneficiary!: string | undefined | null
+  epoch!: bigint
 
   @Index_()
   @Column_("timestamp with time zone", {nullable: false})

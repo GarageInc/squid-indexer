@@ -1,7 +1,7 @@
 type AddedDaiToVoting @entity {
   id: ID!
   currentEpoch: BigInt! @index
-  voter: String
+  voter: String!
   stakingPositionId: BigInt! @index
   votingPositionId: BigInt! @index
   amount: BigInt!
@@ -13,7 +13,7 @@ type AddedDaiToVoting @entity {
 type AddedZooToVoting @entity {
   id: ID!
   currentEpoch: BigInt! @index
-  voter: String
+  voter: String!
   stakingPositionId: BigInt! @index
   votingPositionId: BigInt! @index
   amount: BigInt!
@@ -37,9 +37,9 @@ type ChosenWinner @entity {
 type ClaimedRewardFromStaking @entity {
   id: ID!
   currentEpoch: BigInt!
-  staker: String
+  staker: String!
   stakingPositionId: BigInt! @index
-  beneficiary: String @index
+  beneficiary: String! @index
   yTokenReward: BigInt!
   daiReward: BigInt!
   timestamp: DateTime! @index
@@ -49,9 +49,9 @@ type ClaimedRewardFromStaking @entity {
 type ClaimedRewardFromVoting @entity {
   id: ID!
   currentEpoch: BigInt! @index
-  voter: String
+  voter: String!
   stakingPositionId: BigInt! @index
-  beneficiary: String @index
+  beneficiary: String! @index
   yTokenReward: BigInt!
   daiReward: BigInt!
   votingPositionId: BigInt!
@@ -71,7 +71,7 @@ type Project @entity {
 type CreatedStakerPosition @entity {
   id: ID!
   currentEpoch: BigInt! @index
-  staker: String @index
+  staker: String! @index
   stakingPositionId: BigInt!
   isDeleted: Boolean!
   timestamp: DateTime! @index
@@ -82,7 +82,7 @@ type CreatedStakerPosition @entity {
 type CreatedVotingPosition @entity {
   id: ID!
   currentEpoch: BigInt!
-  voter: String @index
+  voter: String! @index
   stakingPositionId: BigInt! @index
   daiAmount: BigInt!
   votes: BigInt!
@@ -96,9 +96,9 @@ type CreatedVotingPosition @entity {
 type LiquidatedVotingPosition @entity {
   id: ID!
   currentEpoch: BigInt!
-  voter: String @index
+  voter: String! @index
   stakingPositionId: BigInt! @index
-  beneficiary: String @index
+  beneficiary: String! @index
   votingPositionId: BigInt! @index
   zooReturned: BigInt!
   daiReceived: BigInt!
@@ -119,7 +119,7 @@ type PairedNft @entity {
 type RemovedStakerPosition @entity {
   id: ID!
   currentEpoch: BigInt!
-  staker: String
+  staker: String!
   stakingPositionId: BigInt!
   timestamp: DateTime! @index
   transactionHash: String!
@@ -128,7 +128,7 @@ type RemovedStakerPosition @entity {
 type WithdrawedDaiFromVoting @entity {
   id: ID!
   currentEpoch: BigInt!
-  voter: String
+  voter: String!
   stakingPositionId: BigInt!
   votingPositionId: BigInt!
   daiNumber: BigInt!
@@ -140,7 +140,7 @@ type WithdrawedDaiFromVoting @entity {
 type WithdrawedZooFromVoting @entity {
   id: ID!
   currentEpoch: BigInt!
-  voter: String
+  voter: String!
   stakingPositionId: BigInt!
   votingPositionId: BigInt!
   zooNumber: BigInt!
@@ -151,8 +151,8 @@ type WithdrawedZooFromVoting @entity {
 
 type ZooUnlocked @entity {
   id: ID!
-  voter: String @index
-  collection: String @index
+  voter: String! @index
+  collection: String! @index
   amount: BigInt!
   timestamp: DateTime! @index
   transactionHash: String!
@@ -160,8 +160,8 @@ type ZooUnlocked @entity {
 
 type VotedForCollection @entity {
   id: ID!
-  collection: String @index
-  voter: String @index
+  collection: String! @index
+  voter: String! @index
   amount: BigInt!
   timestamp: DateTime! @index
   transactionHash: String!
@@ -208,4 +208,46 @@ type Stats @entity {
   id: ID!
   value: BigInt!
   updatedAt: DateTime! @index
+}
+
+type JackpotStaked @entity {
+  id: ID!
+  type: String! @index
+  positionId: BigInt!
+  jackpotPositionId: BigInt! @index
+  beneficiary: String! @index
+  timestamp: DateTime! @index
+  transactionHash: String!
+}
+
+type JackpotUnstaked @entity {
+  id: ID!
+  type: String! @index
+  jackpotPositionId: BigInt!
+  zooPositionId: BigInt!
+  owner: String! @index
+  beneficiary: String! @index
+  timestamp: DateTime! @index
+  transactionHash: String!
+}
+
+type JackpotWinnerChoosed @entity {
+  id: ID!
+  type: String! @index
+  winner: BigInt!
+  epoch: BigInt! @index
+  timestamp: DateTime! @index
+  transactionHash: String!
+}
+
+type JackpotClaimed @entity {
+  id: ID!
+  type: String! @index
+  positionId: BigInt!
+  epoch: BigInt!
+  owner: String! @index
+  beneficiary: String! @index
+  rewards: BigInt!
+  timestamp: DateTime! @index
+  transactionHash: String!
 }

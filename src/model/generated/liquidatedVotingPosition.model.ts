@@ -14,16 +14,16 @@ export class LiquidatedVotingPosition {
   currentEpoch!: bigint
 
   @Index_()
-  @Column_("text", {nullable: true})
-  voter!: string | undefined | null
+  @Column_("text", {nullable: false})
+  voter!: string
 
   @Index_()
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
   stakingPositionId!: bigint
 
   @Index_()
-  @Column_("text", {nullable: true})
-  beneficiary!: string | undefined | null
+  @Column_("text", {nullable: false})
+  beneficiary!: string
 
   @Index_()
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})

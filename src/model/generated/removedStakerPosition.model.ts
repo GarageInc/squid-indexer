@@ -13,8 +13,8 @@ export class RemovedStakerPosition {
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
   currentEpoch!: bigint
 
-  @Column_("text", {nullable: true})
-  staker!: string | undefined | null
+  @Column_("text", {nullable: false})
+  staker!: string
 
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
   stakingPositionId!: bigint

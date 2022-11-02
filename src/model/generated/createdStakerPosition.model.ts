@@ -16,8 +16,8 @@ export class CreatedStakerPosition {
   currentEpoch!: bigint
 
   @Index_()
-  @Column_("text", {nullable: true})
-  staker!: string | undefined | null
+  @Column_("text", {nullable: false})
+  staker!: string
 
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
   stakingPositionId!: bigint

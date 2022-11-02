@@ -11,12 +11,12 @@ export class ZooUnlocked {
   id!: string
 
   @Index_()
-  @Column_("text", {nullable: true})
-  voter!: string | undefined | null
+  @Column_("text", {nullable: false})
+  voter!: string
 
   @Index_()
-  @Column_("text", {nullable: true})
-  collection!: string | undefined | null
+  @Column_("text", {nullable: false})
+  collection!: string
 
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
   amount!: bigint

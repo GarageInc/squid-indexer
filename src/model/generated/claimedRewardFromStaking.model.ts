@@ -13,16 +13,16 @@ export class ClaimedRewardFromStaking {
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
   currentEpoch!: bigint
 
-  @Column_("text", {nullable: true})
-  staker!: string | undefined | null
+  @Column_("text", {nullable: false})
+  staker!: string
 
   @Index_()
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
   stakingPositionId!: bigint
 
   @Index_()
-  @Column_("text", {nullable: true})
-  beneficiary!: string | undefined | null
+  @Column_("text", {nullable: false})
+  beneficiary!: string
 
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
   yTokenReward!: bigint

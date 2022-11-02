@@ -14,8 +14,8 @@ export class AddedZooToVoting {
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
   currentEpoch!: bigint
 
-  @Column_("text", {nullable: true})
-  voter!: string | undefined | null
+  @Column_("text", {nullable: false})
+  voter!: string
 
   @Index_()
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})

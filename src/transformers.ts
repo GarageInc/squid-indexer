@@ -14,6 +14,10 @@ import {
   ClaimedRewardFromVoting,
   CreatedStakerPosition,
   CreatedVotingPosition,
+  JackpotClaimed,
+  JackpotStaked,
+  JackpotUnstaked,
+  JackpotWinnerChoosed,
   LiquidatedVotingPosition,
   PairedNft,
   Project,
@@ -31,6 +35,7 @@ import * as vemodelAbi from './abi/ve-model-abi'
 import * as faucetAbi from './abi/battle-faucet-abi'
 import * as xZooAbi from './abi/xZoo'
 import * as erc721 from './abi/erc721'
+import * as jackpotAbi from './abi/jackpot'
 import { ZooUnlocked } from './model/generated/zooUnlocked.model'
 import { VotedForCollection } from './model/generated/votedForCollection.model'
 import { FaucetGiven } from './model/generated/faucetGiven.model'
@@ -214,7 +219,7 @@ export async function saveClaimedStaking(
       id: event.id,
       currentEpoch: BigInt(e.currentEpoch.toString()),
       staker: e.staker.toLowerCase(),
-      beneficiary: e.beneficiary,
+      beneficiary: e.beneficiary.toLowerCase(),
       stakingPositionId: BigInt(e.stakingPositionId.toString()),
       yTokenReward: BigInt(e.yTokenReward.toString()),
       daiReward: BigInt(e.daiReward.toString()),
@@ -240,7 +245,7 @@ export async function saveClaimedVoting(
       id: event.id,
       currentEpoch: BigInt(e.currentEpoch.toString()),
       voter: e.voter.toLowerCase(),
-      beneficiary: e.beneficiary,
+      beneficiary: e.beneficiary.toLowerCase(),
       stakingPositionId: BigInt(e.stakingPositionId.toString()),
       votingPositionId: BigInt(e.votingPositionId.toString()),
       yTokenReward: BigInt(e.yTokenReward.toString()),
@@ -503,8 +508,8 @@ export async function saveXZooStaked(
 
     const transfer = new XZooStaked({
       id: event.id,
-      beneficiary: e.beneficiary,
-      staker: e.staker,
+      beneficiary: e.beneficiary.toLowerCase(),
+      staker: e.staker.toLowerCase(),
       amount: BigInt(e.amount.toString()),
       positionId: BigInt(e.positionId.toString()),
       timestamp: new Date(block.timestamp),
@@ -528,8 +533,8 @@ export async function saveXZooWithdrawn(
 
     const transfer = new XZooWithdrawed({
       id: event.id,
-      beneficiary: e.beneficiary,
-      staker: e.staker,
+      beneficiary: e.beneficiary.toLowerCase(),
+      staker: e.staker.toLowerCase(),
       amount: BigInt(e.amount.toString()),
       positionId: BigInt(e.positionId.toString()),
       timestamp: new Date(block.timestamp),
@@ -555,8 +560,8 @@ export async function saveXZooClaimed(
 
     const transfer = new XZooClaimed({
       id: event.id,
-      beneficiary: e.beneficiary,
-      staker: e.staker,
+      beneficiary: e.beneficiary.toLowerCase(),
+      staker: e.staker.toLowerCase(),
       amount: BigInt(e.amount.toString()),
       positionId: BigInt(e.positionId.toString()),
       timestamp: new Date(block.timestamp),
@@ -597,4 +602,116 @@ const saveOrUpdateByKey = async (ctx: Ctx, key: string, amount: bigint) => {
 
     await ctx.store.save([newStat])
   }
+}
+
+type JackpotType = 'A' | 'B'
+
+export async function saveJackpotsStaked(
+  ctx: Ctx,
+  transfersData: { e: jackpotAbi.Staked0Event; event: EvmLogEvent; block: SubstrateBlock }[],
+  type: JackpotType
+) {
+  const transfers: Set<JackpotStaked> = new Set()
+
+  for (const transferData of transfersData) {
+    const { e, event, block } = transferData
+
+    const transfer = new JackpotStaked({
+      id: event.id,
+      positionId: BigInt(e.positionId.toString()),
+      jackpotPositionId: BigInt(e.jackpotPositionId.toString()),
+      beneficiary: e.beneficiary.toLowerCase(),
+      type: type,
+
+      timestamp: new Date(block.timestamp),
+      transactionHash: event.evmTxHash,
+    })
+
+    transfers.add(transfer)
+  }
+
+  await ctx.store.save([...transfers])
+}
+
+export async function saveJackpotsUnStaked(
+  ctx: Ctx,
+  transfersData: { e: jackpotAbi.Unstaked0Event; event: EvmLogEvent; block: SubstrateBlock }[],
+  type: JackpotType
+) {
+  const transfers: Set<JackpotUnstaked> = new Set()
+
+  for (const transferData of transfersData) {
+    const { e, event, block } = transferData
+
+    const transfer = new JackpotUnstaked({
+      id: event.id,
+      zooPositionId: BigInt(e.zooPositionId.toString()),
+      jackpotPositionId: BigInt(e.jackpotPositionId.toString()),
+      beneficiary: e.beneficiary.toLowerCase(),
+      owner: e.owner.toLowerCase(),
+      type: type,
+
+      timestamp: new Date(block.timestamp),
+      transactionHash: event.evmTxHash,
+    })
+
+    transfers.add(transfer)
+  }
+
+  await ctx.store.save([...transfers])
+}
+
+export async function saveJackpotsWinned(
+  ctx: Ctx,
+  transfersData: { e: jackpotAbi.WinnerChoosed0Event; event: EvmLogEvent; block: SubstrateBlock }[],
+  type: JackpotType
+) {
+  const transfers: Set<JackpotWinnerChoosed> = new Set()
+
+  for (const transferData of transfersData) {
+    const { e, event, block } = transferData
+
+    const transfer = new JackpotWinnerChoosed({
+      id: event.id,
+      epoch: BigInt(e.epoch.toString()),
+      winner: BigInt(e.winner.toString()),
+      type: type,
+
+      timestamp: new Date(block.timestamp),
+      transactionHash: event.evmTxHash,
+    })
+
+    transfers.add(transfer)
+  }
+
+  await ctx.store.save([...transfers])
+}
+
+export async function saveJackpotsClaimed(
+  ctx: Ctx,
+  transfersData: { e: jackpotAbi.Claimed0Event; event: EvmLogEvent; block: SubstrateBlock }[],
+  type: JackpotType
+) {
+  const transfers: Set<JackpotClaimed> = new Set()
+
+  for (const transferData of transfersData) {
+    const { e, event, block } = transferData
+
+    const transfer = new JackpotClaimed({
+      id: event.id,
+      beneficiary: e.beneficiary.toLowerCase(),
+      owner: e.owner.toLowerCase(),
+      positionId: BigInt(e.id.toString()),
+      epoch: BigInt(e.epoch.toString()),
+      rewards: BigInt(e.rewards.toString()),
+      type: type,
+
+      timestamp: new Date(block.timestamp),
+      transactionHash: event.evmTxHash,
+    })
+
+    transfers.add(transfer)
+  }
+
+  await ctx.store.save([...transfers])
 }

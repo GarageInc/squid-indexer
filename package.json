@@ -14,6 +14,7 @@
     "abi:ve-model": "npx squid-evm-typegen --abi src/abi/ve-model-abi.json --output src/abi/ve-model-abi.ts",
     "abi:erc721": "npx squid-evm-typegen --abi src/abi/erc721.json --output src/abi/erc721.ts",
     "abi:xzoo": "npx squid-evm-typegen --abi src/abi/xZoo.json --output src/abi/xZoo.ts",
+    "abi:jackpot": "npx squid-evm-typegen --abi src/abi/jackpot.json --output src/abi/jackpot.ts",
     "codegen": "npx squid-typeorm-codegen",
     "db:drop": "npx squid-typeorm-migration drop",
     "db:revert": "npx squid-typeorm-migration revert",

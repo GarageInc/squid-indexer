@@ -687,6 +687,8 @@ export async function saveJackpotsWinned(
   await ctx.store.save([...transfers])
 }
 
+const JACKPOTS_CLAIMED_TOTAL_KEY = 'JACKPOTS_CLAIMED_TOTAL'
+
 export async function saveJackpotsClaimed(
   ctx: Ctx,
   transfersData: { e: jackpotAbi.Claimed0Event; event: EvmLogEvent; block: SubstrateBlock }[],
@@ -711,6 +713,14 @@ export async function saveJackpotsClaimed(
     })
 
     transfers.add(transfer)
+  }
+
+  if (transfersData.length > 0) {
+    const amount = [...transfers].reduce((acc, item) => {
+      return acc + item.rewards
+    }, BigInt(0))
+
+    await saveOrUpdateByKey(ctx, `A_${JACKPOTS_CLAIMED_TOTAL_KEY}`, amount)
   }
 
   await ctx.store.save([...transfers])

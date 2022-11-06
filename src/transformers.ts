@@ -658,6 +658,7 @@ export async function saveJackpotsUnStaked(
 
     const item = await ctx.store.findOneBy(JackpotStaked, {
       jackpotPositionId: BigInt(e.jackpotPositionId.toString()),
+      type: type,
     })
 
     if (item) {

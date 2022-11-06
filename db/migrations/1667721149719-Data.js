@@ -1,5 +1,5 @@
-module.exports = class Data1667368977898 {
-  name = 'Data1667368977898'
+module.exports = class Data1667721149719 {
+  name = 'Data1667721149719'
 
   async up(db) {
     await db.query(`CREATE TABLE "added_dai_to_voting" ("id" character varying NOT NULL, "current_epoch" numeric NOT NULL, "voter" text NOT NULL, "staking_position_id" numeric NOT NULL, "voting_position_id" numeric NOT NULL, "amount" numeric NOT NULL, "votes" numeric NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, CONSTRAINT "PK_9e1e399cbc921bb8d6aedb65ad5" PRIMARY KEY ("id"))`)
@@ -80,7 +80,7 @@ module.exports = class Data1667368977898 {
     await db.query(`CREATE INDEX "IDX_c7508c82d856525863dba34740" ON "x_zoo_claimed" ("timestamp") `)
     await db.query(`CREATE TABLE "stats" ("id" character varying NOT NULL, "value" numeric NOT NULL, "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL, CONSTRAINT "PK_c76e93dfef28ba9b6942f578ab1" PRIMARY KEY ("id"))`)
     await db.query(`CREATE INDEX "IDX_9a0302bb3f242542aef40f2b92" ON "stats" ("updated_at") `)
-    await db.query(`CREATE TABLE "jackpot_staked" ("id" character varying NOT NULL, "type" text NOT NULL, "position_id" numeric NOT NULL, "jackpot_position_id" numeric NOT NULL, "beneficiary" text NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, CONSTRAINT "PK_3ba386afe886037fc3cbd8687a6" PRIMARY KEY ("id"))`)
+    await db.query(`CREATE TABLE "jackpot_staked" ("id" character varying NOT NULL, "type" text NOT NULL, "position_id" numeric NOT NULL, "jackpot_position_id" numeric NOT NULL, "beneficiary" text NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, "is_deleted" boolean NOT NULL, CONSTRAINT "PK_3ba386afe886037fc3cbd8687a6" PRIMARY KEY ("id"))`)
     await db.query(`CREATE INDEX "IDX_cd9d073cbf1d04330b28722356" ON "jackpot_staked" ("type") `)
     await db.query(`CREATE INDEX "IDX_fd3bd92680a2c0b41659f9a90a" ON "jackpot_staked" ("jackpot_position_id") `)
     await db.query(`CREATE INDEX "IDX_28ec39af47d756410058cc38e6" ON "jackpot_staked" ("beneficiary") `)

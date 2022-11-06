@@ -622,7 +622,7 @@ export async function saveJackpotsStaked(
       jackpotPositionId: BigInt(e.jackpotPositionId.toString()),
       beneficiary: e.beneficiary.toLowerCase(),
       type: type,
-
+      isDeleted: false,
       timestamp: new Date(block.timestamp),
       transactionHash: event.evmTxHash,
     })
@@ -639,6 +639,7 @@ export async function saveJackpotsUnStaked(
   type: JackpotType
 ) {
   const transfers: Set<JackpotUnstaked> = new Set()
+  const created: Set<JackpotStaked> = new Set()
 
   for (const transferData of transfersData) {
     const { e, event, block } = transferData
@@ -655,10 +656,20 @@ export async function saveJackpotsUnStaked(
       transactionHash: event.evmTxHash,
     })
 
+    const item = await ctx.store.findOneBy(JackpotStaked, {
+      jackpotPositionId: BigInt(e.jackpotPositionId.toString()),
+    })
+
+    if (item) {
+      item.isDeleted = true
+      created.add(item)
+    }
+
     transfers.add(transfer)
   }
 
   await ctx.store.save([...transfers])
+  await ctx.store.save([...created])
 }
 
 export async function saveJackpotsWinned(

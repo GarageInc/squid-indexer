@@ -31,4 +31,7 @@ export class JackpotStaked {
 
   @Column_("text", {nullable: false})
   transactionHash!: string
+
+  @Column_("bool", {nullable: false})
+  isDeleted!: boolean
 }

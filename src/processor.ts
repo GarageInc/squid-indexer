@@ -13,6 +13,8 @@ import {
   BATTLE_STAKER_MOONBEAM,
 } from './contract'
 import * as arenaAbi from './abi/battle-arena-abi'
+import * as stakerAbi from './abi/battle-staker-abi'
+import * as voterAbi from './abi/battle-voter-abi'
 import * as vemodelAbi from './abi/ve-model-abi'
 import * as faucetAbi from './abi/battle-faucet-abi'
 import * as xZooAbi from './abi/xZoo'
@@ -81,7 +83,10 @@ const JackpotUnstakedT = jackpotAbi.events['Unstaked(uint256,address,address,uin
 const JackpotWinnedT = jackpotAbi.events['WinnerChoosed(uint256,uint256)']
 const JackpotClaimedT = jackpotAbi.events['Claimed(uint256,uint256,address,address,uint256)']
 
-const TransferT = erc721Abi.events['Transfer(address,address,uint256)']
+const TransferStaker = stakerAbi.events['Transfer(address,address,uint256)']
+const TransferVoter = voterAbi.events['Transfer(address,address,uint256)']
+const TransferXZoo = xZooAbi.events['Transfer(address,address,uint256)']
+const TransferJackpot = vemodelAbi.events['Transfer(address,address,uint256)']
 
 interface IArenaEvmEvent {
   topic: string
@@ -193,27 +198,23 @@ processor
 
 processor
   .addEvmLog(JACKPOT_A_MOONBEAM, {
-    filter: [TransferT.topic],
+    filter: [TransferJackpot.topic],
   })
   .addEvmLog(JACKPOT_B_MOONBEAM, {
-    filter: [TransferT.topic],
+    filter: [TransferJackpot.topic],
   })
 
 processor
   .addEvmLog(BATTLE_VOTER_MOONBEAM, {
-    filter: [TransferT.topic],
+    filter: [TransferVoter.topic],
   })
   .addEvmLog(BATTLE_STAKER_MOONBEAM, {
-    filter: [TransferT.topic],
+    filter: [TransferStaker.topic],
   })
 
-processor
-  .addEvmLog(VE_MODEL_MOONBEAM, {
-    filter: [TransferT.topic],
-  })
-  .addEvmLog(X_ZOO_MOONBEAM, {
-    filter: [TransferT.topic],
-  })
+processor.addEvmLog(X_ZOO_MOONBEAM, {
+  filter: [TransferXZoo.topic],
+})
 
 const hasIn = (item: any, topic: string) =>
   item.event.args && item.event.args.log && item.event.args.log.topics.indexOf(topic) !== -1
@@ -374,17 +375,23 @@ processor.run(database, async (ctx: any) => {
           }
         }
 
-        if (hasIn(item, TransferT.topic)) {
-          if (isVoter(item)) {
-            votingsTransferred.push(handler(ctx, block.header, item.event, TransferT))
-          } else if (isStaker(item)) {
-            stakerTransferred.push(handler(ctx, block.header, item.event, TransferT))
-          } else if (isJackpotA(item)) {
-            jackpotATransferred.push(handler(ctx, block.header, item.event, TransferT))
+        if (hasIn(item, TransferVoter.topic)) {
+          votingsTransferred.push(handler(ctx, block.header, item.event, TransferVoter))
+        }
+
+        if (hasIn(item, TransferStaker.topic)) {
+          stakerTransferred.push(handler(ctx, block.header, item.event, TransferStaker))
+        }
+
+        if (hasIn(item, TransferXZoo.topic)) {
+          xZooTransferred.push(handler(ctx, block.header, item.event, TransferXZoo))
+        }
+
+        if (hasIn(item, TransferJackpot.topic)) {
+          if (isJackpotA(item)) {
+            jackpotATransferred.push(handler(ctx, block.header, item.event, TransferJackpot))
           } else if (isJackpotB(item)) {
-            jackpotBTransferred.push(handler(ctx, block.header, item.event, TransferT))
-          } else if (isXZoo(item)) {
-            xZooTransferred.push(handler(ctx, block.header, item.event, TransferT))
+            jackpotBTransferred.push(handler(ctx, block.header, item.event, TransferJackpot))
           }
         }
       }

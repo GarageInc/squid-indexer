@@ -758,9 +758,9 @@ export async function saveTransfers(
 
     const transfer = new Transfer({
       id: event.id,
-      contract: contract,
-      from: e.from,
-      to: e.to,
+      contract: contract.toLowerCase(),
+      from: e.from.toLowerCase(),
+      to: e.to.toLowerCase(),
       tokenId: BigInt(e.tokenId.toString()),
       timestamp: new Date(block.timestamp),
       transactionHash: event.evmTxHash,
@@ -781,12 +781,12 @@ export const saveVotingsTransferred = async (
   const list: CreatedVotingPosition[] = []
   for (const t of transfersData) {
     const target = await ctx.store.findOneBy(CreatedVotingPosition, {
-      voter: t.e.from,
+      voter: t.e.from.toLowerCase(),
       votingPositionId: BigInt(t.e.tokenId.toString()),
     })
 
     if (target) {
-      target.voter = t.e.to
+      target.voter = t.e.to.toLowerCase()
     }
   }
 
@@ -802,12 +802,12 @@ export const saveStakingsTransferred = async (
   const list: CreatedStakerPosition[] = []
   for (const t of transfersData) {
     const target = await ctx.store.findOneBy(CreatedStakerPosition, {
-      staker: t.e.from,
+      staker: t.e.from.toLowerCase(),
       stakingPositionId: BigInt(t.e.tokenId.toString()),
     })
 
     if (target) {
-      target.staker = t.e.to
+      target.staker = t.e.to.toLowerCase()
     }
   }
 
@@ -823,12 +823,12 @@ export const saveXZooTransferred = async (
   const list: XZooStaked[] = []
   for (const t of transfersData) {
     const target = await ctx.store.findOneBy(XZooStaked, {
-      staker: t.e.from,
+      staker: t.e.from.toLowerCase(),
       positionId: BigInt(t.e.tokenId.toString()),
     })
 
     if (target) {
-      target.staker = t.e.to
+      target.staker = t.e.to.toLowerCase()
     }
   }
 
@@ -848,13 +848,13 @@ export const saveJackpotTransferred = async (
 
   for (const t of transfersData) {
     const target = await ctx.store.findOneBy(JackpotStaked, {
-      beneficiary: t.e.from,
+      beneficiary: t.e.from.toLowerCase(),
       type: type,
       jackpotPositionId: BigInt(t.e.tokenId.toString()),
     })
 
     if (target) {
-      target.beneficiary = t.e.to
+      target.beneficiary = t.e.to.toLowerCase()
     }
   }
 

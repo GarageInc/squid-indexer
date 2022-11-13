@@ -97,7 +97,7 @@ const FROM = 1887167
 
 const database = new TypeormDatabase()
 const processor = new SubstrateBatchProcessor()
-  .setBatchSize(500)
+  .setBatchSize(1)
   .setBlockRange({ from: FROM })
   .setDataSource({
     chain: CHAIN_NODE,

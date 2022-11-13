@@ -23,6 +23,7 @@ import {
   Project,
   RemovedStakerPosition,
   Stats,
+  Transfer,
   WithdrawedDaiFromVoting,
   WithdrawedZooFromVoting,
   XZooClaimed,
@@ -39,7 +40,14 @@ import * as jackpotAbi from './abi/jackpot'
 import { ZooUnlocked } from './model/generated/zooUnlocked.model'
 import { VotedForCollection } from './model/generated/votedForCollection.model'
 import { FaucetGiven } from './model/generated/faucetGiven.model'
-import { BATTLE_STAKER_MOONBEAM } from './contract'
+import {
+  BATTLE_STAKER_MOONBEAM,
+  BATTLE_VOTER_MOONBEAM,
+  JACKPOT_A_MOONBEAM,
+  JACKPOT_B_MOONBEAM,
+  VE_MODEL_MOONBEAM,
+  X_ZOO_MOONBEAM,
+} from './contract'
 import { BigNumber } from 'ethers'
 
 export type Item = BatchProcessorItem<typeof SubstrateBatchProcessor>
@@ -736,4 +744,119 @@ export async function saveJackpotsClaimed(
   }
 
   await ctx.store.save([...transfers])
+}
+
+export async function saveTransfers(
+  ctx: Ctx,
+  transfersData: { e: erc721.Transfer0Event; event: EvmLogEvent; block: SubstrateBlock }[],
+  contract: string
+) {
+  const transfers: Set<Transfer> = new Set()
+
+  for (const transferData of transfersData) {
+    const { e, event, block } = transferData
+
+    const transfer = new Transfer({
+      id: event.id,
+      contract: contract,
+      from: e.from,
+      to: e.to,
+      tokenId: BigInt(e.tokenId.toString()),
+      timestamp: new Date(block.timestamp),
+      transactionHash: event.evmTxHash,
+    })
+
+    transfers.add(transfer)
+  }
+
+  await ctx.store.save([...transfers])
+}
+
+export const saveVotingsTransferred = async (
+  ctx: Ctx,
+  transfersData: { e: erc721.Transfer0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+) => {
+  await saveTransfers(ctx, transfersData, BATTLE_VOTER_MOONBEAM)
+
+  const list: CreatedVotingPosition[] = []
+  for (const t of transfersData) {
+    const target = await ctx.store.findOneBy(CreatedVotingPosition, {
+      voter: t.e.from,
+      votingPositionId: BigInt(t.e.tokenId.toString()),
+    })
+
+    if (target) {
+      target.voter = t.e.to
+    }
+  }
+
+  await ctx.store.save(list)
+}
+
+export const saveStakingsTransferred = async (
+  ctx: Ctx,
+  transfersData: { e: erc721.Transfer0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+) => {
+  await saveTransfers(ctx, transfersData, BATTLE_STAKER_MOONBEAM)
+
+  const list: CreatedStakerPosition[] = []
+  for (const t of transfersData) {
+    const target = await ctx.store.findOneBy(CreatedStakerPosition, {
+      staker: t.e.from,
+      stakingPositionId: BigInt(t.e.tokenId.toString()),
+    })
+
+    if (target) {
+      target.staker = t.e.to
+    }
+  }
+
+  await ctx.store.save(list)
+}
+
+export const saveXZooTransferred = async (
+  ctx: Ctx,
+  transfersData: { e: erc721.Transfer0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+) => {
+  await saveTransfers(ctx, transfersData, X_ZOO_MOONBEAM)
+
+  const list: XZooStaked[] = []
+  for (const t of transfersData) {
+    const target = await ctx.store.findOneBy(XZooStaked, {
+      staker: t.e.from,
+      positionId: BigInt(t.e.tokenId.toString()),
+    })
+
+    if (target) {
+      target.staker = t.e.to
+    }
+  }
+
+  await ctx.store.save(list)
+}
+
+export const saveJackpotTransferred = async (
+  ctx: Ctx,
+  transfersData: { e: erc721.Transfer0Event; event: EvmLogEvent; block: SubstrateBlock }[],
+  type: JackpotType
+) => {
+  const isA = type === 'A'
+
+  await saveTransfers(ctx, transfersData, isA ? JACKPOT_A_MOONBEAM : JACKPOT_B_MOONBEAM)
+
+  const list: JackpotStaked[] = []
+
+  for (const t of transfersData) {
+    const target = await ctx.store.findOneBy(JackpotStaked, {
+      beneficiary: t.e.from,
+      type: type,
+      jackpotPositionId: BigInt(t.e.tokenId.toString()),
+    })
+
+    if (target) {
+      target.beneficiary = t.e.to
+    }
+  }
+
+  await ctx.store.save(list)
 }

@@ -9,12 +9,15 @@ import {
   X_ZOO_MOONBEAM,
   JACKPOT_A_MOONBEAM,
   JACKPOT_B_MOONBEAM,
+  BATTLE_VOTER_MOONBEAM,
+  BATTLE_STAKER_MOONBEAM,
 } from './contract'
 import * as arenaAbi from './abi/battle-arena-abi'
 import * as vemodelAbi from './abi/ve-model-abi'
 import * as faucetAbi from './abi/battle-faucet-abi'
 import * as xZooAbi from './abi/xZoo'
 import * as jackpotAbi from './abi/jackpot'
+import * as erc721Abi from './abi/erc721'
 import {
   Ctx,
   liquidateVoted,
@@ -28,19 +31,23 @@ import {
   saveJackpotsStaked,
   saveJackpotsUnStaked,
   saveJackpotsWinned,
+  saveJackpotTransferred,
   savePaired,
   saveStaked,
+  saveStakingsTransferred,
   saveUnStaked,
   saveVoted,
+  saveVotingsTransferred,
   saveWinner,
   saveWithdrawedDai,
   saveWithdrawedZoo,
   saveXZooClaimed,
   saveXZooStaked,
+  saveXZooTransferred,
   saveXZooWithdrawn,
   saveZooUnlocked,
 } from './transformers'
-import { JackpotWinnerChoosed } from './model'
+import { CreatedVotingPosition } from './model'
 
 const CreatedStakerPositionT = arenaAbi.events['CreatedStakerPosition(uint256,address,uint256)']
 const CreatedVotingPositionT = arenaAbi.events['CreatedVotingPosition(uint256,address,uint256,uint256,uint256,uint256)']
@@ -73,6 +80,8 @@ const JackpotStakedT = jackpotAbi.events['Staked(uint256,address,address,uint256
 const JackpotUnstakedT = jackpotAbi.events['Unstaked(uint256,address,address,uint256)']
 const JackpotWinnedT = jackpotAbi.events['WinnerChoosed(uint256,uint256)']
 const JackpotClaimedT = jackpotAbi.events['Claimed(uint256,uint256,address,address,uint256)']
+
+const TransferT = erc721Abi.events['Transfer(address,address,uint256)']
 
 interface IArenaEvmEvent {
   topic: string
@@ -182,11 +191,50 @@ processor
     filter: [JackpotWinnedT.topic],
   })
 
+processor
+  .addEvmLog(JACKPOT_A_MOONBEAM, {
+    filter: [TransferT.topic],
+  })
+  .addEvmLog(JACKPOT_B_MOONBEAM, {
+    filter: [TransferT.topic],
+  })
+
+processor
+  .addEvmLog(BATTLE_VOTER_MOONBEAM, {
+    filter: [TransferT.topic],
+  })
+  .addEvmLog(BATTLE_STAKER_MOONBEAM, {
+    filter: [TransferT.topic],
+  })
+
+processor
+  .addEvmLog(VE_MODEL_MOONBEAM, {
+    filter: [TransferT.topic],
+  })
+  .addEvmLog(X_ZOO_MOONBEAM, {
+    filter: [TransferT.topic],
+  })
+
 const hasIn = (item: any, topic: string) =>
   item.event.args && item.event.args.log && item.event.args.log.topics.indexOf(topic) !== -1
 
 const isJackpotA = (item: any) =>
   item.event?.extrinsic?.call?.args.transaction.value.action.value.toLowerCase() === JACKPOT_A_MOONBEAM
+
+const isJackpotB = (item: any) =>
+  item.event?.extrinsic?.call?.args.transaction.value.action.value.toLowerCase() === JACKPOT_B_MOONBEAM
+
+const isVoter = (item: any) =>
+  item.event?.extrinsic?.call?.args.transaction.value.action.value.toLowerCase() === BATTLE_VOTER_MOONBEAM
+
+const isStaker = (item: any) =>
+  item.event?.extrinsic?.call?.args.transaction.value.action.value.toLowerCase() === BATTLE_STAKER_MOONBEAM
+
+const isVeModel = (item: any) =>
+  item.event?.extrinsic?.call?.args.transaction.value.action.value.toLowerCase() === VE_MODEL_MOONBEAM
+
+const isXZoo = (item: any) =>
+  item.event?.extrinsic?.call?.args.transaction.value.action.value.toLowerCase() === X_ZOO_MOONBEAM
 
 processor.run(database, async (ctx: any) => {
   const staked = []
@@ -220,6 +268,12 @@ processor.run(database, async (ctx: any) => {
   const jackpotBStaked = []
   const jackpotBUnstaked = []
   const jackpotBWinned = []
+
+  const votingsTransferred = []
+  const stakerTransferred = []
+  const jackpotATransferred = []
+  const jackpotBTransferred = []
+  const xZooTransferred = []
 
   for (const block of ctx.blocks) {
     for (const item of block.items) {
@@ -319,9 +373,31 @@ processor.run(database, async (ctx: any) => {
             jackpotBClaimed.push(handler(ctx, block.header, item.event, JackpotClaimedT))
           }
         }
+
+        if (hasIn(item, TransferT.topic)) {
+          if (isVoter(item)) {
+            votingsTransferred.push(handler(ctx, block.header, item.event, TransferT))
+          } else if (isStaker(item)) {
+            stakerTransferred.push(handler(ctx, block.header, item.event, TransferT))
+          } else if (isJackpotA(item)) {
+            jackpotATransferred.push(handler(ctx, block.header, item.event, TransferT))
+          } else if (isJackpotB(item)) {
+            jackpotBTransferred.push(handler(ctx, block.header, item.event, TransferT))
+          } else if (isXZoo(item)) {
+            xZooTransferred.push(handler(ctx, block.header, item.event, TransferT))
+          }
+        }
       }
     }
   }
+
+  await saveVotingsTransferred(ctx, votingsTransferred)
+  await saveStakingsTransferred(ctx, stakerTransferred)
+
+  await saveJackpotTransferred(ctx, jackpotATransferred, 'A')
+  await saveJackpotTransferred(ctx, jackpotBTransferred, 'B')
+
+  await saveXZooTransferred(ctx, xZooTransferred)
 
   await saveJackpotsClaimed(ctx, jackpotAClaimed, 'A')
   await saveJackpotsClaimed(ctx, jackpotBClaimed, 'B')

@@ -252,3 +252,13 @@ type JackpotClaimed @entity {
   timestamp: DateTime! @index
   transactionHash: String!
 }
+
+type Transfer @entity {
+  id: ID!
+  contract: String! @index
+  tokenId: BigInt! @index
+  from: String!
+  to: String!
+  timestamp: DateTime! @index
+  transactionHash: String!
+}

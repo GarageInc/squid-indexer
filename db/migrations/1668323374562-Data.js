@@ -1,5 +1,5 @@
-module.exports = class Data1667721149719 {
-  name = 'Data1667721149719'
+module.exports = class Data1668323374562 {
+  name = 'Data1668323374562'
 
   async up(db) {
     await db.query(`CREATE TABLE "added_dai_to_voting" ("id" character varying NOT NULL, "current_epoch" numeric NOT NULL, "voter" text NOT NULL, "staking_position_id" numeric NOT NULL, "voting_position_id" numeric NOT NULL, "amount" numeric NOT NULL, "votes" numeric NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, CONSTRAINT "PK_9e1e399cbc921bb8d6aedb65ad5" PRIMARY KEY ("id"))`)
@@ -99,6 +99,10 @@ module.exports = class Data1667721149719 {
     await db.query(`CREATE INDEX "IDX_19685e560f128b1237cdb7c4a9" ON "jackpot_claimed" ("owner") `)
     await db.query(`CREATE INDEX "IDX_8426617170eb88a5a55a81bd44" ON "jackpot_claimed" ("beneficiary") `)
     await db.query(`CREATE INDEX "IDX_051418a34da1214c9b9f9b6ce7" ON "jackpot_claimed" ("timestamp") `)
+    await db.query(`CREATE TABLE "transfer" ("id" character varying NOT NULL, "contract" text NOT NULL, "token_id" numeric NOT NULL, "from" text NOT NULL, "to" text NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, CONSTRAINT "PK_fd9ddbdd49a17afcbe014401295" PRIMARY KEY ("id"))`)
+    await db.query(`CREATE INDEX "IDX_5c23fcce4a324e7de2f023d754" ON "transfer" ("contract") `)
+    await db.query(`CREATE INDEX "IDX_b27b1150b8a7af68424540613c" ON "transfer" ("token_id") `)
+    await db.query(`CREATE INDEX "IDX_70ff8b624c3118ac3a4862d22c" ON "transfer" ("timestamp") `)
     await db.query(`ALTER TABLE "created_staker_position" ADD CONSTRAINT "FK_ffae01274ee7c74c16cb8333f3e" FOREIGN KEY ("project_id") REFERENCES "project"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`)
     await db.query(`ALTER TABLE "created_voting_position" ADD CONSTRAINT "FK_70d5c61182c716fadd1458e6d40" FOREIGN KEY ("project_id") REFERENCES "project"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`)
   }
@@ -201,6 +205,10 @@ module.exports = class Data1667721149719 {
     await db.query(`DROP INDEX "public"."IDX_19685e560f128b1237cdb7c4a9"`)
     await db.query(`DROP INDEX "public"."IDX_8426617170eb88a5a55a81bd44"`)
     await db.query(`DROP INDEX "public"."IDX_051418a34da1214c9b9f9b6ce7"`)
+    await db.query(`DROP TABLE "transfer"`)
+    await db.query(`DROP INDEX "public"."IDX_5c23fcce4a324e7de2f023d754"`)
+    await db.query(`DROP INDEX "public"."IDX_b27b1150b8a7af68424540613c"`)
+    await db.query(`DROP INDEX "public"."IDX_70ff8b624c3118ac3a4862d22c"`)
     await db.query(`ALTER TABLE "created_staker_position" DROP CONSTRAINT "FK_ffae01274ee7c74c16cb8333f3e"`)
     await db.query(`ALTER TABLE "created_voting_position" DROP CONSTRAINT "FK_70d5c61182c716fadd1458e6d40"`)
   }

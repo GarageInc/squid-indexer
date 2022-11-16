@@ -398,30 +398,11 @@ processor.run(database, async (ctx: any) => {
     }
   }
 
-  await saveVotingsTransferred(ctx, votingsTransferred)
-  await saveStakingsTransferred(ctx, stakerTransferred)
+  /* FAUCET START */
+  await saveFaucetGiven(ctx, given)
+  /* FAUCET END */
 
-  await saveJackpotTransferred(ctx, jackpotATransferred, 'A')
-  await saveJackpotTransferred(ctx, jackpotBTransferred, 'B')
-
-  await saveXZooTransferred(ctx, xZooTransferred)
-
-  await saveJackpotsClaimed(ctx, jackpotAClaimed, 'A')
-  await saveJackpotsClaimed(ctx, jackpotBClaimed, 'B')
-
-  await saveJackpotsStaked(ctx, jackpotAStaked, 'A')
-  await saveJackpotsStaked(ctx, jackpotBStaked, 'B')
-
-  await saveJackpotsUnStaked(ctx, jackpotAUnstaked, 'A')
-  await saveJackpotsUnStaked(ctx, jackpotBUnstaked, 'B')
-
-  await saveJackpotsWinned(ctx, jackpotAWinned, 'A')
-  await saveJackpotsWinned(ctx, jackpotBWinned, 'B')
-
-  await saveXZooClaimed(ctx, xZooClaimedEvents)
-  await saveXZooStaked(ctx, xZooStakedEvents)
-  await saveXZooWithdrawn(ctx, xZooWithdrawnEvents)
-
+  /* BATTLE START */
   await saveStaked(ctx, staked)
   await saveUnStaked(ctx, unstaked)
 
@@ -429,21 +410,51 @@ processor.run(database, async (ctx: any) => {
   await liquidateVoted(ctx, liquidatedVoting)
 
   await saveAddedDai(ctx, addedDai)
-  await saveAddedZoo(ctx, addedZoo)
-
   await saveWithdrawedDai(ctx, withdrawedDai)
+
+  await savePaired(ctx, pairedNft)
+
+  await saveAddedZoo(ctx, addedZoo)
   await saveWithdrawedZoo(ctx, withdrawedZoo)
 
   await saveWinner(ctx, chosenWinner)
-  await savePaired(ctx, pairedNft)
 
   await saveClaimedVoting(ctx, claimedVoting)
   await saveClaimedStaking(ctx, claimedStaking)
+  /* BATTLE END */
 
+  /* VE MODEL START */
   await saveCollectionVoted(ctx, votedCollection)
   await saveZooUnlocked(ctx, zooUnlocked)
+  /* VE MODEL END */
 
-  await saveFaucetGiven(ctx, given)
+  /* JACKPOTS START */
+  await saveJackpotsStaked(ctx, jackpotAStaked, 'A')
+  await saveJackpotsStaked(ctx, jackpotBStaked, 'B')
+
+  await saveJackpotsClaimed(ctx, jackpotAClaimed, 'A')
+  await saveJackpotsClaimed(ctx, jackpotBClaimed, 'B')
+
+  await saveJackpotsUnStaked(ctx, jackpotAUnstaked, 'A')
+  await saveJackpotsUnStaked(ctx, jackpotBUnstaked, 'B')
+
+  await saveJackpotsWinned(ctx, jackpotAWinned, 'A')
+  await saveJackpotsWinned(ctx, jackpotBWinned, 'B')
+
+  await saveXZooStaked(ctx, xZooStakedEvents)
+  await saveXZooClaimed(ctx, xZooClaimedEvents)
+  await saveXZooWithdrawn(ctx, xZooWithdrawnEvents)
+  /* JACKPOTS END */
+
+  /* TRANSFERS START */
+  await saveVotingsTransferred(ctx, votingsTransferred)
+  await saveStakingsTransferred(ctx, stakerTransferred)
+
+  await saveJackpotTransferred(ctx, jackpotATransferred, 'A')
+  await saveJackpotTransferred(ctx, jackpotBTransferred, 'B')
+
+  await saveXZooTransferred(ctx, xZooTransferred)
+  /* TRANSFERS END */
 })
 
 function handler(ctx: Ctx, block: SubstrateBlock, event: EvmLogEvent, type: IArenaEvmEvent) {

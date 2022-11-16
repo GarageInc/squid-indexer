@@ -25,8 +25,8 @@
     "logs": "npx sqd squid logs",
     "processor": "node -r dotenv/config lib/processor.js",
     "gql": "npx squid-graphql-server",
-    "release": "npx sqd squid:release ZooDAO@v1 --source https://github.com/GarageInc/squid-indexer#master",
-    "deploy-prod": "npx sqd squid:prod ZooDAO@v1"
+    "release": "npx sqd squid:release ZooDAO@v2 --source https://github.com/GarageInc/squid-indexer#master",
+    "deploy-prod": "npx sqd squid:prod ZooDAO@v2"
   },
   "dependencies": {
     "@subsquid/archive-registry": "1.0.14",

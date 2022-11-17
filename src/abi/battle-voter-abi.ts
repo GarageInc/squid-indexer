@@ -916,7 +916,7 @@ function getJsonAbi(): any {
     {
       "inputs": [
         {
-          "internalType": "address",
+          "internalType": "address payable",
           "name": "_nftBattleArena",
           "type": "address"
         }

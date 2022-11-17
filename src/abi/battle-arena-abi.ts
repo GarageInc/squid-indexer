@@ -11,7 +11,7 @@ export type ChosenWinner0Event = ([currentEpoch: ethers.BigNumber, fighter1: eth
 
 export type ClaimedRewardFromStaking0Event = ([currentEpoch: ethers.BigNumber, staker: string, stakingPositionId: ethers.BigNumber, beneficiary: string, yTokenReward: ethers.BigNumber, daiReward: ethers.BigNumber] & {currentEpoch: ethers.BigNumber, staker: string, stakingPositionId: ethers.BigNumber, beneficiary: string, yTokenReward: ethers.BigNumber, daiReward: ethers.BigNumber})
 
-export type ClaimedRewardFromVoting0Event = ([currentEpoch: ethers.BigNumber, voter: string, stakingPositionId: ethers.BigNumber, beneficiary: string, yTokenReward: ethers.BigNumber, daiReward: ethers.BigNumber, votingPositionId: ethers.BigNumber] & {currentEpoch: ethers.BigNumber, voter: string, stakingPositionId: ethers.BigNumber, beneficiary: string, yTokenReward: ethers.BigNumber, daiReward: ethers.BigNumber, votingPositionId: ethers.BigNumber})
+export type ClaimedRewardFromVoting0Event = ([currentEpoch: ethers.BigNumber, voter: string, stakingPositionId: ethers.BigNumber, beneficiary: string, daiReward: ethers.BigNumber, votingPositionId: ethers.BigNumber] & {currentEpoch: ethers.BigNumber, voter: string, stakingPositionId: ethers.BigNumber, beneficiary: string, daiReward: ethers.BigNumber, votingPositionId: ethers.BigNumber})
 
 export type CreatedStakerPosition0Event = ([currentEpoch: ethers.BigNumber, staker: string, stakingPositionId: ethers.BigNumber] & {currentEpoch: ethers.BigNumber, staker: string, stakingPositionId: ethers.BigNumber})
 
@@ -28,8 +28,6 @@ export type RecomputedDaiVotes0Event = ([currentEpoch: ethers.BigNumber, voter: 
 export type RecomputedZooVotes0Event = ([currentEpoch: ethers.BigNumber, voter: string, stakingPositionId: ethers.BigNumber, votingPositionId: ethers.BigNumber, newVotes: ethers.BigNumber, oldVotes: ethers.BigNumber] & {currentEpoch: ethers.BigNumber, voter: string, stakingPositionId: ethers.BigNumber, votingPositionId: ethers.BigNumber, newVotes: ethers.BigNumber, oldVotes: ethers.BigNumber})
 
 export type RemovedStakerPosition0Event = ([currentEpoch: ethers.BigNumber, staker: string, stakingPositionId: ethers.BigNumber] & {currentEpoch: ethers.BigNumber, staker: string, stakingPositionId: ethers.BigNumber})
-
-export type SwappedPositionVotes0Event = ([currentEpoch: ethers.BigNumber, voter: string, newStakingPositionId: ethers.BigNumber, beneficiary: string, votingPositionId: ethers.BigNumber, daiNumber: ethers.BigNumber, newVotingPositionId: ethers.BigNumber] & {currentEpoch: ethers.BigNumber, voter: string, newStakingPositionId: ethers.BigNumber, beneficiary: string, votingPositionId: ethers.BigNumber, daiNumber: ethers.BigNumber, newVotingPositionId: ethers.BigNumber})
 
 export type WithdrawedDaiFromVoting0Event = ([currentEpoch: ethers.BigNumber, voter: string, stakingPositionId: ethers.BigNumber, beneficiary: string, votingPositionId: ethers.BigNumber, daiNumber: ethers.BigNumber] & {currentEpoch: ethers.BigNumber, voter: string, stakingPositionId: ethers.BigNumber, beneficiary: string, votingPositionId: ethers.BigNumber, daiNumber: ethers.BigNumber})
 
@@ -77,10 +75,10 @@ export const events = {
     }
   }
   ,
-  "ClaimedRewardFromVoting(uint256,address,uint256,address,uint256,uint256,uint256)": {
-    topic: abi.getEventTopic("ClaimedRewardFromVoting(uint256,address,uint256,address,uint256,uint256,uint256)"),
+  "ClaimedRewardFromVoting(uint256,address,uint256,address,uint256,uint256)": {
+    topic: abi.getEventTopic("ClaimedRewardFromVoting(uint256,address,uint256,address,uint256,uint256)"),
     decode(data: EvmLog): ClaimedRewardFromVoting0Event {
-      return decodeEvent("ClaimedRewardFromVoting(uint256,address,uint256,address,uint256,uint256,uint256)", data)
+      return decodeEvent("ClaimedRewardFromVoting(uint256,address,uint256,address,uint256,uint256)", data)
     }
   }
   ,
@@ -140,13 +138,6 @@ export const events = {
     }
   }
   ,
-  "SwappedPositionVotes(uint256,address,uint256,address,uint256,uint256,uint256)": {
-    topic: abi.getEventTopic("SwappedPositionVotes(uint256,address,uint256,address,uint256,uint256,uint256)"),
-    decode(data: EvmLog): SwappedPositionVotes0Event {
-      return decodeEvent("SwappedPositionVotes(uint256,address,uint256,address,uint256,uint256,uint256)", data)
-    }
-  }
-  ,
   "WithdrawedDaiFromVoting(uint256,address,uint256,address,uint256,uint256)": {
     topic: abi.getEventTopic("WithdrawedDaiFromVoting(uint256,address,uint256,address,uint256,uint256)"),
     decode(data: EvmLog): WithdrawedDaiFromVoting0Event {
@@ -162,6 +153,8 @@ export const events = {
   }
   ,
 }
+
+export type _createVotingPosition0Function = ([stakingPositionId: ethers.BigNumber, voter: string, yTokens: ethers.BigNumber, amount: ethers.BigNumber] & {stakingPositionId: ethers.BigNumber, voter: string, yTokens: ethers.BigNumber, amount: ethers.BigNumber})
 
 export type AddDaiToVoting0Function = ([votingPositionId: ethers.BigNumber, voter: string, amount: ethers.BigNumber, _yTokens: ethers.BigNumber] & {votingPositionId: ethers.BigNumber, voter: string, amount: ethers.BigNumber, _yTokens: ethers.BigNumber})
 
@@ -181,7 +174,7 @@ export type CreateStakerPosition0Function = ([staker: string, token: string] & {
 
 export type CreateVotingPosition0Function = ([stakingPositionId: ethers.BigNumber, voter: string, amount: ethers.BigNumber] & {stakingPositionId: ethers.BigNumber, voter: string, amount: ethers.BigNumber})
 
-export type Init0Function = ([_xZoo: string, _jackpotA: string, _jackpotB: string] & {_xZoo: string, _jackpotA: string, _jackpotB: string})
+export type Init0Function = ([_xZoo: string, _jackpotA: string, _jackpotB: string, _wglmr: string] & {_xZoo: string, _jackpotA: string, _jackpotB: string, _wglmr: string})
 
 export type PairNft0Function = ([stakingPositionId: ethers.BigNumber] & {stakingPositionId: ethers.BigNumber})
 
@@ -190,8 +183,6 @@ export type RecomputeDaiVotes0Function = ([votingPositionId: ethers.BigNumber] &
 export type RecomputeZooVotes0Function = ([votingPositionId: ethers.BigNumber] & {votingPositionId: ethers.BigNumber})
 
 export type RemoveStakerPosition0Function = ([stakingPositionId: ethers.BigNumber, staker: string] & {stakingPositionId: ethers.BigNumber, staker: string})
-
-export type SwapPositionVotes0Function = ([votingPositionId: ethers.BigNumber, voter: string, beneficiary: string, daiNumber: ethers.BigNumber, newStakingPositionId: ethers.BigNumber, newVotingPositionId: ethers.BigNumber] & {votingPositionId: ethers.BigNumber, voter: string, beneficiary: string, daiNumber: ethers.BigNumber, newStakingPositionId: ethers.BigNumber, newVotingPositionId: ethers.BigNumber})
 
 export type UpdateInfo0Function = ([stakingPositionId: ethers.BigNumber] & {stakingPositionId: ethers.BigNumber})
 
@@ -207,6 +198,13 @@ function decodeFunction(data: string): any {
 }
 
 export const functions = {
+  "_createVotingPosition(uint256,address,uint256,uint256)": {
+    sighash: abi.getSighash("_createVotingPosition(uint256,address,uint256,uint256)"),
+    decode(input: string): _createVotingPosition0Function {
+      return decodeFunction(input)
+    }
+  }
+  ,
   "addDaiToVoting(uint256,address,uint256,uint256)": {
     sighash: abi.getSighash("addDaiToVoting(uint256,address,uint256,uint256)"),
     decode(input: string): AddDaiToVoting0Function {
@@ -270,8 +268,8 @@ export const functions = {
     }
   }
   ,
-  "init(address,address,address)": {
-    sighash: abi.getSighash("init(address,address,address)"),
+  "init(address,address,address,address)": {
+    sighash: abi.getSighash("init(address,address,address,address)"),
     decode(input: string): Init0Function {
       return decodeFunction(input)
     }
@@ -307,13 +305,6 @@ export const functions = {
   ,
   "requestRandom()": {
     sighash: abi.getSighash("requestRandom()"),
-  }
-  ,
-  "swapPositionVotes(uint256,address,address,uint256,uint256,uint256)": {
-    sighash: abi.getSighash("swapPositionVotes(uint256,address,address,uint256,uint256,uint256)"),
-    decode(input: string): SwapPositionVotes0Function {
-      return decodeFunction(input)
-    }
   }
   ,
   "updateEpoch()": {
@@ -453,12 +444,16 @@ export class Contract  {
     return this.call("getPendingStakerReward", [stakingPositionId])
   }
 
-  async getPendingVoterReward(votingPositionId: ethers.BigNumber): Promise<([yTokens: ethers.BigNumber, wells: ethers.BigNumber] & {yTokens: ethers.BigNumber, wells: ethers.BigNumber})> {
+  async getPendingVoterReward(votingPositionId: ethers.BigNumber): Promise<([yTokens: ethers.BigNumber, wells: ethers.BigNumber, glmr: ethers.BigNumber] & {yTokens: ethers.BigNumber, wells: ethers.BigNumber, glmr: ethers.BigNumber})> {
     return this.call("getPendingVoterReward", [votingPositionId])
   }
 
   async getStakerPositionsLength(): Promise<ethers.BigNumber> {
     return this.call("getStakerPositionsLength", [])
+  }
+
+  async glmrClaimedByEpoch(arg0: ethers.BigNumber): Promise<ethers.BigNumber> {
+    return this.call("glmrClaimedByEpoch", [arg0])
   }
 
   async jackpotA(): Promise<string> {
@@ -525,7 +520,7 @@ export class Contract  {
     return this.call("sharesToTokens", [sharesAmount])
   }
 
-  async stakingPositionsValues(arg0: ethers.BigNumber): Promise<([startDate: ethers.BigNumber, startEpoch: ethers.BigNumber, endDate: ethers.BigNumber, endEpoch: ethers.BigNumber, lastRewardedEpoch: ethers.BigNumber, lastUpdateEpoch: ethers.BigNumber, collection: string, lastEpochOfIncentiveReward: ethers.BigNumber] & {startDate: ethers.BigNumber, startEpoch: ethers.BigNumber, endDate: ethers.BigNumber, endEpoch: ethers.BigNumber, lastRewardedEpoch: ethers.BigNumber, lastUpdateEpoch: ethers.BigNumber, collection: string, lastEpochOfIncentiveReward: ethers.BigNumber})> {
+  async stakingPositionsValues(arg0: ethers.BigNumber): Promise<([startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, lastRewardedEpoch: ethers.BigNumber, lastUpdateEpoch: ethers.BigNumber, collection: string, lastEpochOfIncentiveReward: ethers.BigNumber] & {startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, lastRewardedEpoch: ethers.BigNumber, lastUpdateEpoch: ethers.BigNumber, collection: string, lastEpochOfIncentiveReward: ethers.BigNumber})> {
     return this.call("stakingPositionsValues", [arg0])
   }
 
@@ -557,8 +552,12 @@ export class Contract  {
     return this.call("veZoo", [])
   }
 
-  async votingPositionsValues(arg0: ethers.BigNumber): Promise<([stakingPositionId: ethers.BigNumber, startDate: ethers.BigNumber, endDate: ethers.BigNumber, daiInvested: ethers.BigNumber, yTokensNumber: ethers.BigNumber, zooInvested: ethers.BigNumber, daiVotes: ethers.BigNumber, votes: ethers.BigNumber, startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, lastRewardedEpoch: ethers.BigNumber, lastEpochYTokensWereDeductedForRewards: ethers.BigNumber, yTokensRewardDebt: ethers.BigNumber, lastEpochOfIncentiveReward: ethers.BigNumber] & {stakingPositionId: ethers.BigNumber, startDate: ethers.BigNumber, endDate: ethers.BigNumber, daiInvested: ethers.BigNumber, yTokensNumber: ethers.BigNumber, zooInvested: ethers.BigNumber, daiVotes: ethers.BigNumber, votes: ethers.BigNumber, startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, lastRewardedEpoch: ethers.BigNumber, lastEpochYTokensWereDeductedForRewards: ethers.BigNumber, yTokensRewardDebt: ethers.BigNumber, lastEpochOfIncentiveReward: ethers.BigNumber})> {
+  async votingPositionsValues(arg0: ethers.BigNumber): Promise<([stakingPositionId: ethers.BigNumber, daiInvested: ethers.BigNumber, yTokensNumber: ethers.BigNumber, zooInvested: ethers.BigNumber, daiVotes: ethers.BigNumber, votes: ethers.BigNumber, startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, lastRewardedEpoch: ethers.BigNumber, lastEpochYTokensWereDeductedForRewards: ethers.BigNumber, yTokensRewardDebt: ethers.BigNumber, lastEpochOfIncentiveReward: ethers.BigNumber] & {stakingPositionId: ethers.BigNumber, daiInvested: ethers.BigNumber, yTokensNumber: ethers.BigNumber, zooInvested: ethers.BigNumber, daiVotes: ethers.BigNumber, votes: ethers.BigNumber, startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, lastRewardedEpoch: ethers.BigNumber, lastEpochYTokensWereDeductedForRewards: ethers.BigNumber, yTokensRewardDebt: ethers.BigNumber, lastEpochOfIncentiveReward: ethers.BigNumber})> {
     return this.call("votingPositionsValues", [arg0])
+  }
+
+  async wGlmr(): Promise<string> {
+    return this.call("wGlmr", [])
   }
 
   async well(): Promise<string> {
@@ -603,12 +602,12 @@ function getJsonAbi(): any {
     {
       "inputs": [
         {
-          "internalType": "address",
+          "internalType": "contract IERC20Metadata",
           "name": "_zoo",
           "type": "address"
         },
         {
-          "internalType": "address",
+          "internalType": "contract IERC20Metadata",
           "name": "_dai",
           "type": "address"
         },
@@ -658,7 +657,7 @@ function getJsonAbi(): any {
           "type": "address"
         },
         {
-          "internalType": "address",
+          "internalType": "contract IERC20Metadata",
           "name": "_well",
           "type": "address"
         }
@@ -864,12 +863,6 @@ function getJsonAbi(): any {
           "internalType": "address",
           "name": "beneficiary",
           "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "yTokenReward",
-          "type": "uint256"
         },
         {
           "indexed": false,
@@ -1183,55 +1176,6 @@ function getJsonAbi(): any {
         {
           "indexed": true,
           "internalType": "uint256",
-          "name": "newStakingPositionId",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "internalType": "address",
-          "name": "beneficiary",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "votingPositionId",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "daiNumber",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "newVotingPositionId",
-          "type": "uint256"
-        }
-      ],
-      "name": "SwappedPositionVotes",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "uint256",
-          "name": "currentEpoch",
-          "type": "uint256"
-        },
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "voter",
-          "type": "address"
-        },
-        {
-          "indexed": true,
-          "internalType": "uint256",
           "name": "stakingPositionId",
           "type": "uint256"
         },
@@ -1299,6 +1243,45 @@ function getJsonAbi(): any {
       ],
       "name": "WithdrawedZooFromVoting",
       "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "stakingPositionId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "voter",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "yTokens",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "_createVotingPosition",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "votes",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "votingPositionId",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
     },
     {
       "inputs": [
@@ -1439,7 +1422,7 @@ function getJsonAbi(): any {
       "outputs": [
         {
           "internalType": "uint256",
-          "name": "",
+          "name": "reward",
           "type": "uint256"
         }
       ],
@@ -1612,7 +1595,7 @@ function getJsonAbi(): any {
       "name": "dai",
       "outputs": [
         {
-          "internalType": "contract ERC20",
+          "internalType": "contract IERC20Metadata",
           "name": "",
           "type": "address"
         }
@@ -1792,6 +1775,11 @@ function getJsonAbi(): any {
           "internalType": "uint256",
           "name": "wells",
           "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "glmr",
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -1813,6 +1801,25 @@ function getJsonAbi(): any {
     {
       "inputs": [
         {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "glmrClaimedByEpoch",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "address",
           "name": "_xZoo",
           "type": "address"
@@ -1825,6 +1832,11 @@ function getJsonAbi(): any {
         {
           "internalType": "address",
           "name": "_jackpotB",
+          "type": "address"
+        },
+        {
+          "internalType": "address payable",
+          "name": "_wglmr",
           "type": "address"
         }
       ],
@@ -2214,17 +2226,7 @@ function getJsonAbi(): any {
       "outputs": [
         {
           "internalType": "uint256",
-          "name": "startDate",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
           "name": "startEpoch",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "endDate",
           "type": "uint256"
         },
         {
@@ -2254,50 +2256,6 @@ function getJsonAbi(): any {
         }
       ],
       "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "votingPositionId",
-          "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "voter",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "beneficiary",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "daiNumber",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "newStakingPositionId",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "newVotingPositionId",
-          "type": "uint256"
-        }
-      ],
-      "name": "swapPositionVotes",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "createdVotingId",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -2447,16 +2405,6 @@ function getJsonAbi(): any {
         },
         {
           "internalType": "uint256",
-          "name": "startDate",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "endDate",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
           "name": "daiInvested",
           "type": "uint256"
         },
@@ -2516,10 +2464,23 @@ function getJsonAbi(): any {
     },
     {
       "inputs": [],
+      "name": "wGlmr",
+      "outputs": [
+        {
+          "internalType": "address payable",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "well",
       "outputs": [
         {
-          "internalType": "contract ERC20",
+          "internalType": "contract IERC20Metadata",
           "name": "",
           "type": "address"
         }
@@ -2644,7 +2605,7 @@ function getJsonAbi(): any {
       "name": "zoo",
       "outputs": [
         {
-          "internalType": "contract ERC20",
+          "internalType": "contract IERC20Metadata",
           "name": "",
           "type": "address"
         }
@@ -2677,6 +2638,10 @@ function getJsonAbi(): any {
       ],
       "stateMutability": "view",
       "type": "function"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive"
     }
   ]
 }

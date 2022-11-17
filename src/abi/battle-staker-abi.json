@@ -215,7 +215,7 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "address", "name": "_nftBattleArena", "type": "address" }],
+    "inputs": [{ "internalType": "address payable", "name": "_nftBattleArena", "type": "address" }],
     "name": "setNftBattleArena",
     "outputs": [],
     "stateMutability": "nonpayable",

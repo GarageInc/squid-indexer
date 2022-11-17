@@ -1,8 +1,8 @@
 [
   {
     "inputs": [
-      { "internalType": "address", "name": "_zoo", "type": "address" },
-      { "internalType": "address", "name": "_dai", "type": "address" },
+      { "internalType": "contract IERC20Metadata", "name": "_zoo", "type": "address" },
+      { "internalType": "contract IERC20Metadata", "name": "_dai", "type": "address" },
       { "internalType": "address", "name": "_vault", "type": "address" },
       { "internalType": "address", "name": "_zooGovernance", "type": "address" },
       { "internalType": "address", "name": "_treasuryPool", "type": "address" },
@@ -12,7 +12,7 @@
       { "internalType": "address", "name": "_nftVotingPosition", "type": "address" },
       { "internalType": "address", "name": "_veZoo", "type": "address" },
       { "internalType": "address", "name": "_controller", "type": "address" },
-      { "internalType": "address", "name": "_well", "type": "address" }
+      { "internalType": "contract IERC20Metadata", "name": "_well", "type": "address" }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
@@ -76,7 +76,6 @@
       { "indexed": true, "internalType": "address", "name": "voter", "type": "address" },
       { "indexed": true, "internalType": "uint256", "name": "stakingPositionId", "type": "uint256" },
       { "indexed": false, "internalType": "address", "name": "beneficiary", "type": "address" },
-      { "indexed": false, "internalType": "uint256", "name": "yTokenReward", "type": "uint256" },
       { "indexed": false, "internalType": "uint256", "name": "daiReward", "type": "uint256" },
       { "indexed": false, "internalType": "uint256", "name": "votingPositionId", "type": "uint256" }
     ],
@@ -181,20 +180,6 @@
     "inputs": [
       { "indexed": true, "internalType": "uint256", "name": "currentEpoch", "type": "uint256" },
       { "indexed": true, "internalType": "address", "name": "voter", "type": "address" },
-      { "indexed": true, "internalType": "uint256", "name": "newStakingPositionId", "type": "uint256" },
-      { "indexed": false, "internalType": "address", "name": "beneficiary", "type": "address" },
-      { "indexed": false, "internalType": "uint256", "name": "votingPositionId", "type": "uint256" },
-      { "indexed": false, "internalType": "uint256", "name": "daiNumber", "type": "uint256" },
-      { "indexed": false, "internalType": "uint256", "name": "newVotingPositionId", "type": "uint256" }
-    ],
-    "name": "SwappedPositionVotes",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      { "indexed": true, "internalType": "uint256", "name": "currentEpoch", "type": "uint256" },
-      { "indexed": true, "internalType": "address", "name": "voter", "type": "address" },
       { "indexed": true, "internalType": "uint256", "name": "stakingPositionId", "type": "uint256" },
       { "indexed": false, "internalType": "address", "name": "beneficiary", "type": "address" },
       { "indexed": false, "internalType": "uint256", "name": "votingPositionId", "type": "uint256" },
@@ -215,6 +200,21 @@
     ],
     "name": "WithdrawedZooFromVoting",
     "type": "event"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "stakingPositionId", "type": "uint256" },
+      { "internalType": "address", "name": "voter", "type": "address" },
+      { "internalType": "uint256", "name": "yTokens", "type": "uint256" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" }
+    ],
+    "name": "_createVotingPosition",
+    "outputs": [
+      { "internalType": "uint256", "name": "votes", "type": "uint256" },
+      { "internalType": "uint256", "name": "votingPositionId", "type": "uint256" }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
     "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
@@ -270,7 +270,7 @@
   {
     "inputs": [{ "internalType": "uint256", "name": "votingPositionId", "type": "uint256" }],
     "name": "calculateIncentiveRewardForVoter",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [{ "internalType": "uint256", "name": "reward", "type": "uint256" }],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -344,7 +344,7 @@
   {
     "inputs": [],
     "name": "dai",
-    "outputs": [{ "internalType": "contract ERC20", "name": "", "type": "address" }],
+    "outputs": [{ "internalType": "contract IERC20Metadata", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -426,7 +426,8 @@
     "name": "getPendingVoterReward",
     "outputs": [
       { "internalType": "uint256", "name": "yTokens", "type": "uint256" },
-      { "internalType": "uint256", "name": "wells", "type": "uint256" }
+      { "internalType": "uint256", "name": "wells", "type": "uint256" },
+      { "internalType": "uint256", "name": "glmr", "type": "uint256" }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -439,10 +440,18 @@
     "type": "function"
   },
   {
+    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "name": "glmrClaimedByEpoch",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       { "internalType": "address", "name": "_xZoo", "type": "address" },
       { "internalType": "address", "name": "_jackpotA", "type": "address" },
-      { "internalType": "address", "name": "_jackpotB", "type": "address" }
+      { "internalType": "address", "name": "_jackpotB", "type": "address" },
+      { "internalType": "address payable", "name": "_wglmr", "type": "address" }
     ],
     "name": "init",
     "outputs": [],
@@ -618,9 +627,7 @@
     "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "name": "stakingPositionsValues",
     "outputs": [
-      { "internalType": "uint256", "name": "startDate", "type": "uint256" },
       { "internalType": "uint256", "name": "startEpoch", "type": "uint256" },
-      { "internalType": "uint256", "name": "endDate", "type": "uint256" },
       { "internalType": "uint256", "name": "endEpoch", "type": "uint256" },
       { "internalType": "uint256", "name": "lastRewardedEpoch", "type": "uint256" },
       { "internalType": "uint256", "name": "lastUpdateEpoch", "type": "uint256" },
@@ -628,20 +635,6 @@
       { "internalType": "uint256", "name": "lastEpochOfIncentiveReward", "type": "uint256" }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "uint256", "name": "votingPositionId", "type": "uint256" },
-      { "internalType": "address", "name": "voter", "type": "address" },
-      { "internalType": "address", "name": "beneficiary", "type": "address" },
-      { "internalType": "uint256", "name": "daiNumber", "type": "uint256" },
-      { "internalType": "uint256", "name": "newStakingPositionId", "type": "uint256" },
-      { "internalType": "uint256", "name": "newVotingPositionId", "type": "uint256" }
-    ],
-    "name": "swapPositionVotes",
-    "outputs": [{ "internalType": "uint256", "name": "createdVotingId", "type": "uint256" }],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -713,8 +706,6 @@
     "name": "votingPositionsValues",
     "outputs": [
       { "internalType": "uint256", "name": "stakingPositionId", "type": "uint256" },
-      { "internalType": "uint256", "name": "startDate", "type": "uint256" },
-      { "internalType": "uint256", "name": "endDate", "type": "uint256" },
       { "internalType": "uint256", "name": "daiInvested", "type": "uint256" },
       { "internalType": "uint256", "name": "yTokensNumber", "type": "uint256" },
       { "internalType": "uint256", "name": "zooInvested", "type": "uint256" },
@@ -732,8 +723,15 @@
   },
   {
     "inputs": [],
+    "name": "wGlmr",
+    "outputs": [{ "internalType": "address payable", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "well",
-    "outputs": [{ "internalType": "contract ERC20", "name": "", "type": "address" }],
+    "outputs": [{ "internalType": "contract IERC20Metadata", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -786,7 +784,7 @@
   {
     "inputs": [],
     "name": "zoo",
-    "outputs": [{ "internalType": "contract ERC20", "name": "", "type": "address" }],
+    "outputs": [{ "internalType": "contract IERC20Metadata", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -803,5 +801,6 @@
     "outputs": [{ "internalType": "contract ZooGovernance", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
-  }
+  },
+  { "stateMutability": "payable", "type": "receive" }
 ]

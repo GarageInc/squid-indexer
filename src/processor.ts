@@ -67,7 +67,7 @@ const ChosenWinnerT = arenaAbi.events['ChosenWinner(uint256,uint256,uint256,bool
 const ClaimedRewardFromStakingT =
   arenaAbi.events['ClaimedRewardFromStaking(uint256,address,uint256,address,uint256,uint256)']
 const ClaimedRewardFromVotingT =
-  arenaAbi.events['ClaimedRewardFromVoting(uint256,address,uint256,address,uint256,uint256,uint256)']
+  arenaAbi.events['ClaimedRewardFromVoting(uint256,address,uint256,address,uint256,uint256)']
 
 const VotedForCollectionT = vemodelAbi.events['VotedForCollection(address,address,uint256)']
 const ZooUnlockedT = vemodelAbi.events['ZooUnlocked(address,address,uint256)']

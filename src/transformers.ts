@@ -256,7 +256,6 @@ export async function saveClaimedVoting(
       beneficiary: e.beneficiary.toLowerCase(),
       stakingPositionId: BigInt(e.stakingPositionId.toString()),
       votingPositionId: BigInt(e.votingPositionId.toString()),
-      yTokenReward: BigInt(e.yTokenReward.toString()),
       daiReward: BigInt(e.daiReward.toString()),
       timestamp: new Date(block.timestamp),
       transactionHash: event.evmTxHash,

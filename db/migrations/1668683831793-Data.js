@@ -1,5 +1,5 @@
-module.exports = class Data1668371038906 {
-  name = 'Data1668371038906'
+module.exports = class Data1668683831793 {
+  name = 'Data1668683831793'
 
   async up(db) {
     await db.query(`CREATE TABLE "added_dai_to_voting" ("id" character varying NOT NULL, "current_epoch" numeric NOT NULL, "voter" text NOT NULL, "staking_position_id" numeric NOT NULL, "voting_position_id" numeric NOT NULL, "amount" numeric NOT NULL, "votes" numeric NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, CONSTRAINT "PK_9e1e399cbc921bb8d6aedb65ad5" PRIMARY KEY ("id"))`)
@@ -20,7 +20,7 @@ module.exports = class Data1668371038906 {
     await db.query(`CREATE INDEX "IDX_6c3c8d58551cae5c895a622492" ON "claimed_reward_from_staking" ("staking_position_id") `)
     await db.query(`CREATE INDEX "IDX_e9f2d0c87fed054ee4a9184d12" ON "claimed_reward_from_staking" ("beneficiary") `)
     await db.query(`CREATE INDEX "IDX_9778d0f63baf44c6718776683d" ON "claimed_reward_from_staking" ("timestamp") `)
-    await db.query(`CREATE TABLE "claimed_reward_from_voting" ("id" character varying NOT NULL, "current_epoch" numeric NOT NULL, "voter" text NOT NULL, "staking_position_id" numeric NOT NULL, "beneficiary" text NOT NULL, "y_token_reward" numeric NOT NULL, "dai_reward" numeric NOT NULL, "voting_position_id" numeric NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, CONSTRAINT "PK_95804e8f808711ad53822a99405" PRIMARY KEY ("id"))`)
+    await db.query(`CREATE TABLE "claimed_reward_from_voting" ("id" character varying NOT NULL, "current_epoch" numeric NOT NULL, "voter" text NOT NULL, "staking_position_id" numeric NOT NULL, "beneficiary" text NOT NULL, "dai_reward" numeric NOT NULL, "voting_position_id" numeric NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, CONSTRAINT "PK_95804e8f808711ad53822a99405" PRIMARY KEY ("id"))`)
     await db.query(`CREATE INDEX "IDX_91790e9f614ec1f9efc4294e98" ON "claimed_reward_from_voting" ("current_epoch") `)
     await db.query(`CREATE INDEX "IDX_87ef32f1de70d7817e6241e762" ON "claimed_reward_from_voting" ("staking_position_id") `)
     await db.query(`CREATE INDEX "IDX_8915c9d5193ba1d7d1d135f903" ON "claimed_reward_from_voting" ("beneficiary") `)

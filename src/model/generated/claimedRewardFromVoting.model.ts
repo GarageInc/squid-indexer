@@ -26,9 +26,6 @@ export class ClaimedRewardFromVoting {
   beneficiary!: string
 
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
-  yTokenReward!: bigint
-
-  @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
   daiReward!: bigint
 
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})

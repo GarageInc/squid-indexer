@@ -52,7 +52,6 @@ type ClaimedRewardFromVoting @entity {
   voter: String!
   stakingPositionId: BigInt! @index
   beneficiary: String! @index
-  yTokenReward: BigInt!
   daiReward: BigInt!
   votingPositionId: BigInt!
   timestamp: DateTime! @index

@@ -31,6 +31,17 @@
   },
   {
     "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "address", "name": "staker", "type": "address" },
+      { "indexed": false, "internalType": "address", "name": "beneficiary", "type": "address" },
+      { "indexed": false, "internalType": "uint256", "name": "zooReward", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "stakingPositionId", "type": "uint256" }
+    ],
+    "name": "ClaimedIncentiveRewardFromVoting",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
     "inputs": [{ "indexed": false, "internalType": "address", "name": "nftBattleArena", "type": "address" }],
     "name": "NftBattleArenaSet",
     "type": "event"

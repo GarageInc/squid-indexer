@@ -25,6 +25,8 @@ import {
   liquidateVoted,
   saveAddedDai,
   saveAddedZoo,
+  saveClaimedIncentiveStaking,
+  saveClaimedIncentiveVoting,
   saveClaimedStaking,
   saveClaimedVoting,
   saveCollectionVoted,
@@ -68,6 +70,11 @@ const ClaimedRewardFromStakingT =
   arenaAbi.events['ClaimedRewardFromStaking(uint256,address,uint256,address,uint256,uint256)']
 const ClaimedRewardFromVotingT =
   arenaAbi.events['ClaimedRewardFromVoting(uint256,address,uint256,address,uint256,uint256)']
+
+const ClaimedIncentiveRewardFromStakingT =
+  stakerAbi.events['ClaimedIncentiveRewardFromVoting(address,address,uint256,uint256)']
+const ClaimedIncentiveRewardFromVotingT =
+  voterAbi.events['ClaimedIncentiveRewardFromVoting(address,address,uint256,uint256)']
 
 const VotedForCollectionT = vemodelAbi.events['VotedForCollection(address,address,uint256)']
 const ZooUnlockedT = vemodelAbi.events['ZooUnlocked(address,address,uint256)']
@@ -139,6 +146,14 @@ const processor = new SubstrateBatchProcessor()
   })
   .addEvmLog(BATTLE_ARENA_MOONBEAM, {
     filter: [ClaimedRewardFromVotingT.topic],
+  })
+
+processor
+  .addEvmLog(BATTLE_VOTER_MOONBEAM, {
+    filter: [ClaimedIncentiveRewardFromVotingT.topic],
+  })
+  .addEvmLog(BATTLE_STAKER_MOONBEAM, {
+    filter: [ClaimedIncentiveRewardFromStakingT.topic],
   })
 
 processor
@@ -248,8 +263,12 @@ processor.run(database, async (ctx: any) => {
   const withdrawedZoo = []
   const pairedNft = []
   const chosenWinner = []
+
   const claimedStaking = []
   const claimedVoting = []
+
+  const claimedIncentiveStaking = []
+  const claimedIncentiveVoting = []
 
   const votedCollection = []
   const zooUnlocked = []
@@ -320,6 +339,13 @@ processor.run(database, async (ctx: any) => {
         }
         if (hasIn(item, ClaimedRewardFromVotingT.topic)) {
           claimedVoting.push(handler(ctx, block.header, item.event, ClaimedRewardFromVotingT))
+        }
+
+        if (hasIn(item, ClaimedIncentiveRewardFromStakingT.topic)) {
+          claimedIncentiveStaking.push(handler(ctx, block.header, item.event, ClaimedIncentiveRewardFromStakingT))
+        }
+        if (hasIn(item, ClaimedIncentiveRewardFromVotingT.topic)) {
+          claimedIncentiveVoting.push(handler(ctx, block.header, item.event, ClaimedIncentiveRewardFromVotingT))
         }
 
         if (hasIn(item, VotedForCollectionT.topic)) {
@@ -421,6 +447,9 @@ processor.run(database, async (ctx: any) => {
 
   await saveClaimedVoting(ctx, claimedVoting)
   await saveClaimedStaking(ctx, claimedStaking)
+
+  await saveClaimedIncentiveVoting(ctx, claimedIncentiveVoting)
+  await saveClaimedIncentiveStaking(ctx, claimedIncentiveStaking)
   /* BATTLE END */
 
   /* VE MODEL START */

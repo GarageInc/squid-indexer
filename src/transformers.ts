@@ -10,6 +10,7 @@ import {
   AddedDaiToVoting,
   AddedZooToVoting,
   ChosenWinner,
+  ClaimedIncentiveRewardFromVoting,
   ClaimedRewardFromStaking,
   ClaimedRewardFromVoting,
   CreatedStakerPosition,
@@ -31,6 +32,7 @@ import {
   XZooWithdrawed,
 } from './model'
 import * as arenaAbi from './abi/battle-arena-abi'
+import * as voterAbi from './abi/battle-voter-abi'
 import * as stakerAbi from './abi/battle-staker-abi'
 import * as vemodelAbi from './abi/ve-model-abi'
 import * as faucetAbi from './abi/battle-faucet-abi'
@@ -45,7 +47,6 @@ import {
   BATTLE_VOTER_MOONBEAM,
   JACKPOT_A_MOONBEAM,
   JACKPOT_B_MOONBEAM,
-  VE_MODEL_MOONBEAM,
   X_ZOO_MOONBEAM,
 } from './contract'
 import { BigNumber } from 'ethers'
@@ -225,11 +226,9 @@ export async function saveClaimedStaking(
 
     const transfer = new ClaimedRewardFromStaking({
       id: event.id,
-      currentEpoch: BigInt(e.currentEpoch.toString()),
       staker: e.staker.toLowerCase(),
       beneficiary: e.beneficiary.toLowerCase(),
       stakingPositionId: BigInt(e.stakingPositionId.toString()),
-      yTokenReward: BigInt(e.yTokenReward.toString()),
       daiReward: BigInt(e.daiReward.toString()),
       timestamp: new Date(block.timestamp),
       transactionHash: event.evmTxHash,
@@ -240,6 +239,32 @@ export async function saveClaimedStaking(
 
   await ctx.store.save([...transfers])
 }
+
+export async function saveClaimedIncentiveStaking(
+  ctx: Ctx,
+  transfersData: { e: stakerAbi.ClaimedIncentiveRewardFromVoting0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+) {
+  const transfers: Set<ClaimedIncentiveRewardFromVoting> = new Set()
+
+  for (const transferData of transfersData) {
+    const { e, event, block } = transferData
+
+    const transfer = new ClaimedIncentiveRewardFromVoting({
+      id: event.id,
+      staker: e.staker.toLowerCase(),
+      beneficiary: e.beneficiary.toLowerCase(),
+      stakingPositionId: BigInt(e.stakingPositionId.toString()),
+      zooReward: BigInt(e.zooReward.toString()),
+      timestamp: new Date(block.timestamp),
+      transactionHash: event.evmTxHash,
+    })
+
+    transfers.add(transfer)
+  }
+
+  await ctx.store.save([...transfers])
+}
+
 export async function saveClaimedVoting(
   ctx: Ctx,
   transfersData: { e: arenaAbi.ClaimedRewardFromVoting0Event; event: EvmLogEvent; block: SubstrateBlock }[]
@@ -251,12 +276,36 @@ export async function saveClaimedVoting(
 
     const transfer = new ClaimedRewardFromVoting({
       id: event.id,
-      currentEpoch: BigInt(e.currentEpoch.toString()),
       voter: e.voter.toLowerCase(),
       beneficiary: e.beneficiary.toLowerCase(),
       stakingPositionId: BigInt(e.stakingPositionId.toString()),
       votingPositionId: BigInt(e.votingPositionId.toString()),
       daiReward: BigInt(e.daiReward.toString()),
+      timestamp: new Date(block.timestamp),
+      transactionHash: event.evmTxHash,
+    })
+
+    transfers.add(transfer)
+  }
+
+  await ctx.store.save([...transfers])
+}
+
+export async function saveClaimedIncentiveVoting(
+  ctx: Ctx,
+  transfersData: { e: voterAbi.ClaimedIncentiveRewardFromVoting0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+) {
+  const transfers: Set<ClaimedIncentiveRewardFromVoting> = new Set()
+
+  for (const transferData of transfersData) {
+    const { e, event, block } = transferData
+
+    const transfer = new ClaimedIncentiveRewardFromVoting({
+      id: event.id,
+      voter: e.voter.toLowerCase(),
+      beneficiary: e.beneficiary.toLowerCase(),
+      votingPositionId: BigInt(e.votingPositionId.toString()),
+      zooReward: BigInt(e.zooReward.toString()),
       timestamp: new Date(block.timestamp),
       transactionHash: event.evmTxHash,
     })

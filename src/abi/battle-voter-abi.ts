@@ -7,6 +7,8 @@ export type Approval0Event = ([owner: string, approved: string, tokenId: ethers.
 
 export type ApprovalForAll0Event = ([owner: string, operator: string, approved: boolean] & {owner: string, operator: string, approved: boolean})
 
+export type ClaimedIncentiveRewardFromVoting0Event = ([voter: string, beneficiary: string, zooReward: ethers.BigNumber, votingPositionId: ethers.BigNumber] & {voter: string, beneficiary: string, zooReward: ethers.BigNumber, votingPositionId: ethers.BigNumber})
+
 export type NftBattleArenaSet0Event = ([nftBattleArena: string] & {nftBattleArena: string})
 
 export type OwnershipTransferred0Event = ([previousOwner: string, newOwner: string] & {previousOwner: string, newOwner: string})
@@ -38,6 +40,13 @@ export const events = {
     topic: abi.getEventTopic("ApprovalForAll(address,address,bool)"),
     decode(data: EvmLog): ApprovalForAll0Event {
       return decodeEvent("ApprovalForAll(address,address,bool)", data)
+    }
+  }
+  ,
+  "ClaimedIncentiveRewardFromVoting(address,address,uint256,uint256)": {
+    topic: abi.getEventTopic("ClaimedIncentiveRewardFromVoting(address,address,uint256,uint256)"),
+    decode(data: EvmLog): ClaimedIncentiveRewardFromVoting0Event {
+      return decodeEvent("ClaimedIncentiveRewardFromVoting(address,address,uint256,uint256)", data)
     }
   }
   ,
@@ -419,6 +428,37 @@ function getJsonAbi(): any {
         }
       ],
       "name": "ApprovalForAll",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "voter",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "beneficiary",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "zooReward",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "votingPositionId",
+          "type": "uint256"
+        }
+      ],
+      "name": "ClaimedIncentiveRewardFromVoting",
       "type": "event"
     },
     {

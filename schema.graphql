@@ -34,30 +34,6 @@ type ChosenWinner @entity {
   transactionHash: String!
 }
 
-type ClaimedRewardFromStaking @entity {
-  id: ID!
-  currentEpoch: BigInt!
-  staker: String!
-  stakingPositionId: BigInt! @index
-  beneficiary: String! @index
-  yTokenReward: BigInt!
-  daiReward: BigInt!
-  timestamp: DateTime! @index
-  transactionHash: String!
-}
-
-type ClaimedRewardFromVoting @entity {
-  id: ID!
-  currentEpoch: BigInt! @index
-  voter: String!
-  stakingPositionId: BigInt! @index
-  beneficiary: String! @index
-  daiReward: BigInt!
-  votingPositionId: BigInt!
-  timestamp: DateTime! @index
-  transactionHash: String!
-}
-
 type Project @entity {
   id: ID!
   address: String!
@@ -258,6 +234,42 @@ type Transfer @entity {
   tokenId: BigInt! @index
   from: String!
   to: String!
+  timestamp: DateTime! @index
+  transactionHash: String!
+}
+
+type ClaimedRewardFromStaking @entity {
+  id: ID!
+  currentEpoch: BigInt!
+  staker: String!
+  stakingPositionId: BigInt! @index
+  beneficiary: String! @index
+  yTokenReward: BigInt!
+  daiReward: BigInt!
+  timestamp: DateTime! @index
+  transactionHash: String!
+}
+
+type ClaimedRewardFromVoting @entity {
+  id: ID!
+  currentEpoch: BigInt! @index
+  voter: String!
+  stakingPositionId: BigInt! @index
+  beneficiary: String! @index
+  daiReward: BigInt!
+  votingPositionId: BigInt!
+  timestamp: DateTime! @index
+  transactionHash: String!
+}
+
+type ClaimedIncentiveRewardFromVoting @entity {
+  id: ID!
+  staker: String
+  voter: String
+  beneficiary: String! @index
+  stakingPositionId: BigInt @index
+  votingPositionId: BigInt @index
+  zooReward: BigInt!
   timestamp: DateTime! @index
   transactionHash: String!
 }

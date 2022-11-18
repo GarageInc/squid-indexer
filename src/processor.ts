@@ -100,7 +100,7 @@ interface IArenaEvmEvent {
   decode: (data: arenaAbi.EvmLog) => any
 }
 
-const FROM = 1887167
+const FROM = 2321128
 
 const database = new TypeormDatabase()
 const processor = new SubstrateBatchProcessor()

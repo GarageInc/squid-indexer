@@ -620,7 +620,7 @@
     "inputs": [{ "internalType": "uint256", "name": "sharesAmount", "type": "uint256" }],
     "name": "sharesToTokens",
     "outputs": [{ "internalType": "uint256", "name": "tokens", "type": "uint256" }],
-    "stateMutability": "view",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -662,7 +662,7 @@
     "inputs": [{ "internalType": "uint256", "name": "tokens", "type": "uint256" }],
     "name": "tokensToShares",
     "outputs": [{ "internalType": "uint256", "name": "shares", "type": "uint256" }],
-    "stateMutability": "view",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {

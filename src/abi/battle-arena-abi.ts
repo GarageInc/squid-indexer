@@ -184,6 +184,10 @@ export type RecomputeZooVotes0Function = ([votingPositionId: ethers.BigNumber] &
 
 export type RemoveStakerPosition0Function = ([stakingPositionId: ethers.BigNumber, staker: string] & {stakingPositionId: ethers.BigNumber, staker: string})
 
+export type SharesToTokens0Function = ([sharesAmount: ethers.BigNumber] & {sharesAmount: ethers.BigNumber})
+
+export type TokensToShares0Function = ([tokens: ethers.BigNumber] & {tokens: ethers.BigNumber})
+
 export type UpdateInfo0Function = ([stakingPositionId: ethers.BigNumber] & {stakingPositionId: ethers.BigNumber})
 
 export type UpdateInfoAboutStakedNumber0Function = ([collection: string] & {collection: string})
@@ -305,6 +309,20 @@ export const functions = {
   ,
   "requestRandom()": {
     sighash: abi.getSighash("requestRandom()"),
+  }
+  ,
+  "sharesToTokens(uint256)": {
+    sighash: abi.getSighash("sharesToTokens(uint256)"),
+    decode(input: string): SharesToTokens0Function {
+      return decodeFunction(input)
+    }
+  }
+  ,
+  "tokensToShares(uint256)": {
+    sighash: abi.getSighash("tokensToShares(uint256)"),
+    decode(input: string): TokensToShares0Function {
+      return decodeFunction(input)
+    }
   }
   ,
   "updateEpoch()": {
@@ -516,10 +534,6 @@ export class Contract  {
     return this.call("secondStageDuration", [])
   }
 
-  async sharesToTokens(sharesAmount: ethers.BigNumber): Promise<ethers.BigNumber> {
-    return this.call("sharesToTokens", [sharesAmount])
-  }
-
   async stakingPositionsValues(arg0: ethers.BigNumber): Promise<([startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, lastRewardedEpoch: ethers.BigNumber, lastUpdateEpoch: ethers.BigNumber, collection: string, lastEpochOfIncentiveReward: ethers.BigNumber] & {startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, lastRewardedEpoch: ethers.BigNumber, lastUpdateEpoch: ethers.BigNumber, collection: string, lastEpochOfIncentiveReward: ethers.BigNumber})> {
     return this.call("stakingPositionsValues", [arg0])
   }
@@ -534,10 +548,6 @@ export class Contract  {
 
   async tokenController(): Promise<string> {
     return this.call("tokenController", [])
-  }
-
-  async tokensToShares(tokens: ethers.BigNumber): Promise<ethers.BigNumber> {
-    return this.call("tokensToShares", [tokens])
   }
 
   async treasury(): Promise<string> {
@@ -2211,7 +2221,7 @@ function getJsonAbi(): any {
           "type": "uint256"
         }
       ],
-      "stateMutability": "view",
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -2313,7 +2323,7 @@ function getJsonAbi(): any {
           "type": "uint256"
         }
       ],
-      "stateMutability": "view",
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {

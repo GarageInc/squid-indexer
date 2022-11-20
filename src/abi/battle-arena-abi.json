@@ -263,7 +263,7 @@
   {
     "inputs": [{ "internalType": "uint256", "name": "stakingPositionId", "type": "uint256" }],
     "name": "calculateIncentiveRewardForStaker",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [{ "internalType": "uint256", "name": "reward", "type": "uint256" }],
     "stateMutability": "nonpayable",
     "type": "function"
   },

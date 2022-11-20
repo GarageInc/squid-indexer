@@ -1413,7 +1413,7 @@ function getJsonAbi(): any {
       "outputs": [
         {
           "internalType": "uint256",
-          "name": "",
+          "name": "reward",
           "type": "uint256"
         }
       ],

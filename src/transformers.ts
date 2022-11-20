@@ -227,6 +227,7 @@ export async function saveClaimedStaking(
     const transfer = new ClaimedRewardFromStaking({
       id: event.id,
       currentEpoch: BigInt(e.currentEpoch.toString()),
+      yTokenReward: BigInt(e.yTokenReward.toString()),
       staker: e.staker.toLowerCase(),
       beneficiary: e.beneficiary.toLowerCase(),
       stakingPositionId: BigInt(e.stakingPositionId.toString()),

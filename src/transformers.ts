@@ -226,6 +226,7 @@ export async function saveClaimedStaking(
 
     const transfer = new ClaimedRewardFromStaking({
       id: event.id,
+      currentEpoch: BigInt(e.currentEpoch.toString()),
       staker: e.staker.toLowerCase(),
       beneficiary: e.beneficiary.toLowerCase(),
       stakingPositionId: BigInt(e.stakingPositionId.toString()),
@@ -277,6 +278,7 @@ export async function saveClaimedVoting(
     const transfer = new ClaimedRewardFromVoting({
       id: event.id,
       voter: e.voter.toLowerCase(),
+      currentEpoch: BigInt(e.currentEpoch.toString()),
       beneficiary: e.beneficiary.toLowerCase(),
       stakingPositionId: BigInt(e.stakingPositionId.toString()),
       votingPositionId: BigInt(e.votingPositionId.toString()),

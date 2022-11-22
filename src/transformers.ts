@@ -1,10 +1,5 @@
-import {
-  BatchProcessorItem,
-  BatchContext,
-  EvmLogEvent,
-  SubstrateBatchProcessor,
-  SubstrateBlock,
-} from '@subsquid/substrate-processor'
+import { EvmLogEvent, SubstrateBlock } from '@subsquid/substrate-processor'
+import { Context } from './configs'
 import { Store } from '@subsquid/typeorm-store'
 import {
   AddedDaiToVoting,
@@ -51,12 +46,8 @@ import {
 } from './contract'
 import { BigNumber } from 'ethers'
 
-export type Item = BatchProcessorItem<typeof SubstrateBatchProcessor>
-
-export type Ctx = BatchContext<Store, Item>
-
 export async function saveAddedDai(
-  ctx: Ctx,
+  ctx: Context,
   transfersData: { e: arenaAbi.AddedDaiToVoting0Event; event: EvmLogEvent; block: SubstrateBlock }[]
 ) {
   const transfers: Set<AddedDaiToVoting> = new Set()
@@ -83,7 +74,7 @@ export async function saveAddedDai(
 }
 
 export async function saveAddedZoo(
-  ctx: Ctx,
+  ctx: Context,
   transfersData: { e: arenaAbi.AddedZooToVoting0Event; event: EvmLogEvent; block: SubstrateBlock }[]
 ) {
   const transfers: Set<AddedZooToVoting> = new Set()
@@ -110,7 +101,7 @@ export async function saveAddedZoo(
 }
 
 export async function saveWithdrawedZoo(
-  ctx: Ctx,
+  ctx: Context,
   transfersData: { e: arenaAbi.WithdrawedZooFromVoting0Event; event: EvmLogEvent; block: SubstrateBlock }[]
 ) {
   const transfers: Set<WithdrawedZooFromVoting> = new Set()
@@ -137,7 +128,7 @@ export async function saveWithdrawedZoo(
 }
 
 export async function saveWithdrawedDai(
-  ctx: Ctx,
+  ctx: Context,
   transfersData: { e: arenaAbi.WithdrawedDaiFromVoting0Event; event: EvmLogEvent; block: SubstrateBlock }[]
 ) {
   const transfers: Set<WithdrawedDaiFromVoting> = new Set()
@@ -164,7 +155,7 @@ export async function saveWithdrawedDai(
 }
 
 export async function savePaired(
-  ctx: Ctx,
+  ctx: Context,
   transfersData: { e: arenaAbi.PairedNft0Event; event: EvmLogEvent; block: SubstrateBlock }[]
 ) {
   const transfers: Set<PairedNft> = new Set()
@@ -189,7 +180,7 @@ export async function savePaired(
 }
 
 export async function saveWinner(
-  ctx: Ctx,
+  ctx: Context,
   transfersData: { e: arenaAbi.ChosenWinner0Event; event: EvmLogEvent; block: SubstrateBlock }[]
 ) {
   const transfers: Set<ChosenWinner> = new Set()
@@ -216,7 +207,7 @@ export async function saveWinner(
 }
 
 export async function saveClaimedStaking(
-  ctx: Ctx,
+  ctx: Context,
   transfersData: { e: arenaAbi.ClaimedRewardFromStaking0Event; event: EvmLogEvent; block: SubstrateBlock }[]
 ) {
   const transfers: Set<ClaimedRewardFromStaking> = new Set()
@@ -243,7 +234,7 @@ export async function saveClaimedStaking(
 }
 
 export async function saveClaimedIncentiveStaking(
-  ctx: Ctx,
+  ctx: Context,
   transfersData: { e: stakerAbi.ClaimedIncentiveRewardFromVoting0Event; event: EvmLogEvent; block: SubstrateBlock }[]
 ) {
   const transfers: Set<ClaimedIncentiveRewardFromVoting> = new Set()
@@ -268,7 +259,7 @@ export async function saveClaimedIncentiveStaking(
 }
 
 export async function saveClaimedVoting(
-  ctx: Ctx,
+  ctx: Context,
   transfersData: { e: arenaAbi.ClaimedRewardFromVoting0Event; event: EvmLogEvent; block: SubstrateBlock }[]
 ) {
   const transfers: Set<ClaimedRewardFromVoting> = new Set()
@@ -295,7 +286,7 @@ export async function saveClaimedVoting(
 }
 
 export async function saveClaimedIncentiveVoting(
-  ctx: Ctx,
+  ctx: Context,
   transfersData: { e: voterAbi.ClaimedIncentiveRewardFromVoting0Event; event: EvmLogEvent; block: SubstrateBlock }[]
 ) {
   const transfers: Set<ClaimedIncentiveRewardFromVoting> = new Set()
@@ -320,7 +311,7 @@ export async function saveClaimedIncentiveVoting(
 }
 
 export async function saveStaked(
-  ctx: Ctx,
+  ctx: Context,
   transfersData: { e: arenaAbi.CreatedStakerPosition0Event; event: EvmLogEvent; block: SubstrateBlock }[]
 ) {
   const transfers: Set<CreatedStakerPosition> = new Set()
@@ -348,7 +339,7 @@ export async function saveStaked(
 }
 
 export async function saveUnStaked(
-  ctx: Ctx,
+  ctx: Context,
   transfersData: { e: arenaAbi.RemovedStakerPosition0Event; event: EvmLogEvent; block: SubstrateBlock }[]
 ) {
   const transfers: Set<RemovedStakerPosition> = new Set()
@@ -383,7 +374,7 @@ export async function saveUnStaked(
 }
 
 export async function saveVoted(
-  ctx: Ctx,
+  ctx: Context,
   transfersData: { e: arenaAbi.CreatedVotingPosition0Event; event: EvmLogEvent; block: SubstrateBlock }[]
 ) {
   const transfers: Set<CreatedVotingPosition> = new Set()
@@ -414,7 +405,7 @@ export async function saveVoted(
 }
 
 export async function liquidateVoted(
-  ctx: Ctx,
+  ctx: Context,
   transfersData: { e: arenaAbi.LiquidatedVotingPosition0Event; event: EvmLogEvent; block: SubstrateBlock }[]
 ) {
   const transfers: Set<LiquidatedVotingPosition> = new Set()
@@ -454,7 +445,7 @@ export async function liquidateVoted(
 }
 
 export async function saveZooUnlocked(
-  ctx: Ctx,
+  ctx: Context,
   transfersData: { e: vemodelAbi.ZooUnlocked0Event; event: EvmLogEvent; block: SubstrateBlock }[]
 ) {
   const transfers: Set<ZooUnlocked> = new Set()
@@ -477,7 +468,7 @@ export async function saveZooUnlocked(
 }
 
 export async function saveCollectionVoted(
-  ctx: Ctx,
+  ctx: Context,
   transfersData: { e: vemodelAbi.VotedForCollection0Event; event: EvmLogEvent; block: SubstrateBlock }[]
 ) {
   const transfers: Set<VotedForCollection> = new Set()
@@ -501,7 +492,7 @@ export async function saveCollectionVoted(
 }
 
 export async function saveFaucetGiven(
-  ctx: Ctx,
+  ctx: Context,
   transfersData: { e: faucetAbi.tokensGiven0Event; event: EvmLogEvent; block: SubstrateBlock }[]
 ) {
   const transfers: Set<FaucetGiven> = new Set()
@@ -521,7 +512,7 @@ export async function saveFaucetGiven(
 
   await ctx.store.save([...transfers])
 }
-async function getTargetProject(ctx: Ctx, positionId: string, block: SubstrateBlock, newId: string) {
+async function getTargetProject(ctx: Context, positionId: string, block: SubstrateBlock, newId: string) {
   const staker = new stakerAbi.Contract(ctx, { height: block.height }, BATTLE_STAKER_MOONBEAM)
   const data = await staker.positions(BigNumber.from(positionId))
 
@@ -557,7 +548,7 @@ async function getTargetProject(ctx: Ctx, positionId: string, block: SubstrateBl
 }
 
 export async function saveXZooStaked(
-  ctx: Ctx,
+  ctx: Context,
   transfersData: { e: xZooAbi.ZooStaked0Event; event: EvmLogEvent; block: SubstrateBlock }[]
 ) {
   const transfers: Set<XZooStaked> = new Set()
@@ -582,7 +573,7 @@ export async function saveXZooStaked(
 }
 
 export async function saveXZooWithdrawn(
-  ctx: Ctx,
+  ctx: Context,
   transfersData: { e: xZooAbi.ZooWithdrawal0Event; event: EvmLogEvent; block: SubstrateBlock }[]
 ) {
   const transfers: Set<XZooWithdrawed> = new Set()
@@ -609,7 +600,7 @@ export async function saveXZooWithdrawn(
 const X_ZOO_CLAIMED_TOTAL_KEY = 'X_ZOO_CLAIMED_TOTAL_KEY'
 
 export async function saveXZooClaimed(
-  ctx: Ctx,
+  ctx: Context,
   transfersData: { e: xZooAbi.Claimed0Event; event: EvmLogEvent; block: SubstrateBlock }[]
 ) {
   const transfers: Set<XZooClaimed> = new Set()
@@ -641,7 +632,7 @@ export async function saveXZooClaimed(
   await ctx.store.save([...transfers])
 }
 
-const saveOrUpdateByKey = async (ctx: Ctx, key: string, amount: bigint) => {
+const saveOrUpdateByKey = async (ctx: Context, key: string, amount: bigint) => {
   const saved = await ctx.store.findOneBy(Stats, {
     id: key,
   })
@@ -666,7 +657,7 @@ const saveOrUpdateByKey = async (ctx: Ctx, key: string, amount: bigint) => {
 type JackpotType = 'A' | 'B'
 
 export async function saveJackpotsStaked(
-  ctx: Ctx,
+  ctx: Context,
   transfersData: { e: jackpotAbi.Staked0Event; event: EvmLogEvent; block: SubstrateBlock }[],
   type: JackpotType
 ) {
@@ -693,7 +684,7 @@ export async function saveJackpotsStaked(
 }
 
 export async function saveJackpotsUnStaked(
-  ctx: Ctx,
+  ctx: Context,
   transfersData: { e: jackpotAbi.Unstaked0Event; event: EvmLogEvent; block: SubstrateBlock }[],
   type: JackpotType
 ) {
@@ -733,7 +724,7 @@ export async function saveJackpotsUnStaked(
 }
 
 export async function saveJackpotsWinned(
-  ctx: Ctx,
+  ctx: Context,
   transfersData: { e: jackpotAbi.WinnerChoosed0Event; event: EvmLogEvent; block: SubstrateBlock }[],
   type: JackpotType
 ) {
@@ -761,7 +752,7 @@ export async function saveJackpotsWinned(
 const JACKPOTS_CLAIMED_TOTAL_KEY = 'JACKPOTS_CLAIMED_TOTAL'
 
 export async function saveJackpotsClaimed(
-  ctx: Ctx,
+  ctx: Context,
   transfersData: { e: jackpotAbi.Claimed0Event; event: EvmLogEvent; block: SubstrateBlock }[],
   type: JackpotType
 ) {
@@ -798,7 +789,7 @@ export async function saveJackpotsClaimed(
 }
 
 export async function saveTransfers(
-  ctx: Ctx,
+  ctx: Context,
   transfersData: { e: erc721.Transfer0Event; event: EvmLogEvent; block: SubstrateBlock }[],
   contract: string
 ) {
@@ -824,7 +815,7 @@ export async function saveTransfers(
 }
 
 export const saveVotingsTransferred = async (
-  ctx: Ctx,
+  ctx: Context,
   transfersData: { e: erc721.Transfer0Event; event: EvmLogEvent; block: SubstrateBlock }[]
 ) => {
   await saveTransfers(ctx, transfersData, BATTLE_VOTER_MOONBEAM)
@@ -846,7 +837,7 @@ export const saveVotingsTransferred = async (
 }
 
 export const saveStakingsTransferred = async (
-  ctx: Ctx,
+  ctx: Context,
   transfersData: { e: erc721.Transfer0Event; event: EvmLogEvent; block: SubstrateBlock }[]
 ) => {
   await saveTransfers(ctx, transfersData, BATTLE_STAKER_MOONBEAM)
@@ -868,7 +859,7 @@ export const saveStakingsTransferred = async (
 }
 
 export const saveXZooTransferred = async (
-  ctx: Ctx,
+  ctx: Context,
   transfersData: { e: erc721.Transfer0Event; event: EvmLogEvent; block: SubstrateBlock }[]
 ) => {
   await saveTransfers(ctx, transfersData, X_ZOO_MOONBEAM)
@@ -890,7 +881,7 @@ export const saveXZooTransferred = async (
 }
 
 export const saveJackpotTransferred = async (
-  ctx: Ctx,
+  ctx: Context,
   transfersData: { e: erc721.Transfer0Event; event: EvmLogEvent; block: SubstrateBlock }[],
   type: JackpotType
 ) => {

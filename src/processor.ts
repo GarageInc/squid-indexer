@@ -1,26 +1,13 @@
-import { lookupArchive } from '@subsquid/archive-registry'
-import { SubstrateBatchProcessor, EvmLogEvent, SubstrateBlock } from '@subsquid/substrate-processor'
-import { TypeormDatabase } from '@subsquid/typeorm-store'
+import { EvmLogEvent, SubstrateBlock } from '@subsquid/substrate-processor'
 import {
-  CHAIN_NODE,
-  BATTLE_ARENA_MOONBEAM,
   VE_MODEL_MOONBEAM,
-  FAUCET_MOONBEAM,
   X_ZOO_MOONBEAM,
   JACKPOT_A_MOONBEAM,
   JACKPOT_B_MOONBEAM,
   BATTLE_VOTER_MOONBEAM,
   BATTLE_STAKER_MOONBEAM,
 } from './contract'
-import * as arenaAbi from './abi/battle-arena-abi'
-import * as stakerAbi from './abi/battle-staker-abi'
-import * as voterAbi from './abi/battle-voter-abi'
-import * as vemodelAbi from './abi/ve-model-abi'
-import * as faucetAbi from './abi/battle-faucet-abi'
-import * as xZooAbi from './abi/xZoo'
-import * as jackpotAbi from './abi/jackpot'
 import {
-  Ctx,
   liquidateVoted,
   saveAddedDai,
   saveAddedZoo,
@@ -50,185 +37,42 @@ import {
   saveXZooWithdrawn,
   saveZooUnlocked,
 } from './transformers'
-import { CreatedVotingPosition } from './model'
-
-const CreatedStakerPositionT = arenaAbi.events['CreatedStakerPosition(uint256,address,uint256)']
-const CreatedVotingPositionT = arenaAbi.events['CreatedVotingPosition(uint256,address,uint256,uint256,uint256,uint256)']
-const RemovedStakerPositionT = arenaAbi.events['RemovedStakerPosition(uint256,address,uint256)']
-const LiquidatedVotingPositionT =
-  arenaAbi.events['LiquidatedVotingPosition(uint256,address,uint256,address,uint256,uint256,uint256)']
-const AddedZooToVotingT = arenaAbi.events['AddedZooToVoting(uint256,address,uint256,uint256,uint256,uint256)']
-const AddedDaiToVotingT = arenaAbi.events['AddedDaiToVoting(uint256,address,uint256,uint256,uint256,uint256)']
-const WithdrawedDaiFromVotingT =
-  arenaAbi.events['WithdrawedDaiFromVoting(uint256,address,uint256,address,uint256,uint256)']
-const WithdrawedZooFromVotingT =
-  arenaAbi.events['WithdrawedZooFromVoting(uint256,address,uint256,uint256,uint256,address)']
-const PairedNftT = arenaAbi.events['PairedNft(uint256,uint256,uint256,uint256)']
-const ChosenWinnerT = arenaAbi.events['ChosenWinner(uint256,uint256,uint256,bool,uint256,uint256)']
-const ClaimedRewardFromStakingT =
-  arenaAbi.events['ClaimedRewardFromStaking(uint256,address,uint256,address,uint256,uint256)']
-const ClaimedRewardFromVotingT =
-  arenaAbi.events['ClaimedRewardFromVoting(uint256,address,uint256,address,uint256,uint256)']
-
-const ClaimedIncentiveRewardFromStakingT =
-  stakerAbi.events['ClaimedIncentiveRewardFromVoting(address,address,uint256,uint256)']
-const ClaimedIncentiveRewardFromVotingT =
-  voterAbi.events['ClaimedIncentiveRewardFromVoting(address,address,uint256,uint256)']
-
-const VotedForCollectionT = vemodelAbi.events['VotedForCollection(address,address,uint256)']
-const ZooUnlockedT = vemodelAbi.events['ZooUnlocked(address,address,uint256)']
-
-const TokensGivenT = faucetAbi.events['tokensGiven(address)']
-
-const XZooStakedT = xZooAbi.events['ZooStaked(address,address,uint256,uint256)']
-const xZooWithdrawnT = xZooAbi.events['ZooWithdrawal(address,address,uint256,uint256)']
-const xZooClaimedT = xZooAbi.events['Claimed(address,address,uint256,uint256)']
-
-const JackpotStakedT = jackpotAbi.events['Staked(uint256,address,address,uint256)']
-const JackpotUnstakedT = jackpotAbi.events['Unstaked(uint256,address,address,uint256)']
-const JackpotWinnedT = jackpotAbi.events['WinnerChoosed(uint256,uint256)']
-const JackpotClaimedT = jackpotAbi.events['Claimed(uint256,uint256,address,address,uint256)']
-
-const TransferStaker = stakerAbi.events['Transfer(address,address,uint256)']
-const TransferVoter = voterAbi.events['Transfer(address,address,uint256)']
-const TransferXZoo = xZooAbi.events['Transfer(address,address,uint256)']
-const TransferJackpot = jackpotAbi.events['Transfer(address,address,uint256)']
+import { database, processor, Context } from './configs'
+import {
+  CreatedStakerPositionT,
+  RemovedStakerPositionT,
+  CreatedVotingPositionT,
+  LiquidatedVotingPositionT,
+  AddedDaiToVotingT,
+  AddedZooToVotingT,
+  WithdrawedZooFromVotingT,
+  WithdrawedDaiFromVotingT,
+  PairedNftT,
+  ChosenWinnerT,
+  ClaimedRewardFromStakingT,
+  ClaimedRewardFromVotingT,
+  ClaimedIncentiveRewardFromStakingT,
+  ClaimedIncentiveRewardFromVotingT,
+  VotedForCollectionT,
+  ZooUnlockedT,
+  TokensGivenT,
+  XZooStakedT,
+  xZooWithdrawnT,
+  xZooClaimedT,
+  JackpotStakedT,
+  JackpotUnstakedT,
+  JackpotWinnedT,
+  JackpotClaimedT,
+  TransferVoter,
+  TransferStaker,
+  TransferXZoo,
+  TransferJackpot,
+} from './events'
 
 interface IArenaEvmEvent {
   topic: string
-  decode: (data: arenaAbi.EvmLog) => any
+  decode: (data: any) => any
 }
-
-const FROM = 2343003
-
-const database = new TypeormDatabase()
-const processor = new SubstrateBatchProcessor()
-  .setBatchSize(1)
-  .setBlockRange({ from: FROM })
-  .setDataSource({
-    chain: CHAIN_NODE,
-    archive: lookupArchive('moonbeam', { release: 'FireSquid' }),
-  })
-  .setTypesBundle('moonbeam')
-  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
-    filter: [CreatedStakerPositionT.topic],
-  })
-  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
-    filter: [RemovedStakerPositionT.topic],
-  })
-  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
-    filter: [CreatedVotingPositionT.topic],
-  })
-  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
-    filter: [LiquidatedVotingPositionT.topic],
-  })
-  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
-    filter: [AddedDaiToVotingT.topic],
-  })
-  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
-    filter: [AddedZooToVotingT.topic],
-  })
-  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
-    filter: [WithdrawedDaiFromVotingT.topic],
-  })
-  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
-    filter: [WithdrawedZooFromVotingT.topic],
-  })
-  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
-    filter: [PairedNftT.topic],
-  })
-  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
-    filter: [ChosenWinnerT.topic],
-  })
-  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
-    filter: [ClaimedRewardFromStakingT.topic],
-  })
-  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
-    filter: [ClaimedRewardFromVotingT.topic],
-  })
-
-processor
-  .addEvmLog(BATTLE_VOTER_MOONBEAM, {
-    filter: [ClaimedIncentiveRewardFromVotingT.topic],
-  })
-  .addEvmLog(BATTLE_STAKER_MOONBEAM, {
-    filter: [ClaimedIncentiveRewardFromStakingT.topic],
-  })
-
-processor
-  .addEvmLog(VE_MODEL_MOONBEAM, {
-    filter: [VotedForCollectionT.topic],
-  })
-  .addEvmLog(VE_MODEL_MOONBEAM, {
-    filter: [ZooUnlockedT.topic],
-  })
-
-processor.addEvmLog(FAUCET_MOONBEAM, {
-  filter: [TokensGivenT.topic],
-})
-
-processor
-  .addEvmLog(X_ZOO_MOONBEAM, {
-    filter: [xZooClaimedT.topic],
-  })
-  .addEvmLog(X_ZOO_MOONBEAM, {
-    filter: [XZooStakedT.topic],
-  })
-  .addEvmLog(X_ZOO_MOONBEAM, {
-    filter: [xZooWithdrawnT.topic],
-  })
-
-processor
-  .addEvmLog(JACKPOT_A_MOONBEAM, {
-    filter: [JackpotClaimedT.topic],
-  })
-  .addEvmLog(JACKPOT_A_MOONBEAM, {
-    filter: [JackpotStakedT.topic],
-  })
-
-processor
-  .addEvmLog(JACKPOT_A_MOONBEAM, {
-    filter: [JackpotUnstakedT.topic],
-  })
-  .addEvmLog(JACKPOT_A_MOONBEAM, {
-    filter: [JackpotWinnedT.topic],
-  })
-
-processor
-  .addEvmLog(JACKPOT_B_MOONBEAM, {
-    filter: [JackpotClaimedT.topic],
-  })
-  .addEvmLog(JACKPOT_B_MOONBEAM, {
-    filter: [JackpotStakedT.topic],
-  })
-
-processor
-  .addEvmLog(JACKPOT_B_MOONBEAM, {
-    filter: [JackpotUnstakedT.topic],
-  })
-  .addEvmLog(JACKPOT_B_MOONBEAM, {
-    filter: [JackpotWinnedT.topic],
-  })
-
-processor
-  .addEvmLog(JACKPOT_A_MOONBEAM, {
-    filter: [TransferJackpot.topic],
-  })
-  .addEvmLog(JACKPOT_B_MOONBEAM, {
-    filter: [TransferJackpot.topic],
-  })
-
-processor
-  .addEvmLog(BATTLE_VOTER_MOONBEAM, {
-    filter: [TransferVoter.topic],
-  })
-  .addEvmLog(BATTLE_STAKER_MOONBEAM, {
-    filter: [TransferStaker.topic],
-  })
-
-processor.addEvmLog(X_ZOO_MOONBEAM, {
-  filter: [TransferXZoo.topic],
-})
 
 const hasIn = (item: any, topic: string) =>
   item.event.args && item.event.args.log && item.event.args.log.topics.indexOf(topic) !== -1
@@ -251,7 +95,7 @@ const isVeModel = (item: any) =>
 const isXZoo = (item: any) =>
   item.event?.extrinsic?.call?.args.transaction.value.action.value.toLowerCase() === X_ZOO_MOONBEAM
 
-processor.run(database, async (ctx: any) => {
+processor.run(database, async (ctx: Context) => {
   const staked = []
   const unstaked = []
   const voted = []
@@ -400,19 +244,19 @@ processor.run(database, async (ctx: any) => {
           }
         }
 
-        if (hasIn(item, TransferVoter.topic) && isVoter(item)) {
+        if (hasIn(item, TransferVoter.topic)) {
           votingsTransferred.push(handler(ctx, block.header, item.event, TransferVoter))
         }
 
-        if (hasIn(item, TransferStaker.topic) && isStaker(item)) {
+        if (hasIn(item, TransferStaker.topic)) {
           stakerTransferred.push(handler(ctx, block.header, item.event, TransferStaker))
         }
 
-        if (hasIn(item, TransferXZoo.topic) && isXZoo(item)) {
+        if (hasIn(item, TransferXZoo.topic)) {
           xZooTransferred.push(handler(ctx, block.header, item.event, TransferXZoo))
         }
 
-        if (hasIn(item, TransferJackpot.topic) && (isJackpotA(item) || isJackpotB(item))) {
+        if (hasIn(item, TransferJackpot.topic)) {
           if (isJackpotA(item)) {
             jackpotATransferred.push(handler(ctx, block.header, item.event, TransferJackpot))
           } else if (isJackpotB(item)) {
@@ -485,6 +329,6 @@ processor.run(database, async (ctx: any) => {
   /* TRANSFERS END */
 })
 
-function handler(ctx: Ctx, block: SubstrateBlock, event: EvmLogEvent, type: IArenaEvmEvent) {
+function handler(ctx: Context, block: SubstrateBlock, event: EvmLogEvent, type: IArenaEvmEvent) {
   return { e: type.decode(event.args.log), event, block: block }
 }

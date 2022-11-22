@@ -37,10 +37,7 @@ import {
   JackpotStakedT,
   JackpotUnstakedT,
   JackpotWinnedT,
-  TransferJackpot,
-  TransferVoter,
-  TransferStaker,
-  TransferXZoo,
+  TransferT,
 } from './events'
 
 const FROM = 2343003
@@ -155,23 +152,22 @@ processor
 
 processor
   .addEvmLog(JACKPOT_A_MOONBEAM, {
-    filter: [TransferJackpot.topic],
+    filter: [TransferT.topic],
   })
   .addEvmLog(JACKPOT_B_MOONBEAM, {
-    filter: [TransferJackpot.topic],
+    filter: [TransferT.topic],
   })
 
 processor
   .addEvmLog(BATTLE_VOTER_MOONBEAM, {
-    filter: [TransferVoter.topic],
+    filter: [TransferT.topic],
   })
   .addEvmLog(BATTLE_STAKER_MOONBEAM, {
-    filter: [TransferStaker.topic],
+    filter: [TransferT.topic],
   })
 
-console.log(TransferStaker.topic, TransferVoter.topic, TransferXZoo.topic, TransferJackpot.topic)
 processor.addEvmLog(X_ZOO_MOONBEAM, {
-  filter: [TransferXZoo.topic],
+  filter: [TransferT.topic],
 })
 
 export type Item = BatchProcessorItem<typeof processor>

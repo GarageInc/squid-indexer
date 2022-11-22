@@ -63,10 +63,7 @@ import {
   JackpotUnstakedT,
   JackpotWinnedT,
   JackpotClaimedT,
-  TransferVoter,
-  TransferStaker,
-  TransferXZoo,
-  TransferJackpot,
+  TransferT,
 } from './events'
 
 interface IArenaEvmEvent {
@@ -77,23 +74,17 @@ interface IArenaEvmEvent {
 const hasIn = (item: any, topic: string) =>
   item.event.args && item.event.args.log && item.event.args.log.topics.indexOf(topic) !== -1
 
-const isJackpotA = (item: any) =>
-  item.event?.extrinsic?.call?.args.transaction.value.action.value.toLowerCase() === JACKPOT_A_MOONBEAM
+const isJackpotA = (item: any) => item.event?.args?.log?.address.toLowerCase() === JACKPOT_A_MOONBEAM
 
-const isJackpotB = (item: any) =>
-  item.event?.extrinsic?.call?.args.transaction.value.action.value.toLowerCase() === JACKPOT_B_MOONBEAM
+const isJackpotB = (item: any) => item.event?.args?.log?.address.toLowerCase() === JACKPOT_B_MOONBEAM
 
-const isVoter = (item: any) =>
-  item.event?.extrinsic?.call?.args.transaction.value.action.value.toLowerCase() === BATTLE_VOTER_MOONBEAM
+const isVoter = (item: any) => item.event?.args?.log?.address.toLowerCase() === BATTLE_VOTER_MOONBEAM
 
-const isStaker = (item: any) =>
-  item.event?.extrinsic?.call?.args.transaction.value.action.value.toLowerCase() === BATTLE_STAKER_MOONBEAM
+const isStaker = (item: any) => item.event?.args?.log?.address.toLowerCase() === BATTLE_STAKER_MOONBEAM
 
-const isVeModel = (item: any) =>
-  item.event?.extrinsic?.call?.args.transaction.value.action.value.toLowerCase() === VE_MODEL_MOONBEAM
+const isVeModel = (item: any) => item.event?.args?.log?.address.toLowerCase() === VE_MODEL_MOONBEAM
 
-const isXZoo = (item: any) =>
-  item.event?.extrinsic?.call?.args.transaction.value.action.value.toLowerCase() === X_ZOO_MOONBEAM
+const isXZoo = (item: any) => item.event?.args?.log?.address.toLowerCase() === X_ZOO_MOONBEAM
 
 processor.run(database, async (ctx: Context) => {
   const staked = []
@@ -244,23 +235,22 @@ processor.run(database, async (ctx: Context) => {
           }
         }
 
-        if (hasIn(item, TransferVoter.topic)) {
-          votingsTransferred.push(handler(ctx, block.header, item.event, TransferVoter))
-        }
+        if (hasIn(item, TransferT.topic)) {
+          /*if (item.event.evmTxHash === '0x8e0633aba23fd8bc91f38b5eff8de4c82dfab3573f0a8e3945d4e992413acc80') {
+            console.log('------>')
 
-        if (hasIn(item, TransferStaker.topic)) {
-          stakerTransferred.push(handler(ctx, block.header, item.event, TransferStaker))
-        }
-
-        if (hasIn(item, TransferXZoo.topic)) {
-          xZooTransferred.push(handler(ctx, block.header, item.event, TransferXZoo))
-        }
-
-        if (hasIn(item, TransferJackpot.topic)) {
-          if (isJackpotA(item)) {
-            jackpotATransferred.push(handler(ctx, block.header, item.event, TransferJackpot))
+            console.log(item, item.event, handler(ctx, block.header, item.event, TransferT))
+          }*/
+          if (isVoter(item)) {
+            votingsTransferred.push(handler(ctx, block.header, item.event, TransferT))
+          } else if (isStaker(item)) {
+            stakerTransferred.push(handler(ctx, block.header, item.event, TransferT))
+          } else if (isXZoo(item)) {
+            xZooTransferred.push(handler(ctx, block.header, item.event, TransferT))
+          } else if (isJackpotA(item)) {
+            jackpotATransferred.push(handler(ctx, block.header, item.event, TransferT))
           } else if (isJackpotB(item)) {
-            jackpotBTransferred.push(handler(ctx, block.header, item.event, TransferJackpot))
+            jackpotBTransferred.push(handler(ctx, block.header, item.event, TransferT))
           }
         }
       }

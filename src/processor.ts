@@ -99,7 +99,7 @@ interface IArenaEvmEvent {
   decode: (data: arenaAbi.EvmLog) => any
 }
 
-const FROM = 2334803
+const FROM = 2343003
 
 const database = new TypeormDatabase()
 const processor = new SubstrateBatchProcessor()
@@ -400,19 +400,19 @@ processor.run(database, async (ctx: any) => {
           }
         }
 
-        if (hasIn(item, TransferVoter.topic)) {
+        if (hasIn(item, TransferVoter.topic) && isVoter(item)) {
           votingsTransferred.push(handler(ctx, block.header, item.event, TransferVoter))
         }
 
-        if (hasIn(item, TransferStaker.topic)) {
+        if (hasIn(item, TransferStaker.topic) && isStaker(item)) {
           stakerTransferred.push(handler(ctx, block.header, item.event, TransferStaker))
         }
 
-        if (hasIn(item, TransferXZoo.topic)) {
+        if (hasIn(item, TransferXZoo.topic) && isXZoo(item)) {
           xZooTransferred.push(handler(ctx, block.header, item.event, TransferXZoo))
         }
 
-        if (hasIn(item, TransferJackpot.topic)) {
+        if (hasIn(item, TransferJackpot.topic) && (isJackpotA(item) || isJackpotB(item))) {
           if (isJackpotA(item)) {
             jackpotATransferred.push(handler(ctx, block.header, item.event, TransferJackpot))
           } else if (isJackpotB(item)) {

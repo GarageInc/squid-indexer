@@ -19,7 +19,6 @@ import * as vemodelAbi from './abi/ve-model-abi'
 import * as faucetAbi from './abi/battle-faucet-abi'
 import * as xZooAbi from './abi/xZoo'
 import * as jackpotAbi from './abi/jackpot'
-import * as erc721Abi from './abi/erc721'
 import {
   Ctx,
   liquidateVoted,
@@ -93,7 +92,7 @@ const JackpotClaimedT = jackpotAbi.events['Claimed(uint256,uint256,address,addre
 const TransferStaker = stakerAbi.events['Transfer(address,address,uint256)']
 const TransferVoter = voterAbi.events['Transfer(address,address,uint256)']
 const TransferXZoo = xZooAbi.events['Transfer(address,address,uint256)']
-const TransferJackpot = vemodelAbi.events['Transfer(address,address,uint256)']
+const TransferJackpot = jackpotAbi.events['Transfer(address,address,uint256)']
 
 interface IArenaEvmEvent {
   topic: string
@@ -372,7 +371,7 @@ processor.run(database, async (ctx: any) => {
         if (hasIn(item, JackpotStakedT.topic)) {
           if (isJackpotA(item)) {
             jackpotAStaked.push(handler(ctx, block.header, item.event, JackpotStakedT))
-          } else {
+          } else if (isJackpotB(item)) {
             jackpotBStaked.push(handler(ctx, block.header, item.event, JackpotStakedT))
           }
         }
@@ -380,7 +379,7 @@ processor.run(database, async (ctx: any) => {
         if (hasIn(item, JackpotUnstakedT.topic)) {
           if (isJackpotA(item)) {
             jackpotAUnstaked.push(handler(ctx, block.header, item.event, JackpotUnstakedT))
-          } else {
+          } else if (isJackpotB(item)) {
             jackpotBUnstaked.push(handler(ctx, block.header, item.event, JackpotUnstakedT))
           }
         }
@@ -388,7 +387,7 @@ processor.run(database, async (ctx: any) => {
         if (hasIn(item, JackpotWinnedT.topic)) {
           if (isJackpotA(item)) {
             jackpotAWinned.push(handler(ctx, block.header, item.event, JackpotWinnedT))
-          } else {
+          } else if (isJackpotB(item)) {
             jackpotBWinned.push(handler(ctx, block.header, item.event, JackpotWinnedT))
           }
         }
@@ -396,7 +395,7 @@ processor.run(database, async (ctx: any) => {
         if (hasIn(item, JackpotClaimedT.topic)) {
           if (isJackpotA(item)) {
             jackpotAClaimed.push(handler(ctx, block.header, item.event, JackpotClaimedT))
-          } else {
+          } else if (isJackpotB(item)) {
             jackpotBClaimed.push(handler(ctx, block.header, item.event, JackpotClaimedT))
           }
         }

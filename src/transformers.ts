@@ -459,6 +459,7 @@ export async function saveZooUnlocked(
       collection: e.collection.toLowerCase(),
       voter: e.voter.toLowerCase(),
       timestamp: new Date(block.timestamp),
+      transactionHash: event.evmTxHash,
     })
 
     transfers.add(transfer)

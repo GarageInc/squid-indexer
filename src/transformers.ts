@@ -831,10 +831,10 @@ export const saveVotingsTransferred = async (
     if (target) {
       target.voter = t.e.to.toLowerCase()
       list.push(target)
+
+      await ctx.store.save(target)
     }
   }
-
-  await ctx.store.save(list)
 }
 
 export const saveStakingsTransferred = async (
@@ -853,10 +853,10 @@ export const saveStakingsTransferred = async (
     if (target) {
       target.staker = t.e.to.toLowerCase()
       list.push(target)
+
+      await ctx.store.save(target)
     }
   }
-
-  await ctx.store.save(list)
 }
 
 export const saveXZooTransferred = async (
@@ -875,10 +875,10 @@ export const saveXZooTransferred = async (
     if (target) {
       target.staker = t.e.to.toLowerCase()
       list.push(target)
+
+      await ctx.store.save(target)
     }
   }
-
-  await ctx.store.save(list)
 }
 
 export const saveJackpotTransferred = async (
@@ -902,8 +902,8 @@ export const saveJackpotTransferred = async (
     if (target) {
       target.beneficiary = t.e.to.toLowerCase()
       list.push(target)
+
+      await ctx.store.save(target)
     }
   }
-
-  await ctx.store.save(list)
 }

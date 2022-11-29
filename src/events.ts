@@ -32,7 +32,7 @@ export const ClaimedIncentiveRewardFromVotingT =
   voterAbi.events['ClaimedIncentiveRewardFromVoting(address,address,uint256,uint256)']
 
 export const VotedForCollectionT = vemodelAbi.events['VotedForCollection(address,address,uint256)']
-export const ZooUnlockedT = vemodelAbi.events['ZooUnlocked(address,address,uint256)']
+export const ZooUnlockedT = vemodelAbi.events['ZooUnlocked(address,address,uint256,uint256)']
 
 export const TokensGivenT = faucetAbi.events['tokensGiven(address)']
 

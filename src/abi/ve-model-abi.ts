@@ -19,7 +19,7 @@ export type Transfer0Event = ([from: string, to: string, tokenId: ethers.BigNumb
 
 export type VotedForCollection0Event = ([collection: string, voter: string, amount: ethers.BigNumber] & {collection: string, voter: string, amount: ethers.BigNumber})
 
-export type ZooUnlocked0Event = ([voter: string, collection: string, amount: ethers.BigNumber] & {voter: string, collection: string, amount: ethers.BigNumber})
+export type ZooUnlocked0Event = ([voter: string, collection: string, amount: ethers.BigNumber, positionId: ethers.BigNumber] & {voter: string, collection: string, amount: ethers.BigNumber, positionId: ethers.BigNumber})
 
 export interface EvmLog {
   data: string;
@@ -91,10 +91,10 @@ export const events = {
     }
   }
   ,
-  "ZooUnlocked(address,address,uint256)": {
-    topic: abi.getEventTopic("ZooUnlocked(address,address,uint256)"),
+  "ZooUnlocked(address,address,uint256,uint256)": {
+    topic: abi.getEventTopic("ZooUnlocked(address,address,uint256,uint256)"),
     decode(data: EvmLog): ZooUnlocked0Event {
-      return decodeEvent("ZooUnlocked(address,address,uint256)", data)
+      return decodeEvent("ZooUnlocked(address,address,uint256,uint256)", data)
     }
   }
   ,
@@ -614,6 +614,12 @@ function getJsonAbi(): any {
           "indexed": false,
           "internalType": "uint256",
           "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "positionId",
           "type": "uint256"
         }
       ],

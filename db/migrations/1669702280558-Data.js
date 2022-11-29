@@ -1,5 +1,5 @@
-module.exports = class Data1669150107980 {
-  name = 'Data1669150107980'
+module.exports = class Data1669702280558 {
+  name = 'Data1669702280558'
 
   async up(db) {
     await db.query(`CREATE TABLE "added_dai_to_voting" ("id" character varying NOT NULL, "current_epoch" numeric NOT NULL, "voter" text NOT NULL, "staking_position_id" numeric NOT NULL, "voting_position_id" numeric NOT NULL, "amount" numeric NOT NULL, "votes" numeric NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, CONSTRAINT "PK_9e1e399cbc921bb8d6aedb65ad5" PRIMARY KEY ("id"))`)
@@ -46,7 +46,7 @@ module.exports = class Data1669150107980 {
     await db.query(`CREATE INDEX "IDX_3ebc383c15edfe4a1d224479cf" ON "withdrawed_dai_from_voting" ("timestamp") `)
     await db.query(`CREATE TABLE "withdrawed_zoo_from_voting" ("id" character varying NOT NULL, "current_epoch" numeric NOT NULL, "voter" text NOT NULL, "staking_position_id" numeric NOT NULL, "voting_position_id" numeric NOT NULL, "zoo_number" numeric NOT NULL, "beneficiary" text, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, CONSTRAINT "PK_3ac6fcf3a0553b9b24646185c0a" PRIMARY KEY ("id"))`)
     await db.query(`CREATE INDEX "IDX_f0887b6edab2a801198af6d2fd" ON "withdrawed_zoo_from_voting" ("timestamp") `)
-    await db.query(`CREATE TABLE "zoo_unlocked" ("id" character varying NOT NULL, "voter" text NOT NULL, "collection" text NOT NULL, "amount" numeric NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, CONSTRAINT "PK_eda43cf58859d082d6b31f8a9a8" PRIMARY KEY ("id"))`)
+    await db.query(`CREATE TABLE "zoo_unlocked" ("id" character varying NOT NULL, "voter" text NOT NULL, "position_id" numeric NOT NULL, "collection" text NOT NULL, "amount" numeric NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, CONSTRAINT "PK_eda43cf58859d082d6b31f8a9a8" PRIMARY KEY ("id"))`)
     await db.query(`CREATE INDEX "IDX_7b6865d92abac4680497656e83" ON "zoo_unlocked" ("voter") `)
     await db.query(`CREATE INDEX "IDX_eaf8c3ec4fbc78a00b5fd7d9f2" ON "zoo_unlocked" ("collection") `)
     await db.query(`CREATE INDEX "IDX_62188a98f1178909cf199f51fc" ON "zoo_unlocked" ("timestamp") `)

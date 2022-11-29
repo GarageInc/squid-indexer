@@ -127,6 +127,7 @@ type WithdrawedZooFromVoting @entity {
 type ZooUnlocked @entity {
   id: ID!
   voter: String! @index
+  positionId: BigInt!
   collection: String! @index
   amount: BigInt!
   timestamp: DateTime! @index

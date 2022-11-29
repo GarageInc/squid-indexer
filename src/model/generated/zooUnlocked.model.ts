@@ -14,6 +14,9 @@ export class ZooUnlocked {
   @Column_("text", {nullable: false})
   voter!: string
 
+  @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
+  positionId!: bigint
+
   @Index_()
   @Column_("text", {nullable: false})
   collection!: string

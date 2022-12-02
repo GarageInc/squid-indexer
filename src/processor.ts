@@ -1,4 +1,5 @@
 import { EvmLogEvent, SubstrateBlock } from '@subsquid/substrate-processor'
+import * as erc20 from './abi/erc20'
 import {
   VE_MODEL_MOONBEAM,
   X_ZOO_MOONBEAM,
@@ -6,6 +7,8 @@ import {
   JACKPOT_B_MOONBEAM,
   BATTLE_VOTER_MOONBEAM,
   BATTLE_STAKER_MOONBEAM,
+  WELL_MOONBEAM,
+  WGLMR_MOONBEAM,
 } from './contract'
 import {
   liquidateVoted,
@@ -36,6 +39,7 @@ import {
   saveXZooTransferred,
   saveXZooWithdrawn,
   saveZooUnlocked,
+  saveTransfersERC20,
 } from './transformers'
 import { database, processor, Context } from './configs'
 import {
@@ -63,7 +67,8 @@ import {
   JackpotUnstakedT,
   JackpotWinnedT,
   JackpotClaimedT,
-  TransferT,
+  TransferERC721T,
+  TransferErc20T,
 } from './events'
 
 interface IArenaEvmEvent {
@@ -85,6 +90,13 @@ const isStaker = (item: any) => item.event?.args?.log?.address.toLowerCase() ===
 const isVeModel = (item: any) => item.event?.args?.log?.address.toLowerCase() === VE_MODEL_MOONBEAM
 
 const isXZoo = (item: any) => item.event?.args?.log?.address.toLowerCase() === X_ZOO_MOONBEAM
+
+const isErc20InBattles = (item: { e: erc20.Transfer0Event; event: EvmLogEvent; block: SubstrateBlock }) =>
+  item.e.from.toLowerCase() === BATTLE_STAKER_MOONBEAM || item.e.from.toLowerCase() === BATTLE_VOTER_MOONBEAM
+
+const isWellInBattles = (item: any) => item.event?.args?.log?.address.toLowerCase() === WELL_MOONBEAM
+
+const isWGlmrInBattles = (item: any) => item.event?.args?.log?.address.toLowerCase() === WGLMR_MOONBEAM
 
 processor.run(database, async (ctx: Context) => {
   const staked = []
@@ -128,6 +140,12 @@ processor.run(database, async (ctx: Context) => {
   const jackpotATransferred = []
   const jackpotBTransferred = []
   const xZooTransferred = []
+
+  const wglrmTransferredVoting = []
+  const wellTransferredVoting = []
+
+  const wglrmTransferredStaking = []
+  const wellTransferredStaking = []
 
   for (const block of ctx.blocks) {
     for (const item of block.items) {
@@ -235,22 +253,42 @@ processor.run(database, async (ctx: Context) => {
           }
         }
 
-        if (hasIn(item, TransferT.topic)) {
+        if (hasIn(item, TransferERC721T.topic)) {
           /*if (item.event.evmTxHash === '0x8e0633aba23fd8bc91f38b5eff8de4c82dfab3573f0a8e3945d4e992413acc80') {
             console.log('------>')
 
             console.log(item, item.event, handler(ctx, block.header, item.event, TransferT))
           }*/
           if (isVoter(item)) {
-            votingsTransferred.push(handler(ctx, block.header, item.event, TransferT))
+            votingsTransferred.push(handler(ctx, block.header, item.event, TransferERC721T))
           } else if (isStaker(item)) {
-            stakerTransferred.push(handler(ctx, block.header, item.event, TransferT))
+            stakerTransferred.push(handler(ctx, block.header, item.event, TransferERC721T))
           } else if (isXZoo(item)) {
-            xZooTransferred.push(handler(ctx, block.header, item.event, TransferT))
+            xZooTransferred.push(handler(ctx, block.header, item.event, TransferERC721T))
           } else if (isJackpotA(item)) {
-            jackpotATransferred.push(handler(ctx, block.header, item.event, TransferT))
+            jackpotATransferred.push(handler(ctx, block.header, item.event, TransferERC721T))
           } else if (isJackpotB(item)) {
-            jackpotBTransferred.push(handler(ctx, block.header, item.event, TransferT))
+            jackpotBTransferred.push(handler(ctx, block.header, item.event, TransferERC721T))
+          }
+        }
+
+        if (hasIn(item, TransferErc20T.topic)) {
+          const event = handler(ctx, block.header, item.event, TransferErc20T)
+
+          if (isErc20InBattles(event)) {
+            if (isWellInBattles(item)) {
+              if (isVoter(item)) {
+                wellTransferredVoting.push(event)
+              } else if (isStaker(item)) {
+                wellTransferredStaking.push(event)
+              }
+            } else if (isWGlmrInBattles(item)) {
+              if (isVoter(item)) {
+                wglrmTransferredVoting.push(event)
+              } else if (isStaker(item)) {
+                wglrmTransferredStaking.push(event)
+              }
+            }
           }
         }
       }
@@ -308,7 +346,7 @@ processor.run(database, async (ctx: Context) => {
   await saveXZooWithdrawn(ctx, xZooWithdrawnEvents)
   /* JACKPOTS END */
 
-  /* TRANSFERS START */
+  /* TRANSFERS ERC721 START */
   await saveVotingsTransferred(ctx, votingsTransferred)
   await saveStakingsTransferred(ctx, stakerTransferred)
 
@@ -316,7 +354,15 @@ processor.run(database, async (ctx: Context) => {
   await saveJackpotTransferred(ctx, jackpotBTransferred, 'B')
 
   await saveXZooTransferred(ctx, xZooTransferred)
-  /* TRANSFERS END */
+  /* TRANSFERS ERC721 END */
+
+  /* TRANSFERS ERC20 START */
+  await saveTransfersERC20(ctx, wellTransferredStaking, BATTLE_STAKER_MOONBEAM)
+  await saveTransfersERC20(ctx, wglrmTransferredStaking, BATTLE_STAKER_MOONBEAM)
+
+  await saveTransfersERC20(ctx, wellTransferredVoting, BATTLE_VOTER_MOONBEAM)
+  await saveTransfersERC20(ctx, wglrmTransferredVoting, BATTLE_VOTER_MOONBEAM)
+  /* TRANSFERS ERC20 END */
 })
 
 function handler(ctx: Context, block: SubstrateBlock, event: EvmLogEvent, type: IArenaEvmEvent) {

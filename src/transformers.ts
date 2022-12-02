@@ -19,7 +19,8 @@ import {
   Project,
   RemovedStakerPosition,
   Stats,
-  Transfer,
+  TransferErc20,
+  TransferErc721,
   WithdrawedDaiFromVoting,
   WithdrawedZooFromVoting,
   XZooClaimed,
@@ -33,6 +34,7 @@ import * as vemodelAbi from './abi/ve-model-abi'
 import * as faucetAbi from './abi/battle-faucet-abi'
 import * as xZooAbi from './abi/xZoo'
 import * as erc721 from './abi/erc721'
+import * as erc20 from './abi/erc20'
 import * as jackpotAbi from './abi/jackpot'
 import { ZooUnlocked } from './model/generated/zooUnlocked.model'
 import { VotedForCollection } from './model/generated/votedForCollection.model'
@@ -790,17 +792,17 @@ export async function saveJackpotsClaimed(
   await ctx.store.save([...transfers])
 }
 
-export async function saveTransfers(
+export async function saveTransfersERC721(
   ctx: Context,
   transfersData: { e: erc721.Transfer0Event; event: EvmLogEvent; block: SubstrateBlock }[],
   contract: string
 ) {
-  const transfers: Set<Transfer> = new Set()
+  const transfers: Set<TransferErc721> = new Set()
 
   for (const transferData of transfersData) {
     const { e, event, block } = transferData
 
-    const transfer = new Transfer({
+    const transfer = new TransferErc721({
       id: event.id,
       contract: contract.toLowerCase(),
       from: e.from.toLowerCase(),
@@ -816,11 +818,37 @@ export async function saveTransfers(
   await ctx.store.save([...transfers])
 }
 
+export async function saveTransfersERC20(
+  ctx: Context,
+  transfersData: { e: erc20.Transfer0Event; event: EvmLogEvent; block: SubstrateBlock }[],
+  contract: string
+) {
+  const transfers: Set<TransferErc20> = new Set()
+
+  for (const transferData of transfersData) {
+    const { e, event, block } = transferData
+
+    const transfer = new TransferErc20({
+      id: event.id,
+      contract: contract.toLowerCase(),
+      from: e.from.toLowerCase(),
+      to: e.to.toLowerCase(),
+      amount: BigInt(e.value.toString()),
+      timestamp: new Date(block.timestamp),
+      transactionHash: event.evmTxHash,
+    })
+
+    transfers.add(transfer)
+  }
+
+  await ctx.store.save([...transfers])
+}
+
 export const saveVotingsTransferred = async (
   ctx: Context,
   transfersData: { e: erc721.Transfer0Event; event: EvmLogEvent; block: SubstrateBlock }[]
 ) => {
-  await saveTransfers(ctx, transfersData, BATTLE_VOTER_MOONBEAM)
+  await saveTransfersERC721(ctx, transfersData, BATTLE_VOTER_MOONBEAM)
 
   const list: CreatedVotingPosition[] = []
   for (const t of transfersData) {
@@ -842,7 +870,7 @@ export const saveStakingsTransferred = async (
   ctx: Context,
   transfersData: { e: erc721.Transfer0Event; event: EvmLogEvent; block: SubstrateBlock }[]
 ) => {
-  await saveTransfers(ctx, transfersData, BATTLE_STAKER_MOONBEAM)
+  await saveTransfersERC721(ctx, transfersData, BATTLE_STAKER_MOONBEAM)
 
   const list: CreatedStakerPosition[] = []
   for (const t of transfersData) {
@@ -864,7 +892,7 @@ export const saveXZooTransferred = async (
   ctx: Context,
   transfersData: { e: erc721.Transfer0Event; event: EvmLogEvent; block: SubstrateBlock }[]
 ) => {
-  await saveTransfers(ctx, transfersData, X_ZOO_MOONBEAM)
+  await saveTransfersERC721(ctx, transfersData, X_ZOO_MOONBEAM)
 
   const list: XZooStaked[] = []
   for (const t of transfersData) {
@@ -889,7 +917,7 @@ export const saveJackpotTransferred = async (
 ) => {
   const isA = type === 'A'
 
-  await saveTransfers(ctx, transfersData, isA ? JACKPOT_A_MOONBEAM : JACKPOT_B_MOONBEAM)
+  await saveTransfersERC721(ctx, transfersData, isA ? JACKPOT_A_MOONBEAM : JACKPOT_B_MOONBEAM)
 
   const list: JackpotStaked[] = []
 

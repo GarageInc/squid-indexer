@@ -6,6 +6,7 @@ import * as faucetAbi from './abi/battle-faucet-abi'
 import * as xZooAbi from './abi/xZoo'
 import * as jackpotAbi from './abi/jackpot'
 import * as erc721 from './abi/erc721'
+import * as erc20 from './abi/erc20'
 
 export const CreatedStakerPositionT = arenaAbi.events['CreatedStakerPosition(uint256,address,uint256)']
 export const CreatedVotingPositionT =
@@ -45,4 +46,6 @@ export const JackpotUnstakedT = jackpotAbi.events['Unstaked(uint256,address,addr
 export const JackpotWinnedT = jackpotAbi.events['WinnerChoosed(uint256,uint256)']
 export const JackpotClaimedT = jackpotAbi.events['Claimed(uint256,uint256,address,address,uint256)']
 
-export const TransferT = erc721.events['Transfer(address,address,uint256)']
+export const TransferERC721T = erc721.events['Transfer(address,address,uint256)']
+
+export const TransferErc20T = erc20.events['Transfer(address,address,uint256)']

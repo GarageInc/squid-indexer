@@ -11,6 +11,8 @@ import {
   X_ZOO_MOONBEAM,
   JACKPOT_A_MOONBEAM,
   JACKPOT_B_MOONBEAM,
+  WGLMR_MOONBEAM,
+  WELL_MOONBEAM,
 } from './contract'
 import {
   CreatedStakerPositionT,
@@ -37,7 +39,8 @@ import {
   JackpotStakedT,
   JackpotUnstakedT,
   JackpotWinnedT,
-  TransferT,
+  TransferERC721T,
+  TransferErc20T,
 } from './events'
 
 const FROM = 2399637
@@ -152,23 +155,31 @@ processor
 
 processor
   .addEvmLog(JACKPOT_A_MOONBEAM, {
-    filter: [TransferT.topic],
+    filter: [TransferERC721T.topic],
   })
   .addEvmLog(JACKPOT_B_MOONBEAM, {
-    filter: [TransferT.topic],
+    filter: [TransferERC721T.topic],
   })
 
 processor
   .addEvmLog(BATTLE_VOTER_MOONBEAM, {
-    filter: [TransferT.topic],
+    filter: [TransferERC721T.topic],
   })
   .addEvmLog(BATTLE_STAKER_MOONBEAM, {
-    filter: [TransferT.topic],
+    filter: [TransferERC721T.topic],
   })
 
 processor.addEvmLog(X_ZOO_MOONBEAM, {
-  filter: [TransferT.topic],
+  filter: [TransferERC721T.topic],
 })
+
+processor
+  .addEvmLog(WGLMR_MOONBEAM, {
+    filter: [TransferErc20T.topic],
+  })
+  .addEvmLog(WELL_MOONBEAM, {
+    filter: [TransferErc20T.topic],
+  })
 
 export type Item = BatchProcessorItem<typeof processor>
 export type Context = BatchContext<Store, Item>

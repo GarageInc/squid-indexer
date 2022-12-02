@@ -2,8 +2,8 @@ import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, I
 import * as marshal from "./marshal"
 
 @Entity_()
-export class AddedZooToVoting {
-    constructor(props?: Partial<AddedZooToVoting>) {
+export class TransferErc20 {
+    constructor(props?: Partial<TransferErc20>) {
         Object.assign(this, props)
     }
 
@@ -11,25 +11,19 @@ export class AddedZooToVoting {
     id!: string
 
     @Index_()
-    @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
-    currentEpoch!: bigint
-
     @Column_("text", {nullable: false})
-    voter!: string
+    contract!: string
 
     @Index_()
-    @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
-    stakingPositionId!: bigint
+    @Column_("text", {nullable: false})
+    from!: string
 
     @Index_()
-    @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
-    votingPositionId!: bigint
+    @Column_("text", {nullable: false})
+    to!: string
 
     @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
     amount!: bigint
-
-    @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
-    votes!: bigint
 
     @Index_()
     @Column_("timestamp with time zone", {nullable: false})

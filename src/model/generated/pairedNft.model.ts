@@ -3,32 +3,32 @@ import * as marshal from "./marshal"
 
 @Entity_()
 export class PairedNft {
-  constructor(props?: Partial<PairedNft>) {
-    Object.assign(this, props)
-  }
+    constructor(props?: Partial<PairedNft>) {
+        Object.assign(this, props)
+    }
 
-  @PrimaryColumn_()
-  id!: string
+    @PrimaryColumn_()
+    id!: string
 
-  @Index_()
-  @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
-  currentEpoch!: bigint
+    @Index_()
+    @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
+    currentEpoch!: bigint
 
-  @Index_()
-  @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
-  fighter1!: bigint
+    @Index_()
+    @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
+    fighter1!: bigint
 
-  @Index_()
-  @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
-  fighter2!: bigint
+    @Index_()
+    @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
+    fighter2!: bigint
 
-  @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
-  pairIndex!: bigint
+    @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
+    pairIndex!: bigint
 
-  @Index_()
-  @Column_("timestamp with time zone", {nullable: false})
-  timestamp!: Date
+    @Index_()
+    @Column_("timestamp with time zone", {nullable: false})
+    timestamp!: Date
 
-  @Column_("text", {nullable: false})
-  transactionHash!: string
+    @Column_("text", {nullable: false})
+    transactionHash!: string
 }

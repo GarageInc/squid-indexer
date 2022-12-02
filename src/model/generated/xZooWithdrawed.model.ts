@@ -3,31 +3,31 @@ import * as marshal from "./marshal"
 
 @Entity_()
 export class XZooWithdrawed {
-  constructor(props?: Partial<XZooWithdrawed>) {
-    Object.assign(this, props)
-  }
+    constructor(props?: Partial<XZooWithdrawed>) {
+        Object.assign(this, props)
+    }
 
-  @PrimaryColumn_()
-  id!: string
+    @PrimaryColumn_()
+    id!: string
 
-  @Index_()
-  @Column_("text", {nullable: false})
-  staker!: string
+    @Index_()
+    @Column_("text", {nullable: false})
+    staker!: string
 
-  @Index_()
-  @Column_("text", {nullable: false})
-  beneficiary!: string
+    @Index_()
+    @Column_("text", {nullable: false})
+    beneficiary!: string
 
-  @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
-  amount!: bigint
+    @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
+    amount!: bigint
 
-  @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
-  positionId!: bigint
+    @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
+    positionId!: bigint
 
-  @Index_()
-  @Column_("timestamp with time zone", {nullable: false})
-  timestamp!: Date
+    @Index_()
+    @Column_("timestamp with time zone", {nullable: false})
+    timestamp!: Date
 
-  @Column_("text", {nullable: false})
-  transactionHash!: string
+    @Column_("text", {nullable: false})
+    transactionHash!: string
 }

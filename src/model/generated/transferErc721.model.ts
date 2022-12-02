@@ -2,18 +2,32 @@ import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, I
 import * as marshal from "./marshal"
 
 @Entity_()
-export class Stats {
-    constructor(props?: Partial<Stats>) {
+export class TransferErc721 {
+    constructor(props?: Partial<TransferErc721>) {
         Object.assign(this, props)
     }
 
     @PrimaryColumn_()
     id!: string
 
+    @Index_()
+    @Column_("text", {nullable: false})
+    contract!: string
+
+    @Index_()
     @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
-    value!: bigint
+    tokenId!: bigint
+
+    @Column_("text", {nullable: false})
+    from!: string
+
+    @Column_("text", {nullable: false})
+    to!: string
 
     @Index_()
     @Column_("timestamp with time zone", {nullable: false})
-    updatedAt!: Date
+    timestamp!: Date
+
+    @Column_("text", {nullable: false})
+    transactionHash!: string
 }

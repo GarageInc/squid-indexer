@@ -49,3 +49,6 @@ export const JackpotClaimedT = jackpotAbi.events['Claimed(uint256,uint256,addres
 export const TransferERC721T = erc721.events['Transfer(address,address,uint256)']
 
 export const TransferErc20T = erc20.events['Transfer(address,address,uint256)']
+
+console.log('TransferErc20T', TransferErc20T.topic)
+console.log('TransferERC721T', TransferERC721T.topic)

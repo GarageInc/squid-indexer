@@ -173,6 +173,7 @@ processor.addEvmLog(X_ZOO_MOONBEAM, {
   filter: [TransferERC721T.topic],
 })
 
+/*
 processor
   .addEvmLog(WGLMR_MOONBEAM, {
     filter: [TransferErc20T.topic],
@@ -180,6 +181,7 @@ processor
   .addEvmLog(WELL_MOONBEAM, {
     filter: [TransferErc20T.topic],
   })
+*/
 
 export type Item = BatchProcessorItem<typeof processor>
 export type Context = BatchContext<Store, Item>

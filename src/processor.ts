@@ -141,12 +141,13 @@ processor.run(database, async (ctx: Context) => {
   const jackpotBTransferred = []
   const xZooTransferred = []
 
+  /*
   const wglrmTransferredVoting = []
   const wellTransferredVoting = []
 
   const wglrmTransferredStaking = []
   const wellTransferredStaking = []
-
+*/
   for (const block of ctx.blocks) {
     for (const item of block.items) {
       if (item.name === 'EVM.Log') {
@@ -272,17 +273,25 @@ processor.run(database, async (ctx: Context) => {
           }
         }
 
+        /*
         if (hasIn(item, TransferErc20T.topic)) {
-          const event = handler(ctx, block.header, item.event, TransferErc20T)
+          if (isVoter(item) || isStaker(item)) {
+            console.log('--->')
+            console.log(item)
 
-          if (isErc20InBattles(event)) {
             if (isWellInBattles(item)) {
+              console.log('<<----')
+              const event = handler(ctx, block.header, item.event, TransferErc20T)
+              console.log(event, item)
               if (isVoter(item)) {
                 wellTransferredVoting.push(event)
               } else if (isStaker(item)) {
                 wellTransferredStaking.push(event)
               }
             } else if (isWGlmrInBattles(item)) {
+              console.log('<<----')
+              const event = handler(ctx, block.header, item.event, TransferErc20T)
+              console.log(event, item)
               if (isVoter(item)) {
                 wglrmTransferredVoting.push(event)
               } else if (isStaker(item)) {
@@ -290,7 +299,7 @@ processor.run(database, async (ctx: Context) => {
               }
             }
           }
-        }
+        }*/
       }
     }
   }
@@ -357,11 +366,11 @@ processor.run(database, async (ctx: Context) => {
   /* TRANSFERS ERC721 END */
 
   /* TRANSFERS ERC20 START */
-  await saveTransfersERC20(ctx, wellTransferredStaking, BATTLE_STAKER_MOONBEAM)
+  /*await saveTransfersERC20(ctx, wellTransferredStaking, BATTLE_STAKER_MOONBEAM)
   await saveTransfersERC20(ctx, wglrmTransferredStaking, BATTLE_STAKER_MOONBEAM)
 
   await saveTransfersERC20(ctx, wellTransferredVoting, BATTLE_VOTER_MOONBEAM)
-  await saveTransfersERC20(ctx, wglrmTransferredVoting, BATTLE_VOTER_MOONBEAM)
+  await saveTransfersERC20(ctx, wglrmTransferredVoting, BATTLE_VOTER_MOONBEAM)*/
   /* TRANSFERS ERC20 END */
 })
 

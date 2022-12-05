@@ -9,6 +9,7 @@ import {
   BATTLE_STAKER_MOONBEAM,
   WELL_MOONBEAM,
   WGLMR_MOONBEAM,
+  BATTLE_ARENA_MOONBEAM,
 } from './contract'
 import {
   liquidateVoted,
@@ -98,9 +99,9 @@ const isErc20InBattles = (item: {
   block: SubstrateBlock
 }) => item.e.from.toLowerCase() === BATTLE_STAKER_MOONBEAM || item.e.from.toLowerCase() === BATTLE_VOTER_MOONBEAM
 
-const isWellInBattles = (item: any) => item.event?.args?.log?.address.toLowerCase() === WELL_MOONBEAM
+const isWell = (item: any) => item.event?.args?.log?.address.toLowerCase() === WELL_MOONBEAM
 
-const isWGlmrInBattles = (item: any) => item.event?.args?.log?.address.toLowerCase() === WGLMR_MOONBEAM
+const isWGlmr = (item: any) => item.event?.args?.log?.address.toLowerCase() === WGLMR_MOONBEAM
 
 processor.run(database, async (ctx: Context) => {
   const staked = []
@@ -145,11 +146,8 @@ processor.run(database, async (ctx: Context) => {
   const jackpotBTransferred = []
   const xZooTransferred = []
 
-  const wglrmTransferredVoting = []
-  const wellTransferredVoting = []
-
-  const wglrmTransferredStaking = []
-  const wellTransferredStaking = []
+  const wglrmTransferred = []
+  const wellTransferred = []
 
   for (const block of ctx.blocks) {
     for (const item of block.items) {
@@ -277,28 +275,17 @@ processor.run(database, async (ctx: Context) => {
         }
 
         if (hasIn(item, TransferErc20T.topic)) {
-          if (isVoter(item) || isStaker(item)) {
-            console.log('--->')
-            console.log(item)
+          if (isWell(item)) {
+            const event = handler(ctx, block.header, item.event, TransferErc20T)
+            if (isFromArena(event)) {
+              wellTransferred.push(event)
+            }
+          }
 
-            if (isWellInBattles(item)) {
-              console.log('<<----')
-              const event = handler(ctx, block.header, item.event, TransferErc20T)
-              console.log(event, item)
-              if (isVoter(item)) {
-                wellTransferredVoting.push(event)
-              } else if (isStaker(item)) {
-                wellTransferredStaking.push(event)
-              }
-            } else if (isWGlmrInBattles(item)) {
-              console.log('<<----')
-              const event = handler(ctx, block.header, item.event, TransferErc20T)
-              console.log(event, item)
-              if (isVoter(item)) {
-                wglrmTransferredVoting.push(event)
-              } else if (isStaker(item)) {
-                wglrmTransferredStaking.push(event)
-              }
+          if (isWGlmr(item)) {
+            const event = handler(ctx, block.header, item.event, TransferErc20T)
+            if (isFromArena(event)) {
+              wglrmTransferred.push(event)
             }
           }
         }
@@ -368,14 +355,46 @@ processor.run(database, async (ctx: Context) => {
   /* TRANSFERS ERC721 END */
 
   /* TRANSFERS ERC20 START */
-  /*await saveTransfersERC20(ctx, wellTransferredStaking, BATTLE_STAKER_MOONBEAM)
-  await saveTransfersERC20(ctx, wglrmTransferredStaking, BATTLE_STAKER_MOONBEAM)
-
-  await saveTransfersERC20(ctx, wellTransferredVoting, BATTLE_VOTER_MOONBEAM)
-  await saveTransfersERC20(ctx, wglrmTransferredVoting, BATTLE_VOTER_MOONBEAM)*/
+  await saveTransfersERC20(ctx, wellTransferred, BATTLE_ARENA_MOONBEAM)
+  await saveTransfersERC20(ctx, wglrmTransferred, BATTLE_ARENA_MOONBEAM)
   /* TRANSFERS ERC20 END */
 })
 
 function handler<T>(ctx: Context, block: SubstrateBlock, event: EvmLogEvent, log: LogEvent<T>) {
   return { e: log.decode(event.args.log), event, block: block }
+}
+
+function isFromArena(event: {
+  e: [from: string, to: string, value: import('ethers').BigNumber] & {
+    from: string
+    to: string
+    value: import('ethers').BigNumber
+  }
+  event: EvmLogEvent
+  block: SubstrateBlock
+}) {
+  return event.e.from.toLowerCase() === BATTLE_ARENA_MOONBEAM
+}
+function isFromVoter(event: {
+  e: [from: string, to: string, value: import('ethers').BigNumber] & {
+    from: string
+    to: string
+    value: import('ethers').BigNumber
+  }
+  event: EvmLogEvent
+  block: SubstrateBlock
+}) {
+  return event.e.from.toLowerCase() === BATTLE_VOTER_MOONBEAM
+}
+
+function isFromStaker(event: {
+  e: [from: string, to: string, value: import('ethers').BigNumber] & {
+    from: string
+    to: string
+    value: import('ethers').BigNumber
+  }
+  event: EvmLogEvent
+  block: SubstrateBlock
+}) {
+  return event.e.from.toLowerCase() === BATTLE_STAKER_MOONBEAM
 }

@@ -43,12 +43,11 @@ import {
   TransferErc20T,
 } from './events'
 
-const FROM = 2445613 // 2399637
-const TO = 2445615
+const FROM = 2399637
 
 export const database = new TypeormDatabase()
 export const processor = new SubstrateBatchProcessor()
-  .setBlockRange({ from: FROM, to: TO })
+  .setBlockRange({ from: FROM })
   .setDataSource({
     chain: CHAIN_NODE,
     archive: lookupArchive('moonbeam', { release: 'FireSquid' }),

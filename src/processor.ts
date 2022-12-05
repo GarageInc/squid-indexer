@@ -355,8 +355,8 @@ processor.run(database, async (ctx: Context) => {
   /* TRANSFERS ERC721 END */
 
   /* TRANSFERS ERC20 START */
-  await saveTransfersERC20(ctx, wellTransferred, BATTLE_ARENA_MOONBEAM)
-  await saveTransfersERC20(ctx, wglrmTransferred, BATTLE_ARENA_MOONBEAM)
+  await saveTransfersERC20(ctx, wellTransferred, WELL_MOONBEAM)
+  await saveTransfersERC20(ctx, wglrmTransferred, WGLMR_MOONBEAM)
   /* TRANSFERS ERC20 END */
 })
 

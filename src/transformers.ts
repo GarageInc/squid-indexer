@@ -27,15 +27,15 @@ import {
   XZooStaked,
   XZooWithdrawed,
 } from './model'
-import * as arenaAbi from './abi/battle-arena-abi'
-import * as voterAbi from './abi/battle-voter-abi'
-import * as stakerAbi from './abi/battle-staker-abi'
-import * as vemodelAbi from './abi/ve-model-abi'
-import * as faucetAbi from './abi/battle-faucet-abi'
-import * as xZooAbi from './abi/xZoo'
-import * as erc721 from './abi/erc721'
-import * as erc20 from './abi/erc20'
-import * as jackpotAbi from './abi/jackpot'
+import * as arenaAbi from './abi/generated/battle-arena-abi'
+import * as voterAbi from './abi/generated/battle-voter-abi'
+import * as stakerAbi from './abi/generated/battle-staker-abi'
+import * as vemodelAbi from './abi/generated/ve-model-abi'
+import * as faucetAbi from './abi/generated/battle-faucet-abi'
+import * as xZooAbi from './abi/generated/xZoo'
+import * as erc721 from './abi/generated/erc721'
+import * as erc20 from './abi/generated/erc20'
+import * as jackpotAbi from './abi/generated/jackpot'
 import { ZooUnlocked } from './model/generated/zooUnlocked.model'
 import { VotedForCollection } from './model/generated/votedForCollection.model'
 import { FaucetGiven } from './model/generated/faucetGiven.model'
@@ -48,9 +48,13 @@ import {
 } from './contract'
 import { BigNumber } from 'ethers'
 
-export async function saveAddedDai(
+export async function saveAddedDai<T>(
   ctx: Context,
-  transfersData: { e: arenaAbi.AddedDaiToVoting0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+  transfersData: {
+    e: ReturnType<typeof arenaAbi.events.AddedDaiToVoting.decode>
+    event: EvmLogEvent
+    block: SubstrateBlock
+  }[]
 ) {
   const transfers: Set<AddedDaiToVoting> = new Set()
 
@@ -77,7 +81,11 @@ export async function saveAddedDai(
 
 export async function saveAddedZoo(
   ctx: Context,
-  transfersData: { e: arenaAbi.AddedZooToVoting0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+  transfersData: {
+    e: ReturnType<typeof arenaAbi.events.AddedZooToVoting.decode>
+    event: EvmLogEvent
+    block: SubstrateBlock
+  }[]
 ) {
   const transfers: Set<AddedZooToVoting> = new Set()
 
@@ -104,7 +112,11 @@ export async function saveAddedZoo(
 
 export async function saveWithdrawedZoo(
   ctx: Context,
-  transfersData: { e: arenaAbi.WithdrawedZooFromVoting0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+  transfersData: {
+    e: ReturnType<typeof arenaAbi.events.WithdrawedZooFromVoting.decode>
+    event: EvmLogEvent
+    block: SubstrateBlock
+  }[]
 ) {
   const transfers: Set<WithdrawedZooFromVoting> = new Set()
 
@@ -131,7 +143,11 @@ export async function saveWithdrawedZoo(
 
 export async function saveWithdrawedDai(
   ctx: Context,
-  transfersData: { e: arenaAbi.WithdrawedDaiFromVoting0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+  transfersData: {
+    e: ReturnType<typeof arenaAbi.events.WithdrawedDaiFromVoting.decode>
+    event: EvmLogEvent
+    block: SubstrateBlock
+  }[]
 ) {
   const transfers: Set<WithdrawedDaiFromVoting> = new Set()
 
@@ -158,7 +174,7 @@ export async function saveWithdrawedDai(
 
 export async function savePaired(
   ctx: Context,
-  transfersData: { e: arenaAbi.PairedNft0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+  transfersData: { e: ReturnType<typeof arenaAbi.events.PairedNft.decode>; event: EvmLogEvent; block: SubstrateBlock }[]
 ) {
   const transfers: Set<PairedNft> = new Set()
 
@@ -183,7 +199,11 @@ export async function savePaired(
 
 export async function saveWinner(
   ctx: Context,
-  transfersData: { e: arenaAbi.ChosenWinner0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+  transfersData: {
+    e: ReturnType<typeof arenaAbi.events.ChosenWinner.decode>
+    event: EvmLogEvent
+    block: SubstrateBlock
+  }[]
 ) {
   const transfers: Set<ChosenWinner> = new Set()
 
@@ -210,7 +230,11 @@ export async function saveWinner(
 
 export async function saveClaimedStaking(
   ctx: Context,
-  transfersData: { e: arenaAbi.ClaimedRewardFromStaking0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+  transfersData: {
+    e: ReturnType<typeof arenaAbi.events.ClaimedRewardFromStaking.decode>
+    event: EvmLogEvent
+    block: SubstrateBlock
+  }[]
 ) {
   const transfers: Set<ClaimedRewardFromStaking> = new Set()
 
@@ -237,7 +261,11 @@ export async function saveClaimedStaking(
 
 export async function saveClaimedIncentiveStaking(
   ctx: Context,
-  transfersData: { e: stakerAbi.ClaimedIncentiveRewardFromVoting0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+  transfersData: {
+    e: ReturnType<typeof stakerAbi.events.ClaimedIncentiveRewardFromVoting.decode>
+    event: EvmLogEvent
+    block: SubstrateBlock
+  }[]
 ) {
   const transfers: Set<ClaimedIncentiveRewardFromVoting> = new Set()
 
@@ -262,7 +290,11 @@ export async function saveClaimedIncentiveStaking(
 
 export async function saveClaimedVoting(
   ctx: Context,
-  transfersData: { e: arenaAbi.ClaimedRewardFromVoting0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+  transfersData: {
+    e: ReturnType<typeof arenaAbi.events.ClaimedRewardFromVoting.decode>
+    event: EvmLogEvent
+    block: SubstrateBlock
+  }[]
 ) {
   const transfers: Set<ClaimedRewardFromVoting> = new Set()
 
@@ -289,7 +321,11 @@ export async function saveClaimedVoting(
 
 export async function saveClaimedIncentiveVoting(
   ctx: Context,
-  transfersData: { e: voterAbi.ClaimedIncentiveRewardFromVoting0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+  transfersData: {
+    e: ReturnType<typeof voterAbi.events.ClaimedIncentiveRewardFromVoting.decode>
+    event: EvmLogEvent
+    block: SubstrateBlock
+  }[]
 ) {
   const transfers: Set<ClaimedIncentiveRewardFromVoting> = new Set()
 
@@ -314,7 +350,11 @@ export async function saveClaimedIncentiveVoting(
 
 export async function saveStaked(
   ctx: Context,
-  transfersData: { e: arenaAbi.CreatedStakerPosition0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+  transfersData: {
+    e: ReturnType<typeof arenaAbi.events.CreatedStakerPosition.decode>
+    event: EvmLogEvent
+    block: SubstrateBlock
+  }[]
 ) {
   const transfers: Set<CreatedStakerPosition> = new Set()
 
@@ -342,7 +382,11 @@ export async function saveStaked(
 
 export async function saveUnStaked(
   ctx: Context,
-  transfersData: { e: arenaAbi.RemovedStakerPosition0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+  transfersData: {
+    e: ReturnType<typeof arenaAbi.events.RemovedStakerPosition.decode>
+    event: EvmLogEvent
+    block: SubstrateBlock
+  }[]
 ) {
   const transfers: Set<RemovedStakerPosition> = new Set()
   const created: Set<CreatedStakerPosition> = new Set()
@@ -377,7 +421,11 @@ export async function saveUnStaked(
 
 export async function saveVoted(
   ctx: Context,
-  transfersData: { e: arenaAbi.CreatedVotingPosition0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+  transfersData: {
+    e: ReturnType<typeof arenaAbi.events.CreatedVotingPosition.decode>
+    event: EvmLogEvent
+    block: SubstrateBlock
+  }[]
 ) {
   const transfers: Set<CreatedVotingPosition> = new Set()
 
@@ -408,7 +456,11 @@ export async function saveVoted(
 
 export async function liquidateVoted(
   ctx: Context,
-  transfersData: { e: arenaAbi.LiquidatedVotingPosition0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+  transfersData: {
+    e: ReturnType<typeof arenaAbi.events.LiquidatedVotingPosition.decode>
+    event: EvmLogEvent
+    block: SubstrateBlock
+  }[]
 ) {
   const transfers: Set<LiquidatedVotingPosition> = new Set()
   const voted: Set<CreatedVotingPosition> = new Set()
@@ -448,7 +500,11 @@ export async function liquidateVoted(
 
 export async function saveZooUnlocked(
   ctx: Context,
-  transfersData: { e: vemodelAbi.ZooUnlocked0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+  transfersData: {
+    e: ReturnType<typeof vemodelAbi.events.ZooUnlocked.decode>
+    event: EvmLogEvent
+    block: SubstrateBlock
+  }[]
 ) {
   const transfers: Set<ZooUnlocked> = new Set()
 
@@ -473,7 +529,11 @@ export async function saveZooUnlocked(
 
 export async function saveCollectionVoted(
   ctx: Context,
-  transfersData: { e: vemodelAbi.VotedForCollection0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+  transfersData: {
+    e: ReturnType<typeof vemodelAbi.events.VotedForCollection.decode>
+    event: EvmLogEvent
+    block: SubstrateBlock
+  }[]
 ) {
   const transfers: Set<VotedForCollection> = new Set()
 
@@ -497,7 +557,11 @@ export async function saveCollectionVoted(
 
 export async function saveFaucetGiven(
   ctx: Context,
-  transfersData: { e: faucetAbi.tokensGiven0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+  transfersData: {
+    e: ReturnType<typeof faucetAbi.events.tokensGiven.decode>
+    event: EvmLogEvent
+    block: SubstrateBlock
+  }[]
 ) {
   const transfers: Set<FaucetGiven> = new Set()
 
@@ -553,7 +617,7 @@ async function getTargetProject(ctx: Context, positionId: string, block: Substra
 
 export async function saveXZooStaked(
   ctx: Context,
-  transfersData: { e: xZooAbi.ZooStaked0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+  transfersData: { e: ReturnType<typeof xZooAbi.events.ZooStaked.decode>; event: EvmLogEvent; block: SubstrateBlock }[]
 ) {
   const transfers: Set<XZooStaked> = new Set()
 
@@ -578,7 +642,11 @@ export async function saveXZooStaked(
 
 export async function saveXZooWithdrawn(
   ctx: Context,
-  transfersData: { e: xZooAbi.ZooWithdrawal0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+  transfersData: {
+    e: ReturnType<typeof xZooAbi.events.ZooWithdrawal.decode>
+    event: EvmLogEvent
+    block: SubstrateBlock
+  }[]
 ) {
   const transfers: Set<XZooWithdrawed> = new Set()
 
@@ -605,7 +673,7 @@ const X_ZOO_CLAIMED_TOTAL_KEY = 'X_ZOO_CLAIMED_TOTAL_KEY'
 
 export async function saveXZooClaimed(
   ctx: Context,
-  transfersData: { e: xZooAbi.Claimed0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+  transfersData: { e: ReturnType<typeof xZooAbi.events.Claimed.decode>; event: EvmLogEvent; block: SubstrateBlock }[]
 ) {
   const transfers: Set<XZooClaimed> = new Set()
 
@@ -662,7 +730,11 @@ type JackpotType = 'A' | 'B'
 
 export async function saveJackpotsStaked(
   ctx: Context,
-  transfersData: { e: jackpotAbi.Staked0Event; event: EvmLogEvent; block: SubstrateBlock }[],
+  transfersData: {
+    e: ReturnType<typeof jackpotAbi.events.Staked.decode>
+    event: EvmLogEvent
+    block: SubstrateBlock
+  }[],
   type: JackpotType
 ) {
   const transfers: Set<JackpotStaked> = new Set()
@@ -689,7 +761,11 @@ export async function saveJackpotsStaked(
 
 export async function saveJackpotsUnStaked(
   ctx: Context,
-  transfersData: { e: jackpotAbi.Unstaked0Event; event: EvmLogEvent; block: SubstrateBlock }[],
+  transfersData: {
+    e: ReturnType<typeof jackpotAbi.events.Unstaked.decode>
+    event: EvmLogEvent
+    block: SubstrateBlock
+  }[],
   type: JackpotType
 ) {
   const transfers: Set<JackpotUnstaked> = new Set()
@@ -729,7 +805,11 @@ export async function saveJackpotsUnStaked(
 
 export async function saveJackpotsWinned(
   ctx: Context,
-  transfersData: { e: jackpotAbi.WinnerChoosed0Event; event: EvmLogEvent; block: SubstrateBlock }[],
+  transfersData: {
+    e: ReturnType<typeof jackpotAbi.events.WinnerChoosed.decode>
+    event: EvmLogEvent
+    block: SubstrateBlock
+  }[],
   type: JackpotType
 ) {
   const transfers: Set<JackpotWinnerChoosed> = new Set()
@@ -757,7 +837,11 @@ const JACKPOTS_CLAIMED_TOTAL_KEY = 'JACKPOTS_CLAIMED_TOTAL'
 
 export async function saveJackpotsClaimed(
   ctx: Context,
-  transfersData: { e: jackpotAbi.Claimed0Event; event: EvmLogEvent; block: SubstrateBlock }[],
+  transfersData: {
+    e: ReturnType<typeof jackpotAbi.events.Claimed.decode>
+    event: EvmLogEvent
+    block: SubstrateBlock
+  }[],
   type: JackpotType
 ) {
   const transfers: Set<JackpotClaimed> = new Set()
@@ -794,7 +878,7 @@ export async function saveJackpotsClaimed(
 
 export async function saveTransfersERC721(
   ctx: Context,
-  transfersData: { e: erc721.Transfer0Event; event: EvmLogEvent; block: SubstrateBlock }[],
+  transfersData: { e: ReturnType<typeof erc721.events.Transfer.decode>; event: EvmLogEvent; block: SubstrateBlock }[],
   contract: string
 ) {
   const transfers: Set<TransferErc721> = new Set()
@@ -820,7 +904,7 @@ export async function saveTransfersERC721(
 
 export async function saveTransfersERC20(
   ctx: Context,
-  transfersData: { e: erc20.Transfer0Event; event: EvmLogEvent; block: SubstrateBlock }[],
+  transfersData: { e: ReturnType<typeof erc20.events.Transfer.decode>; event: EvmLogEvent; block: SubstrateBlock }[],
   contract: string
 ) {
   const transfers: Set<TransferErc20> = new Set()
@@ -846,7 +930,7 @@ export async function saveTransfersERC20(
 
 export const saveVotingsTransferred = async (
   ctx: Context,
-  transfersData: { e: erc721.Transfer0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+  transfersData: { e: ReturnType<typeof erc721.events.Transfer.decode>; event: EvmLogEvent; block: SubstrateBlock }[]
 ) => {
   await saveTransfersERC721(ctx, transfersData, BATTLE_VOTER_MOONBEAM)
 
@@ -868,7 +952,7 @@ export const saveVotingsTransferred = async (
 
 export const saveStakingsTransferred = async (
   ctx: Context,
-  transfersData: { e: erc721.Transfer0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+  transfersData: { e: ReturnType<typeof erc721.events.Transfer.decode>; event: EvmLogEvent; block: SubstrateBlock }[]
 ) => {
   await saveTransfersERC721(ctx, transfersData, BATTLE_STAKER_MOONBEAM)
 
@@ -890,7 +974,7 @@ export const saveStakingsTransferred = async (
 
 export const saveXZooTransferred = async (
   ctx: Context,
-  transfersData: { e: erc721.Transfer0Event; event: EvmLogEvent; block: SubstrateBlock }[]
+  transfersData: { e: ReturnType<typeof erc721.events.Transfer.decode>; event: EvmLogEvent; block: SubstrateBlock }[]
 ) => {
   await saveTransfersERC721(ctx, transfersData, X_ZOO_MOONBEAM)
 
@@ -912,7 +996,7 @@ export const saveXZooTransferred = async (
 
 export const saveJackpotTransferred = async (
   ctx: Context,
-  transfersData: { e: erc721.Transfer0Event; event: EvmLogEvent; block: SubstrateBlock }[],
+  transfersData: { e: ReturnType<typeof erc721.events.Transfer.decode>; event: EvmLogEvent; block: SubstrateBlock }[],
   type: JackpotType
 ) => {
   const isA = type === 'A'

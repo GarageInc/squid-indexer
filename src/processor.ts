@@ -1,5 +1,5 @@
 import { EvmLogEvent, SubstrateBlock } from '@subsquid/substrate-processor'
-import * as erc20 from './abi/erc20'
+import * as erc20 from './abi/generated/erc20'
 import {
   VE_MODEL_MOONBEAM,
   X_ZOO_MOONBEAM,
@@ -70,6 +70,7 @@ import {
   TransferERC721T,
   TransferErc20T,
 } from './events'
+import { LogEvent } from './abi/generated/abi.support'
 
 interface IArenaEvmEvent {
   topic: string
@@ -91,8 +92,11 @@ const isVeModel = (item: any) => item.event?.args?.log?.address.toLowerCase() ==
 
 const isXZoo = (item: any) => item.event?.args?.log?.address.toLowerCase() === X_ZOO_MOONBEAM
 
-const isErc20InBattles = (item: { e: erc20.Transfer0Event; event: EvmLogEvent; block: SubstrateBlock }) =>
-  item.e.from.toLowerCase() === BATTLE_STAKER_MOONBEAM || item.e.from.toLowerCase() === BATTLE_VOTER_MOONBEAM
+const isErc20InBattles = (item: {
+  e: ReturnType<typeof erc20.events.Transfer.decode>
+  event: EvmLogEvent
+  block: SubstrateBlock
+}) => item.e.from.toLowerCase() === BATTLE_STAKER_MOONBEAM || item.e.from.toLowerCase() === BATTLE_VOTER_MOONBEAM
 
 const isWellInBattles = (item: any) => item.event?.args?.log?.address.toLowerCase() === WELL_MOONBEAM
 
@@ -141,13 +145,12 @@ processor.run(database, async (ctx: Context) => {
   const jackpotBTransferred = []
   const xZooTransferred = []
 
-  /*
   const wglrmTransferredVoting = []
   const wellTransferredVoting = []
 
   const wglrmTransferredStaking = []
   const wellTransferredStaking = []
-*/
+
   for (const block of ctx.blocks) {
     for (const item of block.items) {
       if (item.name === 'EVM.Log') {
@@ -156,7 +159,7 @@ processor.run(database, async (ctx: Context) => {
           block.items.map((i: any) => i)
         )*/
         if (hasIn(item, CreatedStakerPositionT.topic)) {
-          staked.push(handler(ctx, block.header, item.event, CreatedStakerPositionT))
+          staked.push(handler<any>(ctx, block.header, item.event, CreatedStakerPositionT))
         }
         if (hasIn(item, RemovedStakerPositionT.topic)) {
           unstaked.push(handler(ctx, block.header, item.event, RemovedStakerPositionT))
@@ -273,7 +276,6 @@ processor.run(database, async (ctx: Context) => {
           }
         }
 
-        /*
         if (hasIn(item, TransferErc20T.topic)) {
           if (isVoter(item) || isStaker(item)) {
             console.log('--->')
@@ -299,7 +301,7 @@ processor.run(database, async (ctx: Context) => {
               }
             }
           }
-        }*/
+        }
       }
     }
   }
@@ -374,6 +376,6 @@ processor.run(database, async (ctx: Context) => {
   /* TRANSFERS ERC20 END */
 })
 
-function handler(ctx: Context, block: SubstrateBlock, event: EvmLogEvent, type: IArenaEvmEvent) {
-  return { e: type.decode(event.args.log), event, block: block }
+function handler<T>(ctx: Context, block: SubstrateBlock, event: EvmLogEvent, log: LogEvent<T>) {
+  return { e: log.decode(event.args.log), event, block: block }
 }

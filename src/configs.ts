@@ -43,11 +43,12 @@ import {
   TransferErc20T,
 } from './events'
 
-const FROM = 2399637
+const FROM = 2445613 // 2399637
+const TO = 2445615
 
 export const database = new TypeormDatabase()
 export const processor = new SubstrateBatchProcessor()
-  .setBlockRange({ from: FROM })
+  .setBlockRange({ from: FROM, to: TO })
   .setDataSource({
     chain: CHAIN_NODE,
     archive: lookupArchive('moonbeam', { release: 'FireSquid' }),
@@ -173,7 +174,6 @@ processor.addEvmLog(X_ZOO_MOONBEAM, {
   filter: [TransferERC721T.topic],
 })
 
-/*
 processor
   .addEvmLog(WGLMR_MOONBEAM, {
     filter: [TransferErc20T.topic],
@@ -181,7 +181,6 @@ processor
   .addEvmLog(WELL_MOONBEAM, {
     filter: [TransferErc20T.topic],
   })
-*/
 
 export type Item = BatchProcessorItem<typeof processor>
 export type Context = BatchContext<Store, Item>

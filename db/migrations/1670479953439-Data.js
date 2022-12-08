@@ -1,5 +1,5 @@
-module.exports = class Data1670276605250 {
-    name = 'Data1670276605250'
+module.exports = class Data1670479953439 {
+    name = 'Data1670479953439'
 
     async up(db) {
         await db.query(`CREATE TABLE "added_dai_to_voting" ("id" character varying NOT NULL, "current_epoch" numeric NOT NULL, "voter" text NOT NULL, "staking_position_id" numeric NOT NULL, "voting_position_id" numeric NOT NULL, "amount" numeric NOT NULL, "votes" numeric NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, CONSTRAINT "PK_9e1e399cbc921bb8d6aedb65ad5" PRIMARY KEY ("id"))`)
@@ -50,7 +50,7 @@ module.exports = class Data1670276605250 {
         await db.query(`CREATE INDEX "IDX_7b6865d92abac4680497656e83" ON "zoo_unlocked" ("voter") `)
         await db.query(`CREATE INDEX "IDX_eaf8c3ec4fbc78a00b5fd7d9f2" ON "zoo_unlocked" ("collection") `)
         await db.query(`CREATE INDEX "IDX_62188a98f1178909cf199f51fc" ON "zoo_unlocked" ("timestamp") `)
-        await db.query(`CREATE TABLE "voted_for_collection" ("id" character varying NOT NULL, "collection" text NOT NULL, "voter" text NOT NULL, "amount" numeric NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, CONSTRAINT "PK_386ebfe558440c3b23d2dd3b510" PRIMARY KEY ("id"))`)
+        await db.query(`CREATE TABLE "voted_for_collection" ("id" character varying NOT NULL, "collection" text NOT NULL, "voter" text NOT NULL, "amount" numeric NOT NULL, "position_id" numeric NOT NULL, "is_deleted" boolean NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, CONSTRAINT "PK_386ebfe558440c3b23d2dd3b510" PRIMARY KEY ("id"))`)
         await db.query(`CREATE INDEX "IDX_35215a48422d5b703de955b5c6" ON "voted_for_collection" ("collection") `)
         await db.query(`CREATE INDEX "IDX_782d4291eb75cb052b0dd7fbbc" ON "voted_for_collection" ("voter") `)
         await db.query(`CREATE INDEX "IDX_6fadafe2f25940675c6559eff0" ON "voted_for_collection" ("timestamp") `)

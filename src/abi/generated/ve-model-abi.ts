@@ -26,8 +26,8 @@ export const events = {
     Transfer: new LogEvent<([from: string, to: string, tokenId: ethers.BigNumber] & {from: string, to: string, tokenId: ethers.BigNumber})>(
         abi, '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
     ),
-    VotedForCollection: new LogEvent<([collection: string, voter: string, amount: ethers.BigNumber] & {collection: string, voter: string, amount: ethers.BigNumber})>(
-        abi, '0x89cd7995fe45ebee38fb26f557212eae693b49007beb7a2491b3b10453febdd7'
+    VotedForCollection: new LogEvent<([collection: string, voter: string, amount: ethers.BigNumber, positionId: ethers.BigNumber] & {collection: string, voter: string, amount: ethers.BigNumber, positionId: ethers.BigNumber})>(
+        abi, '0x93ecaff21ddd137f6b58113bb9d38c2deceb49a6de98ca29260756dc5322c5e5'
     ),
     ZooUnlocked: new LogEvent<([voter: string, collection: string, amount: ethers.BigNumber, positionId: ethers.BigNumber] & {voter: string, collection: string, amount: ethers.BigNumber, positionId: ethers.BigNumber})>(
         abi, '0xa57ac690002d7c98f53310bae856dfdcfc2e886783284ffb51df5da0cfd5b636'

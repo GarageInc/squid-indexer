@@ -507,6 +507,7 @@ export async function saveZooUnlocked(
   }[]
 ) {
   const transfers: Set<ZooUnlocked> = new Set()
+  const voted: Set<VotedForCollection> = new Set()
 
   for (const transferData of transfersData) {
     const { e, event, block } = transferData
@@ -522,9 +523,20 @@ export async function saveZooUnlocked(
     })
 
     transfers.add(transfer)
+
+    const item = await ctx.store.findOneBy(VotedForCollection, {
+      positionId: BigInt(e.positionId.toString()),
+      collection: e.collection.toLowerCase(),
+    })
+
+    if (item) {
+      item.isDeleted = true
+      voted.add(item)
+    }
   }
 
   await ctx.store.save([...transfers])
+  await ctx.store.save([...voted])
 }
 
 export async function saveCollectionVoted(
@@ -544,9 +556,11 @@ export async function saveCollectionVoted(
       id: event.id,
       amount: BigInt(e.amount.toString()),
       collection: e.collection.toLowerCase(),
+      positionId: BigInt(e.positionId.toString()),
       voter: e.voter.toLowerCase(),
       timestamp: new Date(block.timestamp),
       transactionHash: event.evmTxHash,
+      isDeleted: false,
     })
 
     transfers.add(transfer)

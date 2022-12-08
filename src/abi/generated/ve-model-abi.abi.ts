@@ -178,6 +178,11 @@ export const ABI_JSON = [
                 "type": "uint256",
                 "name": "amount",
                 "indexed": false
+            },
+            {
+                "type": "uint256",
+                "name": "positionId",
+                "indexed": false
             }
         ]
     },

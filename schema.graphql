@@ -139,6 +139,8 @@ type VotedForCollection @entity {
   collection: String! @index
   voter: String! @index
   amount: BigInt!
+  positionId: BigInt!
+  isDeleted: Boolean!
   timestamp: DateTime! @index
   transactionHash: String!
 }

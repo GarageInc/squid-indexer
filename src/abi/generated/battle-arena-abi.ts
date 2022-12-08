@@ -101,6 +101,9 @@ export const functions = {
     dai: new Func<[], {}, string>(
         abi, '0xf4b9fa75'
     ),
+    debtOfPosition: new Func<[ethers.BigNumber], {}, ([wells: ethers.BigNumber, glmrs: ethers.BigNumber] & {wells: ethers.BigNumber, glmrs: ethers.BigNumber})>(
+        abi, '0x057858bc'
+    ),
     epochDuration: new Func<[], {}, ethers.BigNumber>(
         abi, '0x4ff0876a'
     ),
@@ -119,9 +122,6 @@ export const functions = {
     fourthStageDuration: new Func<[], {}, ethers.BigNumber>(
         abi, '0x25623a43'
     ),
-    gasPool: new Func<[], {}, string>(
-        abi, '0xfa08b038'
-    ),
     getCurrentStage: new Func<[], {}, number>(
         abi, '0xeedbe31d'
     ),
@@ -131,7 +131,7 @@ export const functions = {
     getPendingStakerReward: new Func<[stakingPositionId: ethers.BigNumber], {stakingPositionId: ethers.BigNumber}, ([stakerReward: ethers.BigNumber, end: ethers.BigNumber] & {stakerReward: ethers.BigNumber, end: ethers.BigNumber})>(
         abi, '0x2f8816ee'
     ),
-    getPendingVoterReward: new Func<[votingPositionId: ethers.BigNumber], {votingPositionId: ethers.BigNumber}, ([yTokens: ethers.BigNumber, wells: ethers.BigNumber, glmr: ethers.BigNumber] & {yTokens: ethers.BigNumber, wells: ethers.BigNumber, glmr: ethers.BigNumber})>(
+    getPendingVoterReward: new Func<[votingPositionId: ethers.BigNumber], {votingPositionId: ethers.BigNumber}, ([yTokens: ethers.BigNumber, wells: ethers.BigNumber, glmrs: ethers.BigNumber] & {yTokens: ethers.BigNumber, wells: ethers.BigNumber, glmrs: ethers.BigNumber})>(
         abi, '0x73d9181b'
     ),
     getStakerPositionsLength: new Func<[], {}, ethers.BigNumber>(
@@ -300,6 +300,10 @@ export class Contract extends ContractBase {
         return this.eth_call(functions.dai, [])
     }
 
+    debtOfPosition(arg0: ethers.BigNumber): Promise<([wells: ethers.BigNumber, glmrs: ethers.BigNumber] & {wells: ethers.BigNumber, glmrs: ethers.BigNumber})> {
+        return this.eth_call(functions.debtOfPosition, [arg0])
+    }
+
     epochDuration(): Promise<ethers.BigNumber> {
         return this.eth_call(functions.epochDuration, [])
     }
@@ -324,10 +328,6 @@ export class Contract extends ContractBase {
         return this.eth_call(functions.fourthStageDuration, [])
     }
 
-    gasPool(): Promise<string> {
-        return this.eth_call(functions.gasPool, [])
-    }
-
     getCurrentStage(): Promise<number> {
         return this.eth_call(functions.getCurrentStage, [])
     }
@@ -340,7 +340,7 @@ export class Contract extends ContractBase {
         return this.eth_call(functions.getPendingStakerReward, [stakingPositionId])
     }
 
-    getPendingVoterReward(votingPositionId: ethers.BigNumber): Promise<([yTokens: ethers.BigNumber, wells: ethers.BigNumber, glmr: ethers.BigNumber] & {yTokens: ethers.BigNumber, wells: ethers.BigNumber, glmr: ethers.BigNumber})> {
+    getPendingVoterReward(votingPositionId: ethers.BigNumber): Promise<([yTokens: ethers.BigNumber, wells: ethers.BigNumber, glmrs: ethers.BigNumber] & {yTokens: ethers.BigNumber, wells: ethers.BigNumber, glmrs: ethers.BigNumber})> {
         return this.eth_call(functions.getPendingVoterReward, [votingPositionId])
     }
 

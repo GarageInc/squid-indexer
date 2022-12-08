@@ -25,10 +25,6 @@ export const ABI_JSON = [
             },
             {
                 "type": "address",
-                "name": "_gasFeePool"
-            },
-            {
-                "type": "address",
                 "name": "_teamAddress"
             },
             {
@@ -885,6 +881,28 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
+        "name": "debtOfPosition",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [
+            {
+                "type": "uint256"
+            }
+        ],
+        "outputs": [
+            {
+                "type": "uint256",
+                "name": "wells"
+            },
+            {
+                "type": "uint256",
+                "name": "glmrs"
+            }
+        ]
+    },
+    {
+        "type": "function",
         "name": "epochDuration",
         "constant": true,
         "stateMutability": "view",
@@ -967,19 +985,6 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
-        "name": "gasPool",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [],
-        "outputs": [
-            {
-                "type": "address"
-            }
-        ]
-    },
-    {
-        "type": "function",
         "name": "getCurrentStage",
         "constant": true,
         "stateMutability": "view",
@@ -1056,7 +1061,7 @@ export const ABI_JSON = [
             },
             {
                 "type": "uint256",
-                "name": "glmr"
+                "name": "glmrs"
             }
         ]
     },

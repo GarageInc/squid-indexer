@@ -21,6 +21,12 @@ export class VotedForCollection {
     @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
     amount!: bigint
 
+    @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
+    positionId!: bigint
+
+    @Column_("bool", {nullable: false})
+    isDeleted!: boolean
+
     @Index_()
     @Column_("timestamp with time zone", {nullable: false})
     timestamp!: Date

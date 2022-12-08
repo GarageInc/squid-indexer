@@ -43,7 +43,7 @@ import {
   TransferErc20T,
 } from './events'
 
-const FROM = 2399637
+const FROM = 2456739
 
 export const database = new TypeormDatabase()
 export const processor = new SubstrateBatchProcessor()

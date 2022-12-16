@@ -192,7 +192,7 @@ export const ABI_JSON = [
     {
         "type": "event",
         "anonymous": false,
-        "name": "WinnerChoosed",
+        "name": "WinnerChosen",
         "inputs": [
             {
                 "type": "uint256",

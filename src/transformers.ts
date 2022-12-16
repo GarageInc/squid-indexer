@@ -820,7 +820,7 @@ export async function saveJackpotsUnStaked(
 export async function saveJackpotsWinned(
   ctx: Context,
   transfersData: {
-    e: ReturnType<typeof jackpotAbi.events.WinnerChoosed.decode>
+    e: ReturnType<typeof jackpotAbi.events.WinnerChosen.decode>
     event: EvmLogEvent
     block: SubstrateBlock
   }[],

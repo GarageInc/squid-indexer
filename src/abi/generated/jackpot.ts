@@ -26,8 +26,8 @@ export const events = {
     Unstaked: new LogEvent<([jackpotPositionId: ethers.BigNumber, owner: string, beneficiary: string, zooPositionId: ethers.BigNumber] & {jackpotPositionId: ethers.BigNumber, owner: string, beneficiary: string, zooPositionId: ethers.BigNumber})>(
         abi, '0x88567e6595ad345e5250569a2c8d8a50ed9db24198350fa907e42d73faf012d5'
     ),
-    WinnerChoosed: new LogEvent<([epoch: ethers.BigNumber, winner: ethers.BigNumber] & {epoch: ethers.BigNumber, winner: ethers.BigNumber})>(
-        abi, '0xe72a3341a139a15819d08412999b4782ed114ce42cb558eb67c0f78e55d2a236'
+    WinnerChosen: new LogEvent<([epoch: ethers.BigNumber, winner: ethers.BigNumber] & {epoch: ethers.BigNumber, winner: ethers.BigNumber})>(
+        abi, '0xb335e3fa5339ae555551fd7188c64789952d156cf098d055f26dbe00422d6652'
     ),
 }
 

@@ -34,7 +34,7 @@ export const xZooClaimedT = xZooAbi.events.Claimed
 
 export const JackpotStakedT = jackpotAbi.events.Staked
 export const JackpotUnstakedT = jackpotAbi.events.Unstaked
-export const JackpotWinnedT = jackpotAbi.events.WinnerChoosed
+export const JackpotWinnedT = jackpotAbi.events.WinnerChosen
 export const JackpotClaimedT = jackpotAbi.events.Claimed
 
 export const TransferERC721T = erc721.events.Transfer

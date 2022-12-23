@@ -35,4 +35,8 @@ export class CreatedStakerPosition {
 
     @Column_("text", {nullable: false})
     transactionHash!: string
+
+    @Index_()
+    @Column_("text", {nullable: false})
+    author!: string
 }

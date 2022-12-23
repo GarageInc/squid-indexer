@@ -44,4 +44,8 @@ export class CreatedVotingPosition {
     @Index_()
     @ManyToOne_(() => Project, {nullable: true})
     project!: Project
+
+    @Index_()
+    @Column_("text", {nullable: false})
+    author!: string
 }

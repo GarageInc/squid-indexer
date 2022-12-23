@@ -34,4 +34,8 @@ export class JackpotStaked {
 
     @Column_("bool", {nullable: false})
     isDeleted!: boolean
+
+    @Index_()
+    @Column_("text", {nullable: false})
+    author!: string
 }

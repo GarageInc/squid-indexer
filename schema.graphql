@@ -52,6 +52,7 @@ type CreatedStakerPosition @entity {
   timestamp: DateTime! @index
   project: Project!
   transactionHash: String!
+  author: String! @index
 }
 
 type CreatedVotingPosition @entity {
@@ -66,6 +67,7 @@ type CreatedVotingPosition @entity {
   timestamp: DateTime! @index
   transactionHash: String!
   project: Project!
+  author: String! @index
 }
 
 type LiquidatedVotingPosition @entity {
@@ -143,6 +145,7 @@ type VotedForCollection @entity {
   isDeleted: Boolean!
   timestamp: DateTime! @index
   transactionHash: String!
+  author: String! @index
 }
 
 type FaucetGiven @entity {
@@ -160,6 +163,7 @@ type XZooStaked @entity {
   positionId: BigInt!
   timestamp: DateTime! @index
   transactionHash: String!
+  author: String! @index
 }
 
 type XZooWithdrawed @entity {
@@ -197,6 +201,7 @@ type JackpotStaked @entity {
   timestamp: DateTime! @index
   transactionHash: String!
   isDeleted: Boolean!
+  author: String! @index
 }
 
 type JackpotUnstaked @entity {

@@ -151,6 +151,40 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
+        "name": "attemptAmount",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [
+            {
+                "type": "address"
+            }
+        ],
+        "outputs": [
+            {
+                "type": "uint256"
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "attemptAmountNft",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [
+            {
+                "type": "address"
+            }
+        ],
+        "outputs": [
+            {
+                "type": "uint256"
+            }
+        ]
+    },
+    {
+        "type": "function",
         "name": "attemptLimit",
         "constant": true,
         "stateMutability": "view",
@@ -243,6 +277,19 @@ export const ABI_JSON = [
     {
         "type": "function",
         "name": "changeAttemptLimit",
+        "constant": false,
+        "payable": false,
+        "inputs": [
+            {
+                "type": "uint256",
+                "name": "amount"
+            }
+        ],
+        "outputs": []
+    },
+    {
+        "type": "function",
+        "name": "changeAttemptLimitNft",
         "constant": false,
         "payable": false,
         "inputs": [

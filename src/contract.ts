@@ -1,6 +1,6 @@
 export const CHAIN_NODE = 'wss://moonbeam.api.onfinality.io/public-ws' //'wss://moonbeam.public.blastapi.io'
 
-export const FAUCET_MOONBEAM = '0xb24043E9f01f81c4B7f6340754f0475F02fbC1C7'.toLowerCase()
+export const FAUCET_MOONBEAM = '0x043aBF0E3658464c100d80A68343f1Af161d0727'.toLowerCase()
 
 export const BATTLE_STAKER_MOONBEAM = '0x17FaAD925EB7C895b964fcb7633cb7d9649Bf7fd'.toLowerCase()
 export const BATTLE_VOTER_MOONBEAM = '0x0837cFd9DFf9f579BA28084ab9d385a1b65fA57c'.toLowerCase()

@@ -29,6 +29,12 @@ export const functions = {
     approve: new Func<[to: string, tokenId: ethers.BigNumber], {to: string, tokenId: ethers.BigNumber}, []>(
         abi, '0x095ea7b3'
     ),
+    attemptAmount: new Func<[string], {}, ethers.BigNumber>(
+        abi, '0xd604721a'
+    ),
+    attemptAmountNft: new Func<[string], {}, ethers.BigNumber>(
+        abi, '0xea90e103'
+    ),
     attemptLimit: new Func<[], {}, ethers.BigNumber>(
         abi, '0x489b99d8'
     ),
@@ -49,6 +55,9 @@ export const functions = {
     ),
     changeAttemptLimit: new Func<[amount: ethers.BigNumber], {amount: ethers.BigNumber}, []>(
         abi, '0xc37af30f'
+    ),
+    changeAttemptLimitNft: new Func<[amount: ethers.BigNumber], {amount: ethers.BigNumber}, []>(
+        abi, '0xf4a09426'
     ),
     collectionList: new Func<[ethers.BigNumber], {}, string>(
         abi, '0x752d121c'
@@ -116,6 +125,14 @@ export const functions = {
 }
 
 export class Contract extends ContractBase {
+
+    attemptAmount(arg0: string): Promise<ethers.BigNumber> {
+        return this.eth_call(functions.attemptAmount, [arg0])
+    }
+
+    attemptAmountNft(arg0: string): Promise<ethers.BigNumber> {
+        return this.eth_call(functions.attemptAmountNft, [arg0])
+    }
 
     attemptLimit(): Promise<ethers.BigNumber> {
         return this.eth_call(functions.attemptLimit, [])

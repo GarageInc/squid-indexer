@@ -10,6 +10,7 @@ import {
   ClaimedRewardFromVoting,
   CreatedStakerPosition,
   CreatedVotingPosition,
+  FaucetZooGiven,
   JackpotClaimed,
   JackpotStaked,
   JackpotUnstaked,
@@ -38,7 +39,6 @@ import * as erc20 from './abi/generated/erc20'
 import * as jackpotAbi from './abi/generated/jackpot'
 import { ZooUnlocked } from './model/generated/zooUnlocked.model'
 import { VotedForCollection } from './model/generated/votedForCollection.model'
-import { FaucetGiven } from './model/generated/faucetGiven.model'
 import {
   BATTLE_STAKER_MOONBEAM,
   BATTLE_VOTER_MOONBEAM,
@@ -575,17 +575,17 @@ export async function saveCollectionVoted(
 export async function saveFaucetGiven(
   ctx: Context,
   transfersData: {
-    e: ReturnType<typeof faucetAbi.events.tokensGiven.decode>
+    e: ReturnType<typeof faucetAbi.events.ZooGiven.decode>
     event: EvmLogEvent
     block: SubstrateBlock
   }[]
 ) {
-  const transfers: Set<FaucetGiven> = new Set()
+  const transfers: Set<FaucetZooGiven> = new Set()
 
   for (const transferData of transfersData) {
     const { e, event, block } = transferData
 
-    const transfer = new FaucetGiven({
+    const transfer = new FaucetZooGiven({
       id: event.id,
       user: e.user,
       timestamp: new Date(block.timestamp),

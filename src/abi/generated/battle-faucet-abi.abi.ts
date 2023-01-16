@@ -22,6 +22,10 @@ export const ABI_JSON = [
             {
                 "type": "address[]",
                 "name": "_collections"
+            },
+            {
+                "type": "uint256",
+                "name": "attempts"
             }
         ]
     },
@@ -72,6 +76,18 @@ export const ABI_JSON = [
     {
         "type": "event",
         "anonymous": false,
+        "name": "NftsGiven",
+        "inputs": [
+            {
+                "type": "address",
+                "name": "user",
+                "indexed": true
+            }
+        ]
+    },
+    {
+        "type": "event",
+        "anonymous": false,
         "name": "Transfer",
         "inputs": [
             {
@@ -94,7 +110,7 @@ export const ABI_JSON = [
     {
         "type": "event",
         "anonymous": false,
-        "name": "tokensGiven",
+        "name": "ZooGiven",
         "inputs": [
             {
                 "type": "address",
@@ -136,6 +152,19 @@ export const ABI_JSON = [
     {
         "type": "function",
         "name": "attemptLimit",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [],
+        "outputs": [
+            {
+                "type": "uint256"
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "attemptLimitNft",
         "constant": true,
         "stateMutability": "view",
         "payable": false,
@@ -287,7 +316,15 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
-        "name": "getTokens",
+        "name": "getNfts",
+        "constant": false,
+        "payable": false,
+        "inputs": [],
+        "outputs": []
+    },
+    {
+        "type": "function",
+        "name": "getZoo",
         "constant": false,
         "payable": false,
         "inputs": [],

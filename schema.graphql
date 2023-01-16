@@ -148,7 +148,7 @@ type VotedForCollection @entity {
   author: String! @index
 }
 
-type FaucetGiven @entity {
+type FaucetZooGiven @entity {
   id: ID!
   user: String! @index
   timestamp: DateTime! @index

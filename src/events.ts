@@ -26,7 +26,7 @@ export const ClaimedIncentiveRewardFromVotingT = voterAbi.events.ClaimedIncentiv
 export const VotedForCollectionT = vemodelAbi.events.VotedForCollection
 export const ZooUnlockedT = vemodelAbi.events.ZooUnlocked
 
-export const TokensGivenT = faucetAbi.events.tokensGiven
+export const ZooGivenT = faucetAbi.events.ZooGiven
 
 export const XZooStakedT = xZooAbi.events.ZooStaked
 export const xZooWithdrawnT = xZooAbi.events.ZooWithdrawal

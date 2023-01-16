@@ -11,11 +11,14 @@ export const events = {
     ApprovalForAll: new LogEvent<([owner: string, operator: string, approved: boolean] & {owner: string, operator: string, approved: boolean})>(
         abi, '0x17307eab39ab6107e8899845ad3d59bd9653f200f220920489ca2b5937696c31'
     ),
+    NftsGiven: new LogEvent<([user: string] & {user: string})>(
+        abi, '0x1fdfc6b27ac00bd63dda50d1485d1a7d83097461b01b49ddae3528473473260b'
+    ),
     Transfer: new LogEvent<([from: string, to: string, tokenId: ethers.BigNumber] & {from: string, to: string, tokenId: ethers.BigNumber})>(
         abi, '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
     ),
-    tokensGiven: new LogEvent<([user: string] & {user: string})>(
-        abi, '0x7e69811b183120f86dde2927b5f0fdb0d9d2e360fa6bed8c642426f80243d783'
+    ZooGiven: new LogEvent<([user: string] & {user: string})>(
+        abi, '0x65782f1f2dcfe07678a3af25c55e44c3fcd17924c1dfcf8ae712e50ccf6ceb3e'
     ),
 }
 
@@ -28,6 +31,9 @@ export const functions = {
     ),
     attemptLimit: new Func<[], {}, ethers.BigNumber>(
         abi, '0x489b99d8'
+    ),
+    attemptLimitNft: new Func<[], {}, ethers.BigNumber>(
+        abi, '0xba583244'
     ),
     balanceOf: new Func<[owner: string], {owner: string}, ethers.BigNumber>(
         abi, '0x70a08231'
@@ -56,8 +62,11 @@ export const functions = {
     getApproved: new Func<[tokenId: ethers.BigNumber], {tokenId: ethers.BigNumber}, string>(
         abi, '0x081812fc'
     ),
-    getTokens: new Func<[], {}, []>(
-        abi, '0xaa6ca808'
+    getNfts: new Func<[], {}, []>(
+        abi, '0xd8cb55e3'
+    ),
+    getZoo: new Func<[], {}, []>(
+        abi, '0xd0f3b32e'
     ),
     isApprovedForAll: new Func<[owner: string, operator: string], {owner: string, operator: string}, boolean>(
         abi, '0xe985e9c5'
@@ -110,6 +119,10 @@ export class Contract extends ContractBase {
 
     attemptLimit(): Promise<ethers.BigNumber> {
         return this.eth_call(functions.attemptLimit, [])
+    }
+
+    attemptLimitNft(): Promise<ethers.BigNumber> {
+        return this.eth_call(functions.attemptLimitNft, [])
     }
 
     balanceOf(owner: string): Promise<ethers.BigNumber> {

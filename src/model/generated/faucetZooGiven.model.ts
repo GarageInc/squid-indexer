@@ -1,8 +1,8 @@
 import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, Index as Index_} from "typeorm"
 
 @Entity_()
-export class FaucetGiven {
-    constructor(props?: Partial<FaucetGiven>) {
+export class FaucetZooGiven {
+    constructor(props?: Partial<FaucetZooGiven>) {
         Object.assign(this, props)
     }
 

@@ -31,7 +31,7 @@ import {
   ClaimedIncentiveRewardFromStakingT,
   VotedForCollectionT,
   ZooUnlockedT,
-  TokensGivenT,
+  ZooGivenT,
   xZooClaimedT,
   XZooStakedT,
   xZooWithdrawnT,
@@ -107,7 +107,7 @@ processor
   })
 
 processor.addEvmLog(FAUCET_MOONBEAM, {
-  filter: [TokensGivenT.topic],
+  filter: [ZooGivenT.topic],
 })
 
 processor

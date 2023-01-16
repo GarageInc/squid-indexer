@@ -60,7 +60,7 @@ import {
   ClaimedIncentiveRewardFromVotingT,
   VotedForCollectionT,
   ZooUnlockedT,
-  TokensGivenT,
+  ZooGivenT,
   XZooStakedT,
   xZooWithdrawnT,
   xZooClaimedT,
@@ -209,8 +209,8 @@ processor.run(database, async (ctx: Context) => {
           zooUnlocked.push(handler(ctx, block.header, item.event, ZooUnlockedT))
         }
 
-        if (hasIn(item, TokensGivenT.topic)) {
-          given.push(handler(ctx, block.header, item.event, TokensGivenT))
+        if (hasIn(item, ZooGivenT.topic)) {
+          given.push(handler(ctx, block.header, item.event, ZooGivenT))
         }
 
         if (hasIn(item, XZooStakedT.topic)) {

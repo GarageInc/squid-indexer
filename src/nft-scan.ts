@@ -10,7 +10,7 @@ export const fetchNftScan = (url: string) =>
       'Content-Type': 'application/json',
       Accept: 'application/json',
     },
-  }).then((result) => result.json())
+  }).then((result: any) => result.json())
 
 export const getMoonbeamNftAPI = (token: string, id: string) =>
   `https://moonbeamapi.nftscan.com/api/v2/assets/${token}/${id}?show_attribute=true`

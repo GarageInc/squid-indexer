@@ -1,3 +1,5 @@
+import fetch from 'node-fetch'
+
 export const X_NFTSCAN = 'rQB9CURvvzljLfntrYixcWH0'
 
 export const fetchNftScan = (url: string) =>

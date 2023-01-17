@@ -16,6 +16,7 @@ import {
   JackpotUnstaked,
   JackpotWinnerChoosed,
   LiquidatedVotingPosition,
+  NftScanTokens,
   PairedNft,
   Project,
   RemovedStakerPosition,
@@ -47,6 +48,7 @@ import {
   X_ZOO_MOONBEAM,
 } from './contract'
 import { BigNumber } from 'ethers'
+import { fetchNftScan, getMoonbeamNftAPI } from './nft-scan'
 
 export async function saveAddedDai<T>(
   ctx: Context,
@@ -361,7 +363,11 @@ export async function saveStaked(
   for (const transferData of transfersData) {
     const { e, event, block } = transferData
 
-    const targetProject = await getTargetProject(ctx, e.stakingPositionId.toString(), block, event.id)
+    const {
+      project: targetProject,
+      token,
+      id,
+    } = await getTargetProject(ctx, e.stakingPositionId.toString(), block, event.id)
 
     const transfer = new CreatedStakerPosition({
       id: event.id,
@@ -376,6 +382,10 @@ export async function saveStaked(
     })
 
     transfers.add(transfer)
+
+    if (targetProject) {
+      await saveNftScanProject(ctx, event.id, token, id)
+    }
   }
 
   await ctx.store.save([...transfers])
@@ -433,7 +443,11 @@ export async function saveVoted(
   for (const transferData of transfersData) {
     const { e, event, block } = transferData
 
-    const targetProject = await getTargetProject(ctx, e.stakingPositionId.toString(), block, event.id)
+    const {
+      project: targetProject,
+      token,
+      id,
+    } = await getTargetProject(ctx, e.stakingPositionId.toString(), block, event.id)
 
     const transfer = new CreatedVotingPosition({
       id: event.id,
@@ -449,6 +463,10 @@ export async function saveVoted(
       transactionHash: event.evmTxHash,
       project: targetProject,
     })
+
+    if (targetProject) {
+      await saveNftScanProject(ctx, event.id, token, id)
+    }
 
     transfers.add(transfer)
   }
@@ -601,7 +619,7 @@ async function getTargetProject(ctx: Context, positionId: string, block: Substra
   const staker = new stakerAbi.Contract(ctx, { height: block.height }, BATTLE_STAKER_MOONBEAM)
   const data = await staker.positions(BigNumber.from(positionId))
 
-  const { token } = data
+  const { token, id } = data
 
   const address = token.toLowerCase()
 
@@ -615,7 +633,11 @@ async function getTargetProject(ctx: Context, positionId: string, block: Substra
   })
 
   if (tokenSaved) {
-    return tokenSaved
+    return {
+      project: tokenSaved,
+      token,
+      id,
+    }
   } else {
     const project = new Project({
       id: newId,
@@ -627,9 +649,13 @@ async function getTargetProject(ctx: Context, positionId: string, block: Substra
     await ctx.store.save([project])
   }
 
-  return await ctx.store.findOneBy(Project, {
-    address: address,
-  })
+  return {
+    project: await ctx.store.findOneBy(Project, {
+      address: address,
+    }),
+    token,
+    id,
+  }
 }
 
 export async function saveXZooStaked(
@@ -1036,6 +1062,33 @@ export const saveJackpotTransferred = async (
       list.push(target)
 
       await ctx.store.save(target)
+    }
+  }
+}
+const saveNftScanProject = async (ctx: Context, eventId: string, token: string, id: BigNumber) => {
+  const url = getMoonbeamNftAPI(token, id.toString())
+
+  const tokenSaved = await ctx.store.findOneBy(NftScanTokens, {
+    tokenId: BigInt(id.toString()),
+    contract: token,
+  })
+
+  if (tokenSaved) {
+    return tokenSaved
+  } else {
+    const result = await fetchNftScan(url)
+
+    console.log('result', JSON.stringify(result))
+
+    if (+result?.code === 200) {
+      const project = new NftScanTokens({
+        id: eventId,
+        tokenId: BigInt(id.toString()),
+        contract: token,
+        meta: JSON.stringify(result.data),
+      })
+
+      await ctx.store.save([project])
     }
   }
 }

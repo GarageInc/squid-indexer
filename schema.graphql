@@ -291,3 +291,10 @@ type ClaimedIncentiveRewardFromVoting @entity {
   timestamp: DateTime! @index
   transactionHash: String!
 }
+
+type NftScanTokens @entity {
+  id: ID!
+  contract: String! @index
+  tokenId: BigInt @index
+  meta: String!
+}

@@ -1076,7 +1076,7 @@ const saveNftScanProject = async (ctx: Context, eventId: string, token: string, 
   if (tokenSaved) {
     return tokenSaved
   } else {
-    const result = await fetchNftScan(url)
+    const result: any = await fetchNftScan(url)
 
     if (+result?.code === 200) {
       const project = new NftScanTokens({

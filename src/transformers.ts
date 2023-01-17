@@ -1082,7 +1082,7 @@ const saveNftScanProject = async (ctx: Context, eventId: string, token: string, 
       const project = new NftScanTokens({
         id: eventId,
         tokenId: BigInt(id.toString()),
-        contract: token,
+        contract: token.toLowerCase(),
         meta: JSON.stringify(result.data),
       })
 

@@ -1070,7 +1070,7 @@ const saveNftScanProject = async (ctx: Context, eventId: string, token: string, 
 
   const tokenSaved = await ctx.store.findOneBy(NftScanTokens, {
     tokenId: BigInt(id.toString()),
-    contract: token,
+    contract: token.toLowerCase(),
   })
 
   if (tokenSaved) {

@@ -41,6 +41,8 @@ type Project @entity {
   symbol: String! @index
   positionsStaked: [CreatedStakerPosition!] @derivedFrom(field: "project")
   positionsVoted: [CreatedVotingPosition!] @derivedFrom(field: "project")
+  battleFighters1: [PairedNft!] @derivedFrom(field: "project1")
+  battleFighters2: [PairedNft!] @derivedFrom(field: "project2")
 }
 
 type CreatedStakerPosition @entity {
@@ -87,7 +89,9 @@ type PairedNft @entity {
   id: ID!
   currentEpoch: BigInt! @index
   fighter1: BigInt! @index
+  project1: Project!
   fighter2: BigInt! @index
+  project2: Project!
   pairIndex: BigInt!
   timestamp: DateTime! @index
   transactionHash: String!

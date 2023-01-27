@@ -183,10 +183,15 @@ export async function savePaired(
   for (const transferData of transfersData) {
     const { e, event, block } = transferData
 
+    const { project: targetProject1 } = await getTargetProject(ctx, e.fighter1.toString(), block, event.id)
+    const { project: targetProject2 } = await getTargetProject(ctx, e.fighter2.toString(), block, event.id)
+
     const transfer = new PairedNft({
       id: event.id,
       fighter1: BigInt(e.fighter1.toString()),
       fighter2: BigInt(e.fighter2.toString()),
+      project1: targetProject1,
+      project2: targetProject2,
       currentEpoch: BigInt(e.currentEpoch.toString()),
       pairIndex: BigInt(e.pairIndex.toString()),
       timestamp: new Date(block.timestamp),

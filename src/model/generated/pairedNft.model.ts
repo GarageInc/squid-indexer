@@ -1,5 +1,6 @@
-import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, Index as Index_} from "typeorm"
+import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, Index as Index_, ManyToOne as ManyToOne_} from "typeorm"
 import * as marshal from "./marshal"
+import {Project} from "./project.model"
 
 @Entity_()
 export class PairedNft {
@@ -19,8 +20,16 @@ export class PairedNft {
     fighter1!: bigint
 
     @Index_()
+    @ManyToOne_(() => Project, {nullable: true})
+    project1!: Project
+
+    @Index_()
     @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
     fighter2!: bigint
+
+    @Index_()
+    @ManyToOne_(() => Project, {nullable: true})
+    project2!: Project
 
     @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
     pairIndex!: bigint

@@ -1562,6 +1562,23 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
+        "name": "totalActiveVotesByEpoch",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [
+            {
+                "type": "uint256"
+            }
+        ],
+        "outputs": [
+            {
+                "type": "uint256"
+            }
+        ]
+    },
+    {
+        "type": "function",
         "name": "treasury",
         "constant": true,
         "stateMutability": "view",

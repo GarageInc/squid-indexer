@@ -221,6 +221,9 @@ export const functions = {
     tokensToShares: new Func<[tokens: ethers.BigNumber], {tokens: ethers.BigNumber}, ethers.BigNumber>(
         abi, '0xf3044ac7'
     ),
+    totalActiveVotesByEpoch: new Func<[ethers.BigNumber], {}, ethers.BigNumber>(
+        abi, '0x6be10e10'
+    ),
     treasury: new Func<[], {}, string>(
         abi, '0x61d027b3'
     ),
@@ -426,6 +429,10 @@ export class Contract extends ContractBase {
 
     tokenController(): Promise<string> {
         return this.eth_call(functions.tokenController, [])
+    }
+
+    totalActiveVotesByEpoch(arg0: ethers.BigNumber): Promise<ethers.BigNumber> {
+        return this.eth_call(functions.totalActiveVotesByEpoch, [arg0])
     }
 
     treasury(): Promise<string> {

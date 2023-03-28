@@ -3,16 +3,14 @@ import { SubstrateBatchProcessor, BatchProcessorItem, BatchContext } from '@subs
 import { TypeormDatabase, Store } from '@subsquid/typeorm-store'
 import {
   CHAIN_NODE,
-  BATTLE_ARENA_MOONBEAM,
-  BATTLE_VOTER_MOONBEAM,
-  BATTLE_STAKER_MOONBEAM,
-  VE_MODEL_MOONBEAM,
-  FAUCET_MOONBEAM,
-  X_ZOO_MOONBEAM,
-  JACKPOT_A_MOONBEAM,
-  JACKPOT_B_MOONBEAM,
-  WGLMR_MOONBEAM,
-  WELL_MOONBEAM,
+  BATTLE_ARENA_ARBITRUM,
+  BATTLE_VOTER_ARBITRUM,
+  BATTLE_STAKER_ARBITRUM,
+  VE_MODEL_ARBITRUM,
+  X_ZOO_ARBITRUM,
+  JACKPOT_A_ARBITRUM,
+  JACKPOT_B_ARBITRUM,
+  fsGLP,
 } from './contract'
 import {
   CreatedStakerPositionT,
@@ -43,143 +41,135 @@ import {
   TransferErc20T,
 } from './events'
 
-const FROM = 2693056
+const FROM = 73190022
 
 export const database = new TypeormDatabase()
+
 export const processor = new SubstrateBatchProcessor()
   .setBlockRange({ from: FROM })
   .setDataSource({
     chain: CHAIN_NODE,
-    archive: lookupArchive('moonbeam', { release: 'FireSquid' }),
+    archive: lookupArchive('arbitrum'),
   })
-  .setTypesBundle('moonbeam')
-  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
+  .addEvmLog(BATTLE_ARENA_ARBITRUM, {
     filter: [CreatedStakerPositionT.topic],
   })
-  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
+  .addEvmLog(BATTLE_ARENA_ARBITRUM, {
     filter: [RemovedStakerPositionT.topic],
   })
-  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
+  .addEvmLog(BATTLE_ARENA_ARBITRUM, {
     filter: [CreatedVotingPositionT.topic],
   })
-  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
+  .addEvmLog(BATTLE_ARENA_ARBITRUM, {
     filter: [LiquidatedVotingPositionT.topic],
   })
-  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
+  .addEvmLog(BATTLE_ARENA_ARBITRUM, {
     filter: [AddedDaiToVotingT.topic],
   })
-  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
+  .addEvmLog(BATTLE_ARENA_ARBITRUM, {
     filter: [AddedZooToVotingT.topic],
   })
-  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
+  .addEvmLog(BATTLE_ARENA_ARBITRUM, {
     filter: [WithdrawedDaiFromVotingT.topic],
   })
-  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
+  .addEvmLog(BATTLE_ARENA_ARBITRUM, {
     filter: [WithdrawedZooFromVotingT.topic],
   })
-  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
+  .addEvmLog(BATTLE_ARENA_ARBITRUM, {
     filter: [PairedNftT.topic],
   })
-  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
+  .addEvmLog(BATTLE_ARENA_ARBITRUM, {
     filter: [ChosenWinnerT.topic],
   })
-  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
+  .addEvmLog(BATTLE_ARENA_ARBITRUM, {
     filter: [ClaimedRewardFromStakingT.topic],
   })
-  .addEvmLog(BATTLE_ARENA_MOONBEAM, {
+  .addEvmLog(BATTLE_ARENA_ARBITRUM, {
     filter: [ClaimedRewardFromVotingT.topic],
   })
 
 processor
-  .addEvmLog(BATTLE_VOTER_MOONBEAM, {
+  .addEvmLog(BATTLE_VOTER_ARBITRUM, {
     filter: [ClaimedIncentiveRewardFromVotingT.topic],
   })
-  .addEvmLog(BATTLE_STAKER_MOONBEAM, {
+  .addEvmLog(BATTLE_STAKER_ARBITRUM, {
     filter: [ClaimedIncentiveRewardFromStakingT.topic],
   })
 
 processor
-  .addEvmLog(VE_MODEL_MOONBEAM, {
+  .addEvmLog(VE_MODEL_ARBITRUM, {
     filter: [VotedForCollectionT.topic],
   })
-  .addEvmLog(VE_MODEL_MOONBEAM, {
+  .addEvmLog(VE_MODEL_ARBITRUM, {
     filter: [ZooUnlockedT.topic],
   })
 
-processor.addEvmLog(FAUCET_MOONBEAM, {
-  filter: [ZooGivenT.topic],
-})
-
 processor
-  .addEvmLog(X_ZOO_MOONBEAM, {
+  .addEvmLog(X_ZOO_ARBITRUM, {
     filter: [xZooClaimedT.topic],
   })
-  .addEvmLog(X_ZOO_MOONBEAM, {
+  .addEvmLog(X_ZOO_ARBITRUM, {
     filter: [XZooStakedT.topic],
   })
-  .addEvmLog(X_ZOO_MOONBEAM, {
+  .addEvmLog(X_ZOO_ARBITRUM, {
     filter: [xZooWithdrawnT.topic],
   })
 
 processor
-  .addEvmLog(JACKPOT_A_MOONBEAM, {
+  .addEvmLog(JACKPOT_A_ARBITRUM, {
     filter: [JackpotClaimedT.topic],
   })
-  .addEvmLog(JACKPOT_A_MOONBEAM, {
+  .addEvmLog(JACKPOT_A_ARBITRUM, {
     filter: [JackpotStakedT.topic],
   })
 
 processor
-  .addEvmLog(JACKPOT_A_MOONBEAM, {
+  .addEvmLog(JACKPOT_A_ARBITRUM, {
     filter: [JackpotUnstakedT.topic],
   })
-  .addEvmLog(JACKPOT_A_MOONBEAM, {
+  .addEvmLog(JACKPOT_A_ARBITRUM, {
     filter: [JackpotWinnedT.topic],
   })
 
 processor
-  .addEvmLog(JACKPOT_B_MOONBEAM, {
+  .addEvmLog(JACKPOT_B_ARBITRUM, {
     filter: [JackpotClaimedT.topic],
   })
-  .addEvmLog(JACKPOT_B_MOONBEAM, {
+  .addEvmLog(JACKPOT_B_ARBITRUM, {
     filter: [JackpotStakedT.topic],
   })
 
 processor
-  .addEvmLog(JACKPOT_B_MOONBEAM, {
+  .addEvmLog(JACKPOT_B_ARBITRUM, {
     filter: [JackpotUnstakedT.topic],
   })
-  .addEvmLog(JACKPOT_B_MOONBEAM, {
+  .addEvmLog(JACKPOT_B_ARBITRUM, {
     filter: [JackpotWinnedT.topic],
   })
 
 processor
-  .addEvmLog(JACKPOT_A_MOONBEAM, {
+  .addEvmLog(JACKPOT_A_ARBITRUM, {
     filter: [TransferERC721T.topic],
   })
-  .addEvmLog(JACKPOT_B_MOONBEAM, {
+  .addEvmLog(JACKPOT_B_ARBITRUM, {
     filter: [TransferERC721T.topic],
   })
 
 processor
-  .addEvmLog(BATTLE_VOTER_MOONBEAM, {
+  .addEvmLog(BATTLE_VOTER_ARBITRUM, {
     filter: [TransferERC721T.topic],
   })
-  .addEvmLog(BATTLE_STAKER_MOONBEAM, {
+  .addEvmLog(BATTLE_STAKER_ARBITRUM, {
     filter: [TransferERC721T.topic],
   })
 
-processor.addEvmLog(X_ZOO_MOONBEAM, {
+processor.addEvmLog(X_ZOO_ARBITRUM, {
   filter: [TransferERC721T.topic],
 })
 
-processor
-  .addEvmLog(WGLMR_MOONBEAM, {
-    filter: [TransferErc20T.topic],
-  })
-  .addEvmLog(WELL_MOONBEAM, {
-    filter: [TransferErc20T.topic],
-  })
+processor.addEvmLog(fsGLP, {
+  filter: [TransferErc20T.topic],
+})
 
 export type Item = BatchProcessorItem<typeof processor>
 export type Context = BatchContext<Store, Item>

@@ -1,15 +1,14 @@
 import { EvmLogEvent, SubstrateBlock } from '@subsquid/substrate-processor'
 import * as erc20 from './abi/generated/erc20'
 import {
-  VE_MODEL_MOONBEAM,
-  X_ZOO_MOONBEAM,
-  JACKPOT_A_MOONBEAM,
-  JACKPOT_B_MOONBEAM,
-  BATTLE_VOTER_MOONBEAM,
-  BATTLE_STAKER_MOONBEAM,
-  WELL_MOONBEAM,
-  WGLMR_MOONBEAM,
-  BATTLE_ARENA_MOONBEAM,
+  VE_MODEL_ARBITRUM,
+  X_ZOO_ARBITRUM,
+  JACKPOT_A_ARBITRUM,
+  JACKPOT_B_ARBITRUM,
+  BATTLE_VOTER_ARBITRUM,
+  BATTLE_STAKER_ARBITRUM,
+  fsGLP,
+  BATTLE_ARENA_ARBITRUM,
 } from './contract'
 import {
   liquidateVoted,
@@ -20,7 +19,6 @@ import {
   saveClaimedStaking,
   saveClaimedVoting,
   saveCollectionVoted,
-  saveFaucetGiven,
   saveJackpotsClaimed,
   saveJackpotsStaked,
   saveJackpotsUnStaked,
@@ -60,7 +58,6 @@ import {
   ClaimedIncentiveRewardFromVotingT,
   VotedForCollectionT,
   ZooUnlockedT,
-  ZooGivenT,
   XZooStakedT,
   xZooWithdrawnT,
   xZooClaimedT,
@@ -81,27 +78,25 @@ interface IArenaEvmEvent {
 const hasIn = (item: any, topic: string) =>
   item.event.args && item.event.args.log && item.event.args.log.topics.indexOf(topic) !== -1
 
-const isJackpotA = (item: any) => item.event?.args?.log?.address.toLowerCase() === JACKPOT_A_MOONBEAM
+const isJackpotA = (item: any) => item.event?.args?.log?.address.toLowerCase() === JACKPOT_A_ARBITRUM
 
-const isJackpotB = (item: any) => item.event?.args?.log?.address.toLowerCase() === JACKPOT_B_MOONBEAM
+const isJackpotB = (item: any) => item.event?.args?.log?.address.toLowerCase() === JACKPOT_B_ARBITRUM
 
-const isVoter = (item: any) => item.event?.args?.log?.address.toLowerCase() === BATTLE_VOTER_MOONBEAM
+const isVoter = (item: any) => item.event?.args?.log?.address.toLowerCase() === BATTLE_VOTER_ARBITRUM
 
-const isStaker = (item: any) => item.event?.args?.log?.address.toLowerCase() === BATTLE_STAKER_MOONBEAM
+const isStaker = (item: any) => item.event?.args?.log?.address.toLowerCase() === BATTLE_STAKER_ARBITRUM
 
-const isVeModel = (item: any) => item.event?.args?.log?.address.toLowerCase() === VE_MODEL_MOONBEAM
+const isVeModel = (item: any) => item.event?.args?.log?.address.toLowerCase() === VE_MODEL_ARBITRUM
 
-const isXZoo = (item: any) => item.event?.args?.log?.address.toLowerCase() === X_ZOO_MOONBEAM
+const isXZoo = (item: any) => item.event?.args?.log?.address.toLowerCase() === X_ZOO_ARBITRUM
 
 const isErc20InBattles = (item: {
   e: ReturnType<typeof erc20.events.Transfer.decode>
   event: EvmLogEvent
   block: SubstrateBlock
-}) => item.e.from.toLowerCase() === BATTLE_STAKER_MOONBEAM || item.e.from.toLowerCase() === BATTLE_VOTER_MOONBEAM
+}) => item.e.from.toLowerCase() === BATTLE_STAKER_ARBITRUM || item.e.from.toLowerCase() === BATTLE_VOTER_ARBITRUM
 
-const isWell = (item: any) => item.event?.args?.log?.address.toLowerCase() === WELL_MOONBEAM
-
-const isWGlmr = (item: any) => item.event?.args?.log?.address.toLowerCase() === WGLMR_MOONBEAM
+const isRewards = (item: any) => item.event?.args?.log?.address.toLowerCase() === fsGLP
 
 processor.run(database, async (ctx: Context) => {
   const staked = []
@@ -124,8 +119,6 @@ processor.run(database, async (ctx: Context) => {
   const votedCollection = []
   const zooUnlocked = []
 
-  const given = []
-
   const xZooStakedEvents = []
   const xZooWithdrawnEvents = []
   const xZooClaimedEvents = []
@@ -146,8 +139,7 @@ processor.run(database, async (ctx: Context) => {
   const jackpotBTransferred = []
   const xZooTransferred = []
 
-  const wglrmTransferred = []
-  const wellTransferred = []
+  const rewardsTransferred = []
 
   for (const block of ctx.blocks) {
     for (const item of block.items) {
@@ -207,10 +199,6 @@ processor.run(database, async (ctx: Context) => {
         }
         if (hasIn(item, ZooUnlockedT.topic)) {
           zooUnlocked.push(handler(ctx, block.header, item.event, ZooUnlockedT))
-        }
-
-        if (hasIn(item, ZooGivenT.topic)) {
-          given.push(handler(ctx, block.header, item.event, ZooGivenT))
         }
 
         if (hasIn(item, XZooStakedT.topic)) {
@@ -275,17 +263,10 @@ processor.run(database, async (ctx: Context) => {
         }
 
         if (hasIn(item, TransferErc20T.topic)) {
-          if (isWell(item)) {
+          if (isRewards(item)) {
             const event = handler(ctx, block.header, item.event, TransferErc20T)
             if (isFromArena(event)) {
-              wellTransferred.push(event)
-            }
-          }
-
-          if (isWGlmr(item)) {
-            const event = handler(ctx, block.header, item.event, TransferErc20T)
-            if (isFromArena(event)) {
-              wglrmTransferred.push(event)
+              rewardsTransferred.push(event)
             }
           }
         }
@@ -294,7 +275,6 @@ processor.run(database, async (ctx: Context) => {
   }
 
   /* FAUCET START */
-  await saveFaucetGiven(ctx, given)
   /* FAUCET END */
 
   /* BATTLE START */
@@ -355,8 +335,7 @@ processor.run(database, async (ctx: Context) => {
   /* TRANSFERS ERC721 END */
 
   /* TRANSFERS ERC20 START */
-  await saveTransfersERC20(ctx, wellTransferred, WELL_MOONBEAM)
-  await saveTransfersERC20(ctx, wglrmTransferred, WGLMR_MOONBEAM)
+  await saveTransfersERC20(ctx, rewardsTransferred, fsGLP)
   /* TRANSFERS ERC20 END */
 })
 
@@ -373,7 +352,7 @@ function isFromArena(event: {
   event: EvmLogEvent
   block: SubstrateBlock
 }) {
-  return event.e.from.toLowerCase() === BATTLE_ARENA_MOONBEAM
+  return event.e.from.toLowerCase() === BATTLE_ARENA_ARBITRUM
 }
 function isFromVoter(event: {
   e: [from: string, to: string, value: import('ethers').BigNumber] & {
@@ -384,7 +363,7 @@ function isFromVoter(event: {
   event: EvmLogEvent
   block: SubstrateBlock
 }) {
-  return event.e.from.toLowerCase() === BATTLE_VOTER_MOONBEAM
+  return event.e.from.toLowerCase() === BATTLE_VOTER_ARBITRUM
 }
 
 function isFromStaker(event: {
@@ -396,5 +375,5 @@ function isFromStaker(event: {
   event: EvmLogEvent
   block: SubstrateBlock
 }) {
-  return event.e.from.toLowerCase() === BATTLE_STAKER_MOONBEAM
+  return event.e.from.toLowerCase() === BATTLE_STAKER_ARBITRUM
 }

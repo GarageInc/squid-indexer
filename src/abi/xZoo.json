@@ -191,7 +191,7 @@
       { "internalType": "address", "name": "from", "type": "address" },
       { "internalType": "address", "name": "to", "type": "address" },
       { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
-      { "internalType": "bytes", "name": "_data", "type": "bytes" }
+      { "internalType": "bytes", "name": "data", "type": "bytes" }
     ],
     "name": "safeTransferFrom",
     "outputs": [],
@@ -209,7 +209,7 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "address payable", "name": "_nftBattleArena", "type": "address" }],
+    "inputs": [{ "internalType": "address", "name": "_nftBattleArena", "type": "address" }],
     "name": "setNftBattleArena",
     "outputs": [],
     "stateMutability": "nonpayable",

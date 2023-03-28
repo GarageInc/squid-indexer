@@ -68,7 +68,7 @@ export const functions = {
     ownerOf: new Func<[tokenId: ethers.BigNumber], {tokenId: ethers.BigNumber}, string>(
         abi, '0x6352211e'
     ),
-    positions: new Func<[ethers.BigNumber], {}, ([token: string, id: ethers.BigNumber] & {token: string, id: ethers.BigNumber})>(
+    positions: new Func<[_: ethers.BigNumber], {}, ([token: string, id: ethers.BigNumber] & {token: string, id: ethers.BigNumber})>(
         abi, '0x99fbab88'
     ),
     renounceOwnership: new Func<[], {}, []>(
@@ -77,7 +77,7 @@ export const functions = {
     'safeTransferFrom(address,address,uint256)': new Func<[from: string, to: string, tokenId: ethers.BigNumber], {from: string, to: string, tokenId: ethers.BigNumber}, []>(
         abi, '0x42842e0e'
     ),
-    'safeTransferFrom(address,address,uint256,bytes)': new Func<[from: string, to: string, tokenId: ethers.BigNumber, _data: string], {from: string, to: string, tokenId: ethers.BigNumber, _data: string}, []>(
+    'safeTransferFrom(address,address,uint256,bytes)': new Func<[from: string, to: string, tokenId: ethers.BigNumber, data: string], {from: string, to: string, tokenId: ethers.BigNumber, data: string}, []>(
         abi, '0xb88d4fde'
     ),
     setApprovalForAll: new Func<[operator: string, approved: boolean], {operator: string, approved: boolean}, []>(

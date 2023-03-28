@@ -428,7 +428,7 @@ export const ABI_JSON = [
             },
             {
                 "type": "bytes",
-                "name": "_data"
+                "name": "data"
             }
         ],
         "outputs": []

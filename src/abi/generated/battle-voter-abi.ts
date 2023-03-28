@@ -68,6 +68,9 @@ export const functions = {
     isApprovedForAll: new Func<[owner: string, operator: string], {owner: string, operator: string}, boolean>(
         abi, '0xe985e9c5'
     ),
+    lpZoo: new Func<[], {}, string>(
+        abi, '0x47761012'
+    ),
     name: new Func<[], {}, string>(
         abi, '0x06fdde03'
     ),
@@ -86,7 +89,7 @@ export const functions = {
     'safeTransferFrom(address,address,uint256)': new Func<[from: string, to: string, tokenId: ethers.BigNumber], {from: string, to: string, tokenId: ethers.BigNumber}, []>(
         abi, '0x42842e0e'
     ),
-    'safeTransferFrom(address,address,uint256,bytes)': new Func<[from: string, to: string, tokenId: ethers.BigNumber, _data: string], {from: string, to: string, tokenId: ethers.BigNumber, _data: string}, []>(
+    'safeTransferFrom(address,address,uint256,bytes)': new Func<[from: string, to: string, tokenId: ethers.BigNumber, data: string], {from: string, to: string, tokenId: ethers.BigNumber, data: string}, []>(
         abi, '0xb88d4fde'
     ),
     setApprovalForAll: new Func<[operator: string, approved: boolean], {operator: string, approved: boolean}, []>(
@@ -140,6 +143,10 @@ export class Contract extends ContractBase {
 
     isApprovedForAll(owner: string, operator: string): Promise<boolean> {
         return this.eth_call(functions.isApprovedForAll, [owner, operator])
+    }
+
+    lpZoo(): Promise<string> {
+        return this.eth_call(functions.lpZoo, [])
     }
 
     name(): Promise<string> {

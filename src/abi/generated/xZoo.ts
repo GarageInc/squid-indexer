@@ -68,7 +68,7 @@ export const functions = {
     'safeTransferFrom(address,address,uint256)': new Func<[from: string, to: string, tokenId: ethers.BigNumber], {from: string, to: string, tokenId: ethers.BigNumber}, []>(
         abi, '0x42842e0e'
     ),
-    'safeTransferFrom(address,address,uint256,bytes)': new Func<[from: string, to: string, tokenId: ethers.BigNumber, _data: string], {from: string, to: string, tokenId: ethers.BigNumber, _data: string}, []>(
+    'safeTransferFrom(address,address,uint256,bytes)': new Func<[from: string, to: string, tokenId: ethers.BigNumber, data: string], {from: string, to: string, tokenId: ethers.BigNumber, data: string}, []>(
         abi, '0xb88d4fde'
     ),
     setApprovalForAll: new Func<[operator: string, approved: boolean], {operator: string, approved: boolean}, []>(
@@ -89,13 +89,13 @@ export const functions = {
     symbol: new Func<[], {}, string>(
         abi, '0x95d89b41'
     ),
-    tokenOfOwnerByIndex: new Func<[string, ethers.BigNumber], {}, ethers.BigNumber>(
+    tokenOfOwnerByIndex: new Func<[_: string, _: ethers.BigNumber], {}, ethers.BigNumber>(
         abi, '0x2f745c59'
     ),
     tokenURI: new Func<[tokenId: ethers.BigNumber], {tokenId: ethers.BigNumber}, string>(
         abi, '0xc87b56dd'
     ),
-    totalStakedZoo: new Func<[ethers.BigNumber], {}, ethers.BigNumber>(
+    totalStakedZoo: new Func<[_: ethers.BigNumber], {}, ethers.BigNumber>(
         abi, '0x666ae487'
     ),
     transferFrom: new Func<[from: string, to: string, tokenId: ethers.BigNumber], {from: string, to: string, tokenId: ethers.BigNumber}, []>(
@@ -116,7 +116,7 @@ export const functions = {
     withdrawZoo: new Func<[positionId: ethers.BigNumber, amount: ethers.BigNumber, beneficiary: string], {positionId: ethers.BigNumber, amount: ethers.BigNumber, beneficiary: string}, []>(
         abi, '0x2f1741e5'
     ),
-    xZooPositions: new Func<[ethers.BigNumber], {}, ([amount: ethers.BigNumber, startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, yTokensDebt: ethers.BigNumber] & {amount: ethers.BigNumber, startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, yTokensDebt: ethers.BigNumber})>(
+    xZooPositions: new Func<[_: ethers.BigNumber], {}, ([amount: ethers.BigNumber, startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, yTokensDebt: ethers.BigNumber] & {amount: ethers.BigNumber, startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, yTokensDebt: ethers.BigNumber})>(
         abi, '0xa268ba99'
     ),
     zoo: new Func<[], {}, string>(

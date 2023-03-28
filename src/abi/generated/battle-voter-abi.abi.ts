@@ -18,6 +18,10 @@ export const ABI_JSON = [
             {
                 "type": "address",
                 "name": "_zoo"
+            },
+            {
+                "type": "address",
+                "name": "_lpZoo"
             }
         ]
     },
@@ -422,6 +426,19 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
+        "name": "lpZoo",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [],
+        "outputs": [
+            {
+                "type": "address"
+            }
+        ]
+    },
+    {
+        "type": "function",
         "name": "name",
         "constant": true,
         "stateMutability": "view",
@@ -526,7 +543,7 @@ export const ABI_JSON = [
             },
             {
                 "type": "bytes",
-                "name": "_data"
+                "name": "data"
             }
         ],
         "outputs": []

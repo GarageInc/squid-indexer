@@ -41,11 +41,11 @@ import * as jackpotAbi from './abi/generated/jackpot'
 import { ZooUnlocked } from './model/generated/zooUnlocked.model'
 import { VotedForCollection } from './model/generated/votedForCollection.model'
 import {
-  BATTLE_STAKER_MOONBEAM,
-  BATTLE_VOTER_MOONBEAM,
-  JACKPOT_A_MOONBEAM,
-  JACKPOT_B_MOONBEAM,
-  X_ZOO_MOONBEAM,
+  BATTLE_STAKER_ARBITRUM,
+  BATTLE_VOTER_ARBITRUM,
+  JACKPOT_A_ARBITRUM,
+  JACKPOT_B_ARBITRUM,
+  X_ZOO_ARBITRUM,
 } from './contract'
 import { BigNumber } from 'ethers'
 import { fetchNftScan, getMoonbeamNftAPI } from './nft-scan'
@@ -621,7 +621,7 @@ export async function saveFaucetGiven(
   await ctx.store.save([...transfers])
 }
 async function getTargetProject(ctx: Context, positionId: string, block: SubstrateBlock, newId: string) {
-  const staker = new stakerAbi.Contract(ctx, { height: block.height }, BATTLE_STAKER_MOONBEAM)
+  const staker = new stakerAbi.Contract(ctx, { height: block.height }, BATTLE_STAKER_ARBITRUM)
   const data = await staker.positions(BigNumber.from(positionId))
 
   const { token, id } = data
@@ -982,7 +982,7 @@ export const saveVotingsTransferred = async (
   ctx: Context,
   transfersData: { e: ReturnType<typeof erc721.events.Transfer.decode>; event: EvmLogEvent; block: SubstrateBlock }[]
 ) => {
-  await saveTransfersERC721(ctx, transfersData, BATTLE_VOTER_MOONBEAM)
+  await saveTransfersERC721(ctx, transfersData, BATTLE_VOTER_ARBITRUM)
 
   const list: CreatedVotingPosition[] = []
   for (const t of transfersData) {
@@ -1004,7 +1004,7 @@ export const saveStakingsTransferred = async (
   ctx: Context,
   transfersData: { e: ReturnType<typeof erc721.events.Transfer.decode>; event: EvmLogEvent; block: SubstrateBlock }[]
 ) => {
-  await saveTransfersERC721(ctx, transfersData, BATTLE_STAKER_MOONBEAM)
+  await saveTransfersERC721(ctx, transfersData, BATTLE_STAKER_ARBITRUM)
 
   const list: CreatedStakerPosition[] = []
   for (const t of transfersData) {
@@ -1026,7 +1026,7 @@ export const saveXZooTransferred = async (
   ctx: Context,
   transfersData: { e: ReturnType<typeof erc721.events.Transfer.decode>; event: EvmLogEvent; block: SubstrateBlock }[]
 ) => {
-  await saveTransfersERC721(ctx, transfersData, X_ZOO_MOONBEAM)
+  await saveTransfersERC721(ctx, transfersData, X_ZOO_ARBITRUM)
 
   const list: XZooStaked[] = []
   for (const t of transfersData) {
@@ -1051,7 +1051,7 @@ export const saveJackpotTransferred = async (
 ) => {
   const isA = type === 'A'
 
-  await saveTransfersERC721(ctx, transfersData, isA ? JACKPOT_A_MOONBEAM : JACKPOT_B_MOONBEAM)
+  await saveTransfersERC721(ctx, transfersData, isA ? JACKPOT_A_ARBITRUM : JACKPOT_B_ARBITRUM)
 
   const list: JackpotStaked[] = []
 

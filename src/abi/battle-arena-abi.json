@@ -1,7 +1,7 @@
 [
   {
     "inputs": [
-      { "internalType": "contract IERC20Metadata", "name": "_zoo", "type": "address" },
+      { "internalType": "contract ERC4626", "name": "_lpZoo", "type": "address" },
       { "internalType": "contract IERC20Metadata", "name": "_dai", "type": "address" },
       { "internalType": "address", "name": "_vault", "type": "address" },
       { "internalType": "address", "name": "_zooGovernance", "type": "address" },
@@ -9,9 +9,7 @@
       { "internalType": "address", "name": "_teamAddress", "type": "address" },
       { "internalType": "address", "name": "_nftStakingPosition", "type": "address" },
       { "internalType": "address", "name": "_nftVotingPosition", "type": "address" },
-      { "internalType": "address", "name": "_veZoo", "type": "address" },
-      { "internalType": "address", "name": "_controller", "type": "address" },
-      { "internalType": "contract IERC20Metadata", "name": "_well", "type": "address" }
+      { "internalType": "address", "name": "_veZoo", "type": "address" }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
@@ -348,16 +346,6 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "name": "debtOfPosition",
-    "outputs": [
-      { "internalType": "uint256", "name": "wells", "type": "uint256" },
-      { "internalType": "uint256", "name": "glmrs", "type": "uint256" }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "epochDuration",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
@@ -401,6 +389,13 @@
   },
   {
     "inputs": [],
+    "name": "gauge",
+    "outputs": [{ "internalType": "contract IGauge", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "getCurrentStage",
     "outputs": [{ "internalType": "enum Stage", "name": "", "type": "uint8" }],
     "stateMutability": "view",
@@ -428,8 +423,8 @@
     "name": "getPendingVoterReward",
     "outputs": [
       { "internalType": "uint256", "name": "yTokens", "type": "uint256" },
-      { "internalType": "uint256", "name": "wells", "type": "uint256" },
-      { "internalType": "uint256", "name": "glmrs", "type": "uint256" }
+      { "internalType": "uint256", "name": "", "type": "uint256" },
+      { "internalType": "uint256", "name": "", "type": "uint256" }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -442,18 +437,13 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "name": "glmrClaimedByEpoch",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       { "internalType": "address", "name": "_xZoo", "type": "address" },
       { "internalType": "address", "name": "_jackpotA", "type": "address" },
       { "internalType": "address", "name": "_jackpotB", "type": "address" },
-      { "internalType": "address payable", "name": "_wglmr", "type": "address" }
+      { "internalType": "address", "name": "_veBal", "type": "address" },
+      { "internalType": "address", "name": "_gauge", "type": "address" },
+      { "internalType": "uint256", "name": "_zooVoteRate", "type": "uint256" }
     ],
     "name": "init",
     "outputs": [],
@@ -485,6 +475,13 @@
     "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "name": "lastUpdatesOfStakedNumbers",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "lpZoo",
+    "outputs": [{ "internalType": "contract ERC4626", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -654,24 +651,10 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "tokenController",
-    "outputs": [{ "internalType": "contract ControllerInterface", "name": "", "type": "address" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [{ "internalType": "uint256", "name": "tokens", "type": "uint256" }],
     "name": "tokensToShares",
     "outputs": [{ "internalType": "uint256", "name": "shares", "type": "uint256" }],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "name": "totalActiveVotesByEpoch",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -705,6 +688,13 @@
   },
   {
     "inputs": [],
+    "name": "veBal",
+    "outputs": [{ "internalType": "contract IVeBalRewardDistributor", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "veZoo",
     "outputs": [{ "internalType": "contract ListingList", "name": "", "type": "address" }],
     "stateMutability": "view",
@@ -727,27 +717,6 @@
       { "internalType": "uint256", "name": "yTokensRewardDebt", "type": "uint256" },
       { "internalType": "uint256", "name": "lastEpochOfIncentiveReward", "type": "uint256" }
     ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "wGlmr",
-    "outputs": [{ "internalType": "address payable", "name": "", "type": "address" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "well",
-    "outputs": [{ "internalType": "contract IERC20Metadata", "name": "", "type": "address" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "name": "wellClaimedByEpoch",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -792,13 +761,6 @@
   },
   {
     "inputs": [],
-    "name": "zoo",
-    "outputs": [{ "internalType": "contract IERC20Metadata", "name": "", "type": "address" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "zooFunctions",
     "outputs": [{ "internalType": "contract IZooFunctions", "name": "", "type": "address" }],
     "stateMutability": "view",
@@ -811,5 +773,11 @@
     "stateMutability": "view",
     "type": "function"
   },
-  { "stateMutability": "payable", "type": "receive" }
+  {
+    "inputs": [],
+    "name": "zooVoteRate",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  }
 ]

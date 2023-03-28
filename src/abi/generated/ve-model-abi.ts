@@ -47,13 +47,13 @@ export const functions = {
     batchAllowNewContract: new Func<[tokens: Array<string>, royalteRecipients: Array<string>], {tokens: Array<string>, royalteRecipients: Array<string>}, []>(
         abi, '0x9f94ad9c'
     ),
-    collectionRecords: new Func<[string, ethers.BigNumber], {}, ([decayRate: ethers.BigNumber, rateOfIncrease: ethers.BigNumber, weightAtTheStart: ethers.BigNumber] & {decayRate: ethers.BigNumber, rateOfIncrease: ethers.BigNumber, weightAtTheStart: ethers.BigNumber})>(
+    collectionRecords: new Func<[_: string, _: ethers.BigNumber], {}, ([decayRate: ethers.BigNumber, rateOfIncrease: ethers.BigNumber, weightAtTheStart: ethers.BigNumber] & {decayRate: ethers.BigNumber, rateOfIncrease: ethers.BigNumber, weightAtTheStart: ethers.BigNumber})>(
         abi, '0xd13d9cab'
     ),
     disallowContractFromStaking: new Func<[collection: string, recipient: string], {collection: string, recipient: string}, []>(
         abi, '0x2f6ea097'
     ),
-    eligibleCollections: new Func<[string], {}, boolean>(
+    eligibleCollections: new Func<[_: string], {}, boolean>(
         abi, '0x65845b78'
     ),
     endEpochOfIncentiveRewards: new Func<[], {}, ethers.BigNumber>(
@@ -74,7 +74,7 @@ export const functions = {
     isApprovedForAll: new Func<[owner: string, operator: string], {owner: string, operator: string}, boolean>(
         abi, '0xe985e9c5'
     ),
-    lastUpdatedEpochsForCollection: new Func<[string], {}, ethers.BigNumber>(
+    lastUpdatedEpochsForCollection: new Func<[_: string], {}, ethers.BigNumber>(
         abi, '0x1a70ff3b'
     ),
     maxTimelock: new Func<[], {}, ethers.BigNumber>(
@@ -101,13 +101,13 @@ export const functions = {
     renounceOwnership: new Func<[], {}, []>(
         abi, '0x715018a6'
     ),
-    royalteRecipient: new Func<[string], {}, string>(
+    royalteRecipient: new Func<[_: string], {}, string>(
         abi, '0xb79c5f5d'
     ),
     'safeTransferFrom(address,address,uint256)': new Func<[from: string, to: string, tokenId: ethers.BigNumber], {from: string, to: string, tokenId: ethers.BigNumber}, []>(
         abi, '0x42842e0e'
     ),
-    'safeTransferFrom(address,address,uint256,bytes)': new Func<[from: string, to: string, tokenId: ethers.BigNumber, _data: string], {from: string, to: string, tokenId: ethers.BigNumber, _data: string}, []>(
+    'safeTransferFrom(address,address,uint256,bytes)': new Func<[from: string, to: string, tokenId: ethers.BigNumber, data: string], {from: string, to: string, tokenId: ethers.BigNumber, data: string}, []>(
         abi, '0xb88d4fde'
     ),
     setApprovalForAll: new Func<[operator: string, approved: boolean], {operator: string, approved: boolean}, []>(
@@ -125,7 +125,7 @@ export const functions = {
     symbol: new Func<[], {}, string>(
         abi, '0x95d89b41'
     ),
-    tokenOfOwnerByIndex: new Func<[string, ethers.BigNumber], {}, ethers.BigNumber>(
+    tokenOfOwnerByIndex: new Func<[_: string, _: ethers.BigNumber], {}, ethers.BigNumber>(
         abi, '0x2f745c59'
     ),
     tokenURI: new Func<[tokenId: ethers.BigNumber], {tokenId: ethers.BigNumber}, string>(
@@ -146,7 +146,7 @@ export const functions = {
     vePositionIndex: new Func<[], {}, ethers.BigNumber>(
         abi, '0x141d7e8b'
     ),
-    vePositions: new Func<[ethers.BigNumber], {}, ([expirationDate: ethers.BigNumber, zooLocked: ethers.BigNumber, collection: string, decayRate: ethers.BigNumber] & {expirationDate: ethers.BigNumber, zooLocked: ethers.BigNumber, collection: string, decayRate: ethers.BigNumber})>(
+    vePositions: new Func<[_: ethers.BigNumber], {}, ([expirationDate: ethers.BigNumber, zooLocked: ethers.BigNumber, collection: string, decayRate: ethers.BigNumber] & {expirationDate: ethers.BigNumber, zooLocked: ethers.BigNumber, collection: string, decayRate: ethers.BigNumber})>(
         abi, '0xc87489ab'
     ),
     voteForNftCollection: new Func<[collection: string, amount: ethers.BigNumber, lockTime: ethers.BigNumber], {collection: string, amount: ethers.BigNumber, lockTime: ethers.BigNumber}, []>(

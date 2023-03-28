@@ -5,7 +5,7 @@ export const ABI_JSON = [
         "inputs": [
             {
                 "type": "address",
-                "name": "_zoo"
+                "name": "_lpZoo"
             },
             {
                 "type": "address",
@@ -38,14 +38,6 @@ export const ABI_JSON = [
             {
                 "type": "address",
                 "name": "_veZoo"
-            },
-            {
-                "type": "address",
-                "name": "_controller"
-            },
-            {
-                "type": "address",
-                "name": "_well"
             }
         ]
     },
@@ -881,28 +873,6 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
-        "name": "debtOfPosition",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [
-            {
-                "type": "uint256"
-            }
-        ],
-        "outputs": [
-            {
-                "type": "uint256",
-                "name": "wells"
-            },
-            {
-                "type": "uint256",
-                "name": "glmrs"
-            }
-        ]
-    },
-    {
-        "type": "function",
         "name": "epochDuration",
         "constant": true,
         "stateMutability": "view",
@@ -985,6 +955,19 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
+        "name": "gauge",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [],
+        "outputs": [
+            {
+                "type": "address"
+            }
+        ]
+    },
+    {
+        "type": "function",
         "name": "getCurrentStage",
         "constant": true,
         "stateMutability": "view",
@@ -1056,12 +1039,10 @@ export const ABI_JSON = [
                 "name": "yTokens"
             },
             {
-                "type": "uint256",
-                "name": "wells"
+                "type": "uint256"
             },
             {
-                "type": "uint256",
-                "name": "glmrs"
+                "type": "uint256"
             }
         ]
     },
@@ -1076,23 +1057,6 @@ export const ABI_JSON = [
             {
                 "type": "uint256",
                 "name": "amount"
-            }
-        ]
-    },
-    {
-        "type": "function",
-        "name": "glmrClaimedByEpoch",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [
-            {
-                "type": "uint256"
-            }
-        ],
-        "outputs": [
-            {
-                "type": "uint256"
             }
         ]
     },
@@ -1116,7 +1080,15 @@ export const ABI_JSON = [
             },
             {
                 "type": "address",
-                "name": "_wglmr"
+                "name": "_veBal"
+            },
+            {
+                "type": "address",
+                "name": "_gauge"
+            },
+            {
+                "type": "uint256",
+                "name": "_zooVoteRate"
             }
         ],
         "outputs": []
@@ -1178,6 +1150,19 @@ export const ABI_JSON = [
         "outputs": [
             {
                 "type": "uint256"
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "lpZoo",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [],
+        "outputs": [
+            {
+                "type": "address"
             }
         ]
     },
@@ -1531,19 +1516,6 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
-        "name": "tokenController",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [],
-        "outputs": [
-            {
-                "type": "address"
-            }
-        ]
-    },
-    {
-        "type": "function",
         "name": "tokensToShares",
         "constant": false,
         "payable": false,
@@ -1557,23 +1529,6 @@ export const ABI_JSON = [
             {
                 "type": "uint256",
                 "name": "shares"
-            }
-        ]
-    },
-    {
-        "type": "function",
-        "name": "totalActiveVotesByEpoch",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [
-            {
-                "type": "uint256"
-            }
-        ],
-        "outputs": [
-            {
-                "type": "uint256"
             }
         ]
     },
@@ -1627,6 +1582,19 @@ export const ABI_JSON = [
     {
         "type": "function",
         "name": "vault",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [],
+        "outputs": [
+            {
+                "type": "address"
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "veBal",
         "constant": true,
         "stateMutability": "view",
         "payable": false,
@@ -1709,49 +1677,6 @@ export const ABI_JSON = [
             {
                 "type": "uint256",
                 "name": "lastEpochOfIncentiveReward"
-            }
-        ]
-    },
-    {
-        "type": "function",
-        "name": "wGlmr",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [],
-        "outputs": [
-            {
-                "type": "address"
-            }
-        ]
-    },
-    {
-        "type": "function",
-        "name": "well",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [],
-        "outputs": [
-            {
-                "type": "address"
-            }
-        ]
-    },
-    {
-        "type": "function",
-        "name": "wellClaimedByEpoch",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [
-            {
-                "type": "uint256"
-            }
-        ],
-        "outputs": [
-            {
-                "type": "uint256"
             }
         ]
     },
@@ -1841,19 +1766,6 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
-        "name": "zoo",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [],
-        "outputs": [
-            {
-                "type": "address"
-            }
-        ]
-    },
-    {
-        "type": "function",
         "name": "zooFunctions",
         "constant": true,
         "stateMutability": "view",
@@ -1875,6 +1787,19 @@ export const ABI_JSON = [
         "outputs": [
             {
                 "type": "address"
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "zooVoteRate",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [],
+        "outputs": [
+            {
+                "type": "uint256"
             }
         ]
     }

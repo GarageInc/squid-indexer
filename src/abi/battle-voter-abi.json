@@ -4,7 +4,8 @@
       { "internalType": "string", "name": "_name", "type": "string" },
       { "internalType": "string", "name": "_symbol", "type": "string" },
       { "internalType": "address", "name": "_dai", "type": "address" },
-      { "internalType": "address", "name": "_zoo", "type": "address" }
+      { "internalType": "address", "name": "_zoo", "type": "address" },
+      { "internalType": "address", "name": "_lpZoo", "type": "address" }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
@@ -200,6 +201,13 @@
   },
   {
     "inputs": [],
+    "name": "lpZoo",
+    "outputs": [{ "internalType": "contract ERC4626", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "name",
     "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
     "stateMutability": "view",
@@ -243,7 +251,7 @@
       { "internalType": "address", "name": "from", "type": "address" },
       { "internalType": "address", "name": "to", "type": "address" },
       { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
-      { "internalType": "bytes", "name": "_data", "type": "bytes" }
+      { "internalType": "bytes", "name": "data", "type": "bytes" }
     ],
     "name": "safeTransferFrom",
     "outputs": [],
@@ -261,7 +269,7 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "address payable", "name": "_nftBattleArena", "type": "address" }],
+    "inputs": [{ "internalType": "address", "name": "_nftBattleArena", "type": "address" }],
     "name": "setNftBattleArena",
     "outputs": [],
     "stateMutability": "nonpayable",

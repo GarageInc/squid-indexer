@@ -1,4 +1,4 @@
-export const CHAIN_NODE = 'wss://arb1.arbitrum.io/feed'
+export const CHAIN_NODE = 'wss://arbitrum-one.public.blastapi.io' // 'wss://arb1.arbitrum.io/feed'
 
 export const BATTLE_STAKER_ARBITRUM = '0x7f2F4B005C6b0A8B64cbD28C4f9640C08d6C20B4'.toLowerCase()
 export const BATTLE_VOTER_ARBITRUM = '0xa6E90F0997afE9F0Bf8d2193D58C1C23993349E7'.toLowerCase()

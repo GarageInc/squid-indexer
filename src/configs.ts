@@ -50,7 +50,7 @@ export const processor = new SubstrateBatchProcessor()
   .setBlockRange({ from: FROM })
   .setDataSource({
     chain: CHAIN_NODE,
-    archive: lookupArchive('moonbeam', { release: 'FireSquid' }),
+    archive: lookupArchive('moonbeam', { release: 'FireSquid', type: 'Substrate' }),
   })
   .setTypesBundle('moonbeam')
   .addEvmLog(BATTLE_ARENA_MOONBEAM, {

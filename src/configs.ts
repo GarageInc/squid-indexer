@@ -1,5 +1,6 @@
 import { lookupArchive } from '@subsquid/archive-registry'
-import { SubstrateBatchProcessor, BatchProcessorItem, BatchContext } from '@subsquid/substrate-processor'
+import { EvmBatchProcessor, LogHandlerContext, BatchHandlerContext, BatchProcessorItem } from '@subsquid/evm-processor'
+import { LogDataRequest, LogRequest, TransactionRequest } from '@subsquid/evm-processor/lib/interfaces/dataSelection'
 import { TypeormDatabase, Store } from '@subsquid/typeorm-store'
 import {
   CHAIN_NODE,
@@ -29,7 +30,6 @@ import {
   ClaimedIncentiveRewardFromStakingT,
   VotedForCollectionT,
   ZooUnlockedT,
-  ZooGivenT,
   xZooClaimedT,
   XZooStakedT,
   xZooWithdrawnT,
@@ -45,131 +45,184 @@ const FROM = 73190022
 
 export const database = new TypeormDatabase()
 
-export const processor = new SubstrateBatchProcessor()
+const DATA_TEMPLATE: LogDataRequest = {
+  evmLog: {
+    data: true,
+    topics: true,
+  },
+  transaction: {
+    hash: true,
+    from: true,
+  },
+}
+
+export const processor = new EvmBatchProcessor()
   .setBlockRange({ from: FROM })
   .setDataSource({
     chain: CHAIN_NODE,
     archive: lookupArchive('arbitrum'),
   })
-  .addEvmLog(BATTLE_ARENA_ARBITRUM, {
-    filter: [CreatedStakerPositionT.topic],
+  .addLog(BATTLE_ARENA_ARBITRUM, {
+    filter: [[CreatedStakerPositionT.topic]],
+    data: DATA_TEMPLATE,
   })
-  .addEvmLog(BATTLE_ARENA_ARBITRUM, {
-    filter: [RemovedStakerPositionT.topic],
+  .addLog(BATTLE_ARENA_ARBITRUM, {
+    filter: [[RemovedStakerPositionT.topic]],
+    data: DATA_TEMPLATE,
   })
-  .addEvmLog(BATTLE_ARENA_ARBITRUM, {
-    filter: [CreatedVotingPositionT.topic],
+  .addLog(BATTLE_ARENA_ARBITRUM, {
+    filter: [[CreatedVotingPositionT.topic]],
+    data: DATA_TEMPLATE,
   })
-  .addEvmLog(BATTLE_ARENA_ARBITRUM, {
-    filter: [LiquidatedVotingPositionT.topic],
+  .addLog(BATTLE_ARENA_ARBITRUM, {
+    filter: [[LiquidatedVotingPositionT.topic]],
+    data: DATA_TEMPLATE,
   })
-  .addEvmLog(BATTLE_ARENA_ARBITRUM, {
-    filter: [AddedDaiToVotingT.topic],
+  .addLog(BATTLE_ARENA_ARBITRUM, {
+    filter: [[AddedDaiToVotingT.topic]],
+    data: DATA_TEMPLATE,
   })
-  .addEvmLog(BATTLE_ARENA_ARBITRUM, {
-    filter: [AddedZooToVotingT.topic],
+  .addLog(BATTLE_ARENA_ARBITRUM, {
+    filter: [[AddedZooToVotingT.topic]],
+    data: DATA_TEMPLATE,
   })
-  .addEvmLog(BATTLE_ARENA_ARBITRUM, {
-    filter: [WithdrawedDaiFromVotingT.topic],
+  .addLog(BATTLE_ARENA_ARBITRUM, {
+    filter: [[WithdrawedDaiFromVotingT.topic]],
+    data: DATA_TEMPLATE,
   })
-  .addEvmLog(BATTLE_ARENA_ARBITRUM, {
-    filter: [WithdrawedZooFromVotingT.topic],
+  .addLog(BATTLE_ARENA_ARBITRUM, {
+    filter: [[WithdrawedZooFromVotingT.topic]],
+    data: DATA_TEMPLATE,
   })
-  .addEvmLog(BATTLE_ARENA_ARBITRUM, {
-    filter: [PairedNftT.topic],
+  .addLog(BATTLE_ARENA_ARBITRUM, {
+    filter: [[PairedNftT.topic]],
+    data: DATA_TEMPLATE,
   })
-  .addEvmLog(BATTLE_ARENA_ARBITRUM, {
-    filter: [ChosenWinnerT.topic],
+  .addLog(BATTLE_ARENA_ARBITRUM, {
+    filter: [[ChosenWinnerT.topic]],
+    data: DATA_TEMPLATE,
   })
-  .addEvmLog(BATTLE_ARENA_ARBITRUM, {
-    filter: [ClaimedRewardFromStakingT.topic],
+  .addLog(BATTLE_ARENA_ARBITRUM, {
+    filter: [[ClaimedRewardFromStakingT.topic]],
+    data: DATA_TEMPLATE,
   })
-  .addEvmLog(BATTLE_ARENA_ARBITRUM, {
-    filter: [ClaimedRewardFromVotingT.topic],
-  })
-
-processor
-  .addEvmLog(BATTLE_VOTER_ARBITRUM, {
-    filter: [ClaimedIncentiveRewardFromVotingT.topic],
-  })
-  .addEvmLog(BATTLE_STAKER_ARBITRUM, {
-    filter: [ClaimedIncentiveRewardFromStakingT.topic],
-  })
-
-processor
-  .addEvmLog(VE_MODEL_ARBITRUM, {
-    filter: [VotedForCollectionT.topic],
-  })
-  .addEvmLog(VE_MODEL_ARBITRUM, {
-    filter: [ZooUnlockedT.topic],
+  .addLog(BATTLE_ARENA_ARBITRUM, {
+    filter: [[ClaimedRewardFromVotingT.topic]],
+    data: DATA_TEMPLATE,
   })
 
-processor
-  .addEvmLog(X_ZOO_ARBITRUM, {
-    filter: [xZooClaimedT.topic],
-  })
-  .addEvmLog(X_ZOO_ARBITRUM, {
-    filter: [XZooStakedT.topic],
-  })
-  .addEvmLog(X_ZOO_ARBITRUM, {
-    filter: [xZooWithdrawnT.topic],
-  })
-
-processor
-  .addEvmLog(JACKPOT_A_ARBITRUM, {
-    filter: [JackpotClaimedT.topic],
-  })
-  .addEvmLog(JACKPOT_A_ARBITRUM, {
-    filter: [JackpotStakedT.topic],
-  })
-
-processor
-  .addEvmLog(JACKPOT_A_ARBITRUM, {
-    filter: [JackpotUnstakedT.topic],
-  })
-  .addEvmLog(JACKPOT_A_ARBITRUM, {
-    filter: [JackpotWinnedT.topic],
-  })
-
-processor
-  .addEvmLog(JACKPOT_B_ARBITRUM, {
-    filter: [JackpotClaimedT.topic],
-  })
-  .addEvmLog(JACKPOT_B_ARBITRUM, {
-    filter: [JackpotStakedT.topic],
-  })
-
-processor
-  .addEvmLog(JACKPOT_B_ARBITRUM, {
-    filter: [JackpotUnstakedT.topic],
-  })
-  .addEvmLog(JACKPOT_B_ARBITRUM, {
-    filter: [JackpotWinnedT.topic],
-  })
-
-processor
-  .addEvmLog(JACKPOT_A_ARBITRUM, {
-    filter: [TransferERC721T.topic],
-  })
-  .addEvmLog(JACKPOT_B_ARBITRUM, {
-    filter: [TransferERC721T.topic],
-  })
-
-processor
-  .addEvmLog(BATTLE_VOTER_ARBITRUM, {
-    filter: [TransferERC721T.topic],
-  })
-  .addEvmLog(BATTLE_STAKER_ARBITRUM, {
-    filter: [TransferERC721T.topic],
-  })
-
-processor.addEvmLog(X_ZOO_ARBITRUM, {
-  filter: [TransferERC721T.topic],
+processor.addLog(BATTLE_VOTER_ARBITRUM, {
+  filter: [[ClaimedIncentiveRewardFromVotingT.topic]],
+  data: DATA_TEMPLATE,
 })
 
-processor.addEvmLog(fsGLP, {
-  filter: [TransferErc20T.topic],
+processor.addLog(BATTLE_STAKER_ARBITRUM, {
+  filter: [[ClaimedIncentiveRewardFromStakingT.topic]],
+  data: DATA_TEMPLATE,
 })
 
-export type Item = BatchProcessorItem<typeof processor>
-export type Context = BatchContext<Store, Item>
+processor.addLog(VE_MODEL_ARBITRUM, {
+  filter: [[VotedForCollectionT.topic]],
+  data: DATA_TEMPLATE,
+})
+
+processor.addLog(VE_MODEL_ARBITRUM, {
+  filter: [[ZooUnlockedT.topic]],
+  data: DATA_TEMPLATE,
+})
+
+processor.addLog(JACKPOT_A_ARBITRUM, {
+  filter: [[JackpotClaimedT.topic]],
+  data: DATA_TEMPLATE,
+})
+processor.addLog(JACKPOT_A_ARBITRUM, {
+  filter: [[JackpotStakedT.topic]],
+  data: DATA_TEMPLATE,
+})
+
+processor.addLog(JACKPOT_A_ARBITRUM, {
+  filter: [[JackpotUnstakedT.topic]],
+  data: DATA_TEMPLATE,
+})
+processor.addLog(JACKPOT_A_ARBITRUM, {
+  filter: [[JackpotWinnedT.topic]],
+  data: DATA_TEMPLATE,
+})
+
+processor.addLog(JACKPOT_B_ARBITRUM, {
+  filter: [[JackpotClaimedT.topic]],
+  data: DATA_TEMPLATE,
+})
+processor.addLog(JACKPOT_B_ARBITRUM, {
+  filter: [[JackpotStakedT.topic]],
+  data: DATA_TEMPLATE,
+})
+
+processor.addLog(JACKPOT_B_ARBITRUM, {
+  filter: [[JackpotUnstakedT.topic]],
+  data: DATA_TEMPLATE,
+})
+processor.addLog(JACKPOT_B_ARBITRUM, {
+  filter: [[JackpotWinnedT.topic]],
+  data: DATA_TEMPLATE,
+})
+
+processor.addLog(JACKPOT_A_ARBITRUM, {
+  filter: [[TransferERC721T.topic]],
+  data: DATA_TEMPLATE,
+})
+processor.addLog(JACKPOT_B_ARBITRUM, {
+  filter: [[TransferERC721T.topic]],
+  data: DATA_TEMPLATE,
+})
+
+processor.addLog(BATTLE_VOTER_ARBITRUM, {
+  filter: [[TransferERC721T.topic]],
+  data: DATA_TEMPLATE,
+})
+processor.addLog(BATTLE_STAKER_ARBITRUM, {
+  filter: [[TransferERC721T.topic]],
+  data: DATA_TEMPLATE,
+})
+
+processor.addLog(X_ZOO_ARBITRUM, {
+  filter: [[TransferERC721T.topic]],
+  data: DATA_TEMPLATE,
+})
+
+processor.addLog(fsGLP, {
+  filter: [[TransferErc20T.topic]],
+  data: DATA_TEMPLATE,
+})
+
+processor.addLog(X_ZOO_ARBITRUM, {
+  filter: [[xZooClaimedT.topic]],
+  data: DATA_TEMPLATE,
+})
+
+processor.addLog(X_ZOO_ARBITRUM, {
+  filter: [[XZooStakedT.topic]],
+  data: DATA_TEMPLATE,
+})
+
+processor.addLog(X_ZOO_ARBITRUM, {
+  filter: [[xZooWithdrawnT.topic]],
+  data: DATA_TEMPLATE,
+})
+
+export type LogEventItem = BatchProcessorItem<typeof processor>
+export type Context = BatchHandlerContext<Store, LogEventItem>
+
+export type LogContext = LogHandlerContext<
+  Store,
+  {
+    evmLog: {
+      data: true
+      topics: true
+    }
+    transaction: {
+      hash: true
+      from: true
+    }
+  }
+>

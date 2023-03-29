@@ -1161,6 +1161,24 @@
     glob "^8.1.0"
     supports-color "^8.1.1"
 
+"@subsquid/evm-processor@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@subsquid/evm-processor/-/evm-processor-0.4.0.tgz#a5b02b60e85adc14e005f82191258117b0684468"
+  integrity sha512-gDvJEtOiVuC7eX4m89o9e6mgrdGp6DYqLFrDt+qd9kGBruj0ZsoygqKjkaDC4QbmbxV/CXOUyZX9j07+pdGEPw==
+  dependencies:
+    "@subsquid/logger" "^0.3.0"
+    "@subsquid/rpc-client" "^1.0.2"
+    "@subsquid/typeorm-config" "^2.0.0"
+    "@subsquid/util-internal" "^1.0.0"
+    "@subsquid/util-internal-binary-heap" "^0.0.0"
+    "@subsquid/util-internal-code-printer" "^0.1.0"
+    "@subsquid/util-internal-counters" "^0.0.1"
+    "@subsquid/util-internal-hex" "^0.0.1"
+    "@subsquid/util-internal-prometheus-server" "^0.0.2"
+    "@subsquid/util-xxhash" "^0.1.1"
+    node-fetch "^2.6.8"
+    prom-client "^14.1.1"
+
 "@subsquid/evm-typegen@2.1.1":
   version "2.1.1"
   resolved "https://registry.npmjs.org/@subsquid/evm-typegen/-/evm-typegen-2.1.1.tgz"
@@ -1209,7 +1227,7 @@
     pg "^8.9.0"
     ws "^8.12.0"
 
-"@subsquid/logger@^0.3.1":
+"@subsquid/logger@^0.3.0", "@subsquid/logger@^0.3.1":
   version "0.3.1"
   resolved "https://registry.npmjs.org/@subsquid/logger/-/logger-0.3.1.tgz"
   integrity sha512-Hi0aWeVgK0OZ3L2KxRejLCHIBIs6k3AR8FEb9RCKgQvqHK8DDNuMFANo4obHqXDZpDF+Ef+T050Oz5n4O1u3lA==
@@ -1241,6 +1259,14 @@
     graphql-ws "^5.11.3"
     pg "^8.9.0"
     ws "^8.12.0"
+
+"@subsquid/rpc-client@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@subsquid/rpc-client/-/rpc-client-1.0.2.tgz#d072f3933b7f0b040a49c37d3f8149ac4c898cd4"
+  integrity sha512-/z4cG3+yvRHkE0DZUyhTcyTvFPMo+DddEmh1eMXu2iFKHzE3XZqO0em04a3BL9HxF0FNXyi7XslGWWLsiKnm3Q==
+  dependencies:
+    "@subsquid/util-timeout" "^0.0.0"
+    websocket "^1.0.34"
 
 "@subsquid/rpc-client@^2.0.0":
   version "2.0.0"
@@ -1344,7 +1370,7 @@
     "@subsquid/util-naming" "^0.0.2"
     commander "^10.0.0"
 
-"@subsquid/typeorm-config@^2.0.2":
+"@subsquid/typeorm-config@^2.0.0", "@subsquid/typeorm-config@^2.0.2":
   version "2.0.2"
   resolved "https://registry.npmjs.org/@subsquid/typeorm-config/-/typeorm-config-2.0.2.tgz"
   integrity sha512-LoyWzhFeNSI9fXnhgYF4MizyGuiBVB7t3je9TFsOTCnOTYSIcDKJJkmCDzobDlA8PgkJ5bFLFilxIFKsVFqt4w==
@@ -1375,7 +1401,7 @@
   resolved "https://registry.npmjs.org/@subsquid/util-internal-binary-heap/-/util-internal-binary-heap-0.0.0.tgz"
   integrity sha512-eVtdf442+L10G4lgSHCcxgNzYEcrdZ3WKy7Y7CGkhKLJhKuOlgDtEwklZmh1/lM+37AQn9XnX/VpxTaJ2vA2sg==
 
-"@subsquid/util-internal-code-printer@^0.1.1":
+"@subsquid/util-internal-code-printer@^0.1.0", "@subsquid/util-internal-code-printer@^0.1.1":
   version "0.1.1"
   resolved "https://registry.npmjs.org/@subsquid/util-internal-code-printer/-/util-internal-code-printer-0.1.1.tgz"
   integrity sha512-367YmYeLoLaOiBdlrYElEC4AeM4Kx0XYWM9mA9VBllGvT9qWNnGllaJ+mY9UBhlhWQtCbUnTRtHXhjR5qL8g1w==
@@ -1393,10 +1419,20 @@
     "@exodus/schemasafe" "^1.0.0-rc.9"
     jsonc-parser "^3.2.0"
 
+"@subsquid/util-internal-counters@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@subsquid/util-internal-counters/-/util-internal-counters-0.0.1.tgz#a9118ad63f8c965606a9b3ad32503009f876f551"
+  integrity sha512-cZOrsBWGDSV+0JuWBesGLxIXaXMG2aclNVsOnfZ3jV1ACXepLF8fM/U1ilaBBXIYxPjEeGoWNCcj0LRSQt6yFQ==
+
 "@subsquid/util-internal-counters@^0.0.2":
   version "0.0.2"
   resolved "https://registry.npmjs.org/@subsquid/util-internal-counters/-/util-internal-counters-0.0.2.tgz"
   integrity sha512-x/O+56bR/X41ZEKjxZy0IqiapKCN9gGJB7G8md+idvGeC15kw8r5pg2Ck9tulB07VQEOqWLNNuvobrfvH0hNkg==
+
+"@subsquid/util-internal-hex@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@subsquid/util-internal-hex/-/util-internal-hex-0.0.1.tgz#13975109bc4ba1fbdf1e84a9bed2e6a20995fab7"
+  integrity sha512-sNok0jQV6+OpAl3QKaH2VFh8PKZyZ6XHZhZ71LeirOhgfVprKFmEvFG9yQIp7qKe7JGXmolX54zu150OMP9f5w==
 
 "@subsquid/util-internal-hex@^0.0.2":
   version "0.0.2"
@@ -1412,7 +1448,7 @@
     "@subsquid/util-internal" "^1.1.0"
     node-fetch "^3.3.0"
 
-"@subsquid/util-internal-http-server@^0.1.1":
+"@subsquid/util-internal-http-server@^0.1.0", "@subsquid/util-internal-http-server@^0.1.1":
   version "0.1.1"
   resolved "https://registry.npmjs.org/@subsquid/util-internal-http-server/-/util-internal-http-server-0.1.1.tgz"
   integrity sha512-Vi7hSBSty5qOvrANNsxCtHASpdhRqmJsrp+hVnQ3PhcrZkGRrcu0O7jkVAZfhptzxMZeQ5r/NXDTt4b/qNSvJg==
@@ -1425,6 +1461,13 @@
   integrity sha512-X9bhhKWBcaeZekGEiE15i8xwfq07/aIYDhA+JFdiVT3aygdb9b57V85USuArd6oh3jjHeQ2SBgj6B5rd8m8vlA==
   dependencies:
     "@subsquid/util-internal-hex" "^0.0.2"
+
+"@subsquid/util-internal-prometheus-server@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@subsquid/util-internal-prometheus-server/-/util-internal-prometheus-server-0.0.2.tgz#36d7c020dfedcf3dea34e9bed3256c778846e5ef"
+  integrity sha512-ODLBH03RkDm34AHkInQ6M5gcm5LCtI9wBAoOlKtqCcgTSIflELJKfmvqGCd3hhPyw0t6PJ2LQayrX3rth/nOqw==
+  dependencies:
+    "@subsquid/util-internal-http-server" "^0.1.0"
 
 "@subsquid/util-internal-prometheus-server@^0.0.3":
   version "0.0.3"
@@ -1463,12 +1506,17 @@
     camelcase "^6.3.0"
     inflected "^2.1.0"
 
+"@subsquid/util-timeout@^0.0.0":
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/@subsquid/util-timeout/-/util-timeout-0.0.0.tgz#af88f292b15b22ed40a2f0ff939140f7fb2e1b89"
+  integrity sha512-xvuGKuIc9Dm0rEu7fVAIaIylASGn1+edwYdG5IpXB9IVz5RGG1oeGJybY98hlcwVKAZfzFSMKnaEDqI9jKYwmg==
+
 "@subsquid/util-timeout@^1.0.0":
   version "1.0.0"
   resolved "https://registry.npmjs.org/@subsquid/util-timeout/-/util-timeout-1.0.0.tgz"
   integrity sha512-6LiXYuRKIFcuUOsHPL3qN+cYDZJiCPGQFDdBECrZvXM/FtjF6dloX9JS4LJ7lMHsnKsu7v78+ioiUYpk1Jlyug==
 
-"@subsquid/util-xxhash@^0.1.2":
+"@subsquid/util-xxhash@^0.1.1", "@subsquid/util-xxhash@^0.1.2":
   version "0.1.2"
   resolved "https://registry.npmjs.org/@subsquid/util-xxhash/-/util-xxhash-0.1.2.tgz"
   integrity sha512-UQ1opUT0vP2wwCYblM5TvDtvKvPy3LLRI4vVlLPXDelroTa5zkWL3LNTC+Niw4Mvac0u3gpqNDknVdKlKrVvhw==
@@ -5291,6 +5339,13 @@ node-fetch@2, node-fetch@^2, node-fetch@^2.6.7:
   version "2.6.8"
   resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.8.tgz"
   integrity sha512-RZ6dBYuj8dRSfxpUSu+NsdF1dpPpluJxwOp+6IoDp/sH2QNDSvurYsAa+F1WxY2RjA1iP93xhcsUoYbF2XBqVg==
+  dependencies:
+    whatwg-url "^5.0.0"
+
+node-fetch@^2.6.8:
+  version "2.6.9"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.9.tgz#7c7f744b5cc6eb5fd404e0c7a9fec630a55657e6"
+  integrity sha512-DJm/CJkZkRjKKj4Zi4BsKVZh3ValV5IR5s7LVZnW+6YMh0W1BfNA8XSs6DLMGYlId5F3KnA70uu2qepcR08Qqg==
   dependencies:
     whatwg-url "^5.0.0"
 

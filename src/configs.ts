@@ -7,7 +7,6 @@ import {
   BATTLE_VOTER_MOONBEAM,
   BATTLE_STAKER_MOONBEAM,
   VE_MODEL_MOONBEAM,
-  FAUCET_MOONBEAM,
   X_ZOO_MOONBEAM,
   JACKPOT_A_MOONBEAM,
   JACKPOT_B_MOONBEAM,
@@ -105,10 +104,6 @@ processor
   .addEvmLog(VE_MODEL_MOONBEAM, {
     filter: [ZooUnlockedT.topic],
   })
-
-processor.addEvmLog(FAUCET_MOONBEAM, {
-  filter: [ZooGivenT.topic],
-})
 
 processor
   .addEvmLog(X_ZOO_MOONBEAM, {

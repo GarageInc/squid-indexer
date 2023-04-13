@@ -46,7 +46,7 @@ import {
   X_ZOO_ARBITRUM,
 } from './contract'
 import { BigNumber } from 'ethers'
-import { fetchNftScan, getMoonbeamNftAPI } from './nft-scan'
+import { fetchNftScan, getArbitrumNftAPI } from './nft-scan'
 import { EvmBlock } from '@subsquid/evm-processor'
 
 const makeId = (event: LogContext) =>
@@ -1073,7 +1073,7 @@ export const saveJackpotTransferred = async (
   }
 }
 const saveNftScanProject = async (ctx: Context, eventId: string, token: string, id: BigNumber) => {
-  const url = getMoonbeamNftAPI(token, id.toString())
+  const url = getArbitrumNftAPI(token, id.toString())
 
   const tokenSaved = await ctx.store.findOneBy(NftScanTokens, {
     tokenId: BigInt(id.toString()),

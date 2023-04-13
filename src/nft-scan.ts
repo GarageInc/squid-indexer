@@ -12,5 +12,5 @@ export const fetchNftScan = (url: string) =>
     },
   }).then((result: any) => result.json())
 
-export const getMoonbeamNftAPI = (token: string, id: string) =>
-  `https://moonbeamapi.nftscan.com/api/v2/assets/${token}/${id}?show_attribute=true`
+export const getArbitrumNftAPI = (token: string, id: string) =>
+  `https://arbitrumapi.nftscan.com/api/v2/assets/${token}/${id}?show_attribute=true`

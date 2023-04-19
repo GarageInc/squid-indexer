@@ -48,7 +48,7 @@ import {
   X_ZOO_MOONBEAM,
 } from './contract'
 import { BigNumber } from 'ethers'
-import { fetchNftScan, getMoonbeamNftAPI } from './nft-scan'
+import { SupportedChainId, fetchNftScan, getMoonbeamNftAPI, saveToBackend } from './nft-scan'
 
 export async function saveAddedDai<T>(
   ctx: Context,
@@ -1092,6 +1092,8 @@ const saveNftScanProject = async (ctx: Context, eventId: string, token: string, 
       })
 
       await ctx.store.save([project])
+
+      await saveToBackend(token, id, SupportedChainId.MOONBEAM)
     }
   }
 }

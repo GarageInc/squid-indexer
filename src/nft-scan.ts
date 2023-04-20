@@ -21,7 +21,7 @@ export const fetchNftScan = (url: string) =>
 export const getMoonbeamNftAPI = (token: string, id: string) =>
   `https://moonbeamapi.nftscan.com/api/v2/assets/${token}/${id}?show_attribute=true`
 
-const BACKEND_URL = 'http://localhost:3001/v1/nfts/save'
+const BACKEND_URL = 'https://stage-api.zoodao.com/v1/nfts/save'
 
 export const saveToBackend = async (token: string, id: BigNumber, chainId: number) => {
   return fetch(BACKEND_URL, {

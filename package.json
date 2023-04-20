@@ -27,8 +27,7 @@
     "logs": "npx sqd squid logs",
     "processor": "node -r dotenv/config lib/processor.js",
     "gql": "npx squid-graphql-server",
-    "release": "npx sqd squid:release zoodao@v9 --source https://github.com/GarageInc/squid-indexer#master",
-    "deploy-prod": "npx sqd squid:prod zoodao@v9"
+    "deploy-prod": "sqd deploy ."
   },
   "dependencies": {
     "@ethersproject/abi": "^5.7.0",

@@ -28,7 +28,7 @@
     "processor": "node -r dotenv/config lib/processor.js",
     "gql": "npx squid-graphql-server",
     "release": "npx sqd squid:release zoodao@arbitrum1 --source https://github.com/GarageInc/squid-indexer#arbitrum",
-    "deploy-prod": "npx sqd squid:prod zoodao@arbitrum1"
+    "deploy-prod": "sqd deploy ."
   },
   "dependencies": {
     "@ethersproject/abi": "^5.7.0",

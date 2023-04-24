@@ -986,7 +986,6 @@ export const saveVotingsTransferred = async (
 ) => {
   await saveTransfersERC721(ctx, transfersData, BATTLE_VOTER_ARBITRUM)
 
-  const list: CreatedVotingPosition[] = []
   for (const t of transfersData) {
     const target = await ctx.store.findOneBy(CreatedVotingPosition, {
       voter: t.e.from.toLowerCase(),
@@ -995,7 +994,6 @@ export const saveVotingsTransferred = async (
 
     if (target) {
       target.voter = t.e.to.toLowerCase()
-      list.push(target)
 
       await ctx.store.save(target)
     }

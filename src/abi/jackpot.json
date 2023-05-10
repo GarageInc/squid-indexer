@@ -519,7 +519,7 @@
       },
       {
         "internalType": "bytes",
-        "name": "_data",
+        "name": "data",
         "type": "bytes"
       }
     ],
@@ -549,7 +549,7 @@
   {
     "inputs": [
       {
-        "internalType": "address payable",
+        "internalType": "address",
         "name": "_nftBattleArena",
         "type": "address"
       }

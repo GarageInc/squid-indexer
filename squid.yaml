@@ -1,6 +1,6 @@
 manifestVersion: subsquid.io/v0.1
 name: zoodao # set name
-version: 9 # version, must be an integer
+version: 11 # version, must be an integer
 description: |- # set description
   ZooDAO Moonbeam
 

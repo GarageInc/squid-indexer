@@ -577,19 +577,30 @@ export async function saveCollectionVoted(
   for (const transferData of transfersData) {
     const { e, event, block } = transferData
 
-    const transfer = new VotedForCollection({
-      id: event.id,
-      amount: BigInt(e.amount.toString()),
-      collection: e.collection.toLowerCase(),
+    const votingSaved = await ctx.store.findOneBy(VotedForCollection, {
       positionId: BigInt(e.positionId.toString()),
-      voter: e.voter.toLowerCase(),
-      author: e.voter.toLowerCase(),
-      timestamp: new Date(block.timestamp),
-      transactionHash: event.evmTxHash,
+      collection: e.collection.toLowerCase(),
       isDeleted: false,
     })
 
-    transfers.add(transfer)
+    if (votingSaved) {
+      votingSaved.amount = votingSaved.amount + BigInt(e.amount.toString())
+      transfers.add(votingSaved)
+    } else {
+      const transfer = new VotedForCollection({
+        id: event.id,
+        amount: BigInt(e.amount.toString()),
+        collection: e.collection.toLowerCase(),
+        positionId: BigInt(e.positionId.toString()),
+        voter: e.voter.toLowerCase(),
+        author: e.voter.toLowerCase(),
+        timestamp: new Date(block.timestamp),
+        transactionHash: event.evmTxHash,
+        isDeleted: false,
+      })
+
+      transfers.add(transfer)
+    }
   }
 
   await ctx.store.save([...transfers])

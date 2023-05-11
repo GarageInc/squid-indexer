@@ -585,6 +585,12 @@ export async function saveCollectionVoted(
 
     if (votingSaved) {
       votingSaved.amount = votingSaved.amount + BigInt(e.amount.toString())
+      votingSaved.timestamp = new Date(block.timestamp)
+      votingSaved.transactionHash = event.evmTxHash
+
+      votingSaved.voter = e.voter.toLowerCase()
+      votingSaved.author = e.voter.toLowerCase()
+
       transfers.add(votingSaved)
     } else {
       const transfer = new VotedForCollection({

@@ -423,7 +423,7 @@
     "name": "getPendingVoterReward",
     "outputs": [
       { "internalType": "uint256", "name": "yTokens", "type": "uint256" },
-      { "internalType": "uint256", "name": "", "type": "uint256" },
+      { "internalType": "uint256", "name": "zooRewards", "type": "uint256" },
       { "internalType": "uint256", "name": "", "type": "uint256" }
     ],
     "stateMutability": "view",
@@ -443,7 +443,8 @@
       { "internalType": "address", "name": "_jackpotB", "type": "address" },
       { "internalType": "address", "name": "_veBal", "type": "address" },
       { "internalType": "address", "name": "_gauge", "type": "address" },
-      { "internalType": "uint256", "name": "_zooVoteRate", "type": "uint256" }
+      { "internalType": "uint256", "name": "_zooVoteRate", "type": "uint256" },
+      { "internalType": "contract IERC20Metadata", "name": "_zoo", "type": "address" }
     ],
     "name": "init",
     "outputs": [],
@@ -567,6 +568,20 @@
     "type": "function"
   },
   {
+    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "name": "pendingVotes",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "name": "pendingVotesEpoch",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [{ "internalType": "uint256", "name": "votingPositionId", "type": "uint256" }],
     "name": "recomputeDaiVotes",
     "outputs": [],
@@ -603,7 +618,8 @@
       { "internalType": "uint256", "name": "yTokens", "type": "uint256" },
       { "internalType": "uint256", "name": "tokensAtBattleStart", "type": "uint256" },
       { "internalType": "uint256", "name": "pricePerShareAtBattleStart", "type": "uint256" },
-      { "internalType": "uint256", "name": "pricePerShareCoef", "type": "uint256" }
+      { "internalType": "uint256", "name": "pricePerShareCoef", "type": "uint256" },
+      { "internalType": "uint256", "name": "zooRewards", "type": "uint256" }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -631,7 +647,8 @@
       { "internalType": "uint256", "name": "lastRewardedEpoch", "type": "uint256" },
       { "internalType": "uint256", "name": "lastUpdateEpoch", "type": "uint256" },
       { "internalType": "address", "name": "collection", "type": "address" },
-      { "internalType": "uint256", "name": "lastEpochOfIncentiveReward", "type": "uint256" }
+      { "internalType": "uint256", "name": "lastEpochOfIncentiveReward", "type": "uint256" },
+      { "internalType": "uint8", "name": "league", "type": "uint8" }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -756,6 +773,13 @@
     "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "name": "xZooRewards",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "zoo",
+    "outputs": [{ "internalType": "contract IERC20Metadata", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },

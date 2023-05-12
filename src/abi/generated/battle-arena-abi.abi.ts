@@ -1039,7 +1039,8 @@ export const ABI_JSON = [
                 "name": "yTokens"
             },
             {
-                "type": "uint256"
+                "type": "uint256",
+                "name": "zooRewards"
             },
             {
                 "type": "uint256"
@@ -1089,6 +1090,10 @@ export const ABI_JSON = [
             {
                 "type": "uint256",
                 "name": "_zooVoteRate"
+            },
+            {
+                "type": "address",
+                "name": "_zoo"
             }
         ],
         "outputs": []
@@ -1329,6 +1334,40 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
+        "name": "pendingVotes",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [
+            {
+                "type": "uint256"
+            }
+        ],
+        "outputs": [
+            {
+                "type": "uint256"
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "pendingVotesEpoch",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [
+            {
+                "type": "uint256"
+            }
+        ],
+        "outputs": [
+            {
+                "type": "uint256"
+            }
+        ]
+    },
+    {
+        "type": "function",
         "name": "recomputeDaiVotes",
         "constant": false,
         "payable": false,
@@ -1416,6 +1455,10 @@ export const ABI_JSON = [
             {
                 "type": "uint256",
                 "name": "pricePerShareCoef"
+            },
+            {
+                "type": "uint256",
+                "name": "zooRewards"
             }
         ]
     },
@@ -1485,6 +1528,10 @@ export const ABI_JSON = [
             {
                 "type": "uint256",
                 "name": "lastEpochOfIncentiveReward"
+            },
+            {
+                "type": "uint8",
+                "name": "league"
             }
         ]
     },
@@ -1761,6 +1808,19 @@ export const ABI_JSON = [
         "outputs": [
             {
                 "type": "uint256"
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "zoo",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [],
+        "outputs": [
+            {
+                "type": "address"
             }
         ]
     },

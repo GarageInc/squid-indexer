@@ -46,8 +46,12 @@ import {
   X_ZOO_ARBITRUM,
 } from './contract'
 import { BigNumber } from 'ethers'
+<<<<<<< HEAD
 import { fetchNftScan, getArbitrumNftAPI } from './nft-scan'
+=======
+>>>>>>> 00a4f9cbf39fae47ca3c03ee520382cdd7da6231
 import { EvmBlock } from '@subsquid/evm-processor'
+import { SupportedChainId, fetchNftScan, getArbitrumApi, saveToBackend } from './nft-scan'
 
 const makeId = (event: LogContext) =>
   `${event.transaction.hash}-${event.evmLog.transactionIndex}-${event.evmLog.id}-${event.evmLog.index}`
@@ -579,19 +583,36 @@ export async function saveCollectionVoted(
   for (const transferData of transfersData) {
     const { e, event, block } = transferData
 
-    const transfer = new VotedForCollection({
-      id: makeId(event),
-      amount: BigInt(e.amount.toString()),
-      collection: e.collection.toLowerCase(),
+    const votingSaved = await ctx.store.findOneBy(VotedForCollection, {
       positionId: BigInt(e.positionId.toString()),
-      voter: e.voter.toLowerCase(),
-      author: e.voter.toLowerCase(),
-      timestamp: new Date(block.timestamp),
-      transactionHash: event.transaction.hash,
+      collection: e.collection.toLowerCase(),
       isDeleted: false,
     })
 
-    transfers.add(transfer)
+    if (votingSaved) {
+      votingSaved.amount = votingSaved.amount + BigInt(e.amount.toString())
+      votingSaved.timestamp = new Date(block.timestamp)
+      votingSaved.transactionHash = event.transaction.hash
+
+      votingSaved.voter = e.voter.toLowerCase()
+      votingSaved.author = e.voter.toLowerCase()
+
+      transfers.add(votingSaved)
+    } else {
+      const transfer = new VotedForCollection({
+        id: makeId(event),
+        amount: BigInt(e.amount.toString()),
+        collection: e.collection.toLowerCase(),
+        positionId: BigInt(e.positionId.toString()),
+        voter: e.voter.toLowerCase(),
+        author: e.voter.toLowerCase(),
+        timestamp: new Date(block.timestamp),
+        transactionHash: event.transaction.hash,
+        isDeleted: false,
+      })
+
+      transfers.add(transfer)
+    }
   }
 
   await ctx.store.save([...transfers])
@@ -986,7 +1007,6 @@ export const saveVotingsTransferred = async (
 ) => {
   await saveTransfersERC721(ctx, transfersData, BATTLE_VOTER_ARBITRUM)
 
-  const list: CreatedVotingPosition[] = []
   for (const t of transfersData) {
     const target = await ctx.store.findOneBy(CreatedVotingPosition, {
       voter: t.e.from.toLowerCase(),
@@ -995,7 +1015,6 @@ export const saveVotingsTransferred = async (
 
     if (target) {
       target.voter = t.e.to.toLowerCase()
-      list.push(target)
 
       await ctx.store.save(target)
     }
@@ -1073,7 +1092,7 @@ export const saveJackpotTransferred = async (
   }
 }
 const saveNftScanProject = async (ctx: Context, eventId: string, token: string, id: BigNumber) => {
-  const url = getArbitrumNftAPI(token, id.toString())
+  const url = getArbitrumApi(token, id.toString())
 
   const tokenSaved = await ctx.store.findOneBy(NftScanTokens, {
     tokenId: BigInt(id.toString()),
@@ -1094,6 +1113,8 @@ const saveNftScanProject = async (ctx: Context, eventId: string, token: string, 
       })
 
       await ctx.store.save([project])
+
+      await saveToBackend(token, id, SupportedChainId.ARBITRUM_ONE)
     }
   }
 }

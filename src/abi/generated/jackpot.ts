@@ -50,7 +50,7 @@ export const functions = {
     claimReward: new Func<[id: ethers.BigNumber, epoch: ethers.BigNumber, beneficiary: string], {id: ethers.BigNumber, epoch: ethers.BigNumber, beneficiary: string}, ethers.BigNumber>(
         abi, '0xeedfcb5e'
     ),
-    claimedBy: new Func<[ethers.BigNumber, ethers.BigNumber], {}, boolean>(
+    claimedBy: new Func<[_: ethers.BigNumber, _: ethers.BigNumber], {}, boolean>(
         abi, '0xd00ee1fb'
     ),
     getApproved: new Func<[tokenId: ethers.BigNumber], {tokenId: ethers.BigNumber}, string>(
@@ -74,7 +74,7 @@ export const functions = {
     'safeTransferFrom(address,address,uint256)': new Func<[from: string, to: string, tokenId: ethers.BigNumber], {from: string, to: string, tokenId: ethers.BigNumber}, []>(
         abi, '0x42842e0e'
     ),
-    'safeTransferFrom(address,address,uint256,bytes)': new Func<[from: string, to: string, tokenId: ethers.BigNumber, _data: string], {from: string, to: string, tokenId: ethers.BigNumber, _data: string}, []>(
+    'safeTransferFrom(address,address,uint256,bytes)': new Func<[from: string, to: string, tokenId: ethers.BigNumber, data: string], {from: string, to: string, tokenId: ethers.BigNumber, data: string}, []>(
         abi, '0xb88d4fde'
     ),
     setApprovalForAll: new Func<[operator: string, approved: boolean], {operator: string, approved: boolean}, []>(
@@ -86,7 +86,7 @@ export const functions = {
     stake: new Func<[id: ethers.BigNumber, beneficiary: string], {id: ethers.BigNumber, beneficiary: string}, ethers.BigNumber>(
         abi, '0x7acb7757'
     ),
-    stakedPositionsById: new Func<[ethers.BigNumber], {}, ethers.BigNumber>(
+    stakedPositionsById: new Func<[_: ethers.BigNumber], {}, ethers.BigNumber>(
         abi, '0xc44ba812'
     ),
     supportsInterface: new Func<[interfaceId: string], {interfaceId: string}, boolean>(
@@ -95,7 +95,7 @@ export const functions = {
     symbol: new Func<[], {}, string>(
         abi, '0x95d89b41'
     ),
-    tokenOfOwner: new Func<[string], {}, ethers.BigNumber>(
+    tokenOfOwner: new Func<[_: string], {}, ethers.BigNumber>(
         abi, '0x294cdf0d'
     ),
     tokenURI: new Func<[tokenId: ethers.BigNumber], {tokenId: ethers.BigNumber}, string>(
@@ -110,7 +110,7 @@ export const functions = {
     vault: new Func<[], {}, string>(
         abi, '0xfbfa77cf'
     ),
-    winners: new Func<[ethers.BigNumber], {}, ethers.BigNumber>(
+    winners: new Func<[_: ethers.BigNumber], {}, ethers.BigNumber>(
         abi, '0xa2fb1175'
     ),
     zooFunctions: new Func<[], {}, string>(

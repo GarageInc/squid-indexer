@@ -367,6 +367,10 @@ export const ABI_JSON = [
             {
                 "type": "uint256",
                 "name": "amount"
+            },
+            {
+                "type": "bool",
+                "name": "allowToSwapVotes"
             }
         ],
         "outputs": []
@@ -598,7 +602,36 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
-        "name": "swapVotesFromPosition",
+        "name": "swapVotesFromPositionForOwner",
+        "constant": false,
+        "payable": false,
+        "inputs": [
+            {
+                "type": "uint256",
+                "name": "votingPositionId"
+            },
+            {
+                "type": "uint256",
+                "name": "daiNumber"
+            },
+            {
+                "type": "uint256",
+                "name": "newStakingPositionId"
+            },
+            {
+                "type": "address",
+                "name": "beneficiary"
+            },
+            {
+                "type": "uint256",
+                "name": "newVotingPosition"
+            }
+        ],
+        "outputs": []
+    },
+    {
+        "type": "function",
+        "name": "swapVotesFromPositionForUnstackedNft",
         "constant": false,
         "payable": false,
         "inputs": [

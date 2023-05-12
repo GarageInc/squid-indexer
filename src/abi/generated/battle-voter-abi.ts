@@ -56,8 +56,8 @@ export const functions = {
     claimRewardFromVoting: new Func<[votingPositionId: ethers.BigNumber, beneficiary: string], {votingPositionId: ethers.BigNumber, beneficiary: string}, ethers.BigNumber>(
         abi, '0x110f633f'
     ),
-    createNewVotingPosition: new Func<[stakingPositionId: ethers.BigNumber, amount: ethers.BigNumber], {stakingPositionId: ethers.BigNumber, amount: ethers.BigNumber}, []>(
-        abi, '0x091903c9'
+    createNewVotingPosition: new Func<[stakingPositionId: ethers.BigNumber, amount: ethers.BigNumber, allowToSwapVotes: boolean], {stakingPositionId: ethers.BigNumber, amount: ethers.BigNumber, allowToSwapVotes: boolean}, []>(
+        abi, '0x8cedae92'
     ),
     dai: new Func<[], {}, string>(
         abi, '0xf4b9fa75'
@@ -101,8 +101,11 @@ export const functions = {
     supportsInterface: new Func<[interfaceId: string], {interfaceId: string}, boolean>(
         abi, '0x01ffc9a7'
     ),
-    swapVotesFromPosition: new Func<[votingPositionId: ethers.BigNumber, daiNumber: ethers.BigNumber, newStakingPositionId: ethers.BigNumber, beneficiary: string, newVotingPosition: ethers.BigNumber], {votingPositionId: ethers.BigNumber, daiNumber: ethers.BigNumber, newStakingPositionId: ethers.BigNumber, beneficiary: string, newVotingPosition: ethers.BigNumber}, []>(
-        abi, '0x5fd717bb'
+    swapVotesFromPositionForOwner: new Func<[votingPositionId: ethers.BigNumber, daiNumber: ethers.BigNumber, newStakingPositionId: ethers.BigNumber, beneficiary: string, newVotingPosition: ethers.BigNumber], {votingPositionId: ethers.BigNumber, daiNumber: ethers.BigNumber, newStakingPositionId: ethers.BigNumber, beneficiary: string, newVotingPosition: ethers.BigNumber}, []>(
+        abi, '0x20718895'
+    ),
+    swapVotesFromPositionForUnstackedNft: new Func<[votingPositionId: ethers.BigNumber, daiNumber: ethers.BigNumber, newStakingPositionId: ethers.BigNumber, beneficiary: string, newVotingPosition: ethers.BigNumber], {votingPositionId: ethers.BigNumber, daiNumber: ethers.BigNumber, newStakingPositionId: ethers.BigNumber, beneficiary: string, newVotingPosition: ethers.BigNumber}, []>(
+        abi, '0x6a787a89'
     ),
     symbol: new Func<[], {}, string>(
         abi, '0x95d89b41'

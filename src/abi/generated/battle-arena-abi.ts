@@ -131,14 +131,14 @@ export const functions = {
     getPendingStakerReward: new Func<[stakingPositionId: ethers.BigNumber], {stakingPositionId: ethers.BigNumber}, ([stakerReward: ethers.BigNumber, end: ethers.BigNumber] & {stakerReward: ethers.BigNumber, end: ethers.BigNumber})>(
         abi, '0x2f8816ee'
     ),
-    getPendingVoterReward: new Func<[votingPositionId: ethers.BigNumber], {votingPositionId: ethers.BigNumber}, ([yTokens: ethers.BigNumber, _: ethers.BigNumber, _: ethers.BigNumber] & {yTokens: ethers.BigNumber})>(
+    getPendingVoterReward: new Func<[votingPositionId: ethers.BigNumber], {votingPositionId: ethers.BigNumber}, ([yTokens: ethers.BigNumber, zooRewards: ethers.BigNumber, _: ethers.BigNumber] & {yTokens: ethers.BigNumber, zooRewards: ethers.BigNumber})>(
         abi, '0x73d9181b'
     ),
     getStakerPositionsLength: new Func<[], {}, ethers.BigNumber>(
         abi, '0x519ee3e2'
     ),
-    init: new Func<[_xZoo: string, _jackpotA: string, _jackpotB: string, _veBal: string, _gauge: string, _zooVoteRate: ethers.BigNumber], {_xZoo: string, _jackpotA: string, _jackpotB: string, _veBal: string, _gauge: string, _zooVoteRate: ethers.BigNumber}, []>(
-        abi, '0x544b08b5'
+    init: new Func<[_xZoo: string, _jackpotA: string, _jackpotB: string, _veBal: string, _gauge: string, _zooVoteRate: ethers.BigNumber, _zoo: string], {_xZoo: string, _jackpotA: string, _jackpotB: string, _veBal: string, _gauge: string, _zooVoteRate: ethers.BigNumber, _zoo: string}, []>(
+        abi, '0xd92832e8'
     ),
     jackpotA: new Func<[], {}, string>(
         abi, '0x2cdfa248'
@@ -185,6 +185,12 @@ export const functions = {
     pairsInEpoch: new Func<[_: ethers.BigNumber, _: ethers.BigNumber], {}, ([token1: ethers.BigNumber, token2: ethers.BigNumber, playedInEpoch: boolean, win: boolean] & {token1: ethers.BigNumber, token2: ethers.BigNumber, playedInEpoch: boolean, win: boolean})>(
         abi, '0xe911b5aa'
     ),
+    pendingVotes: new Func<[_: ethers.BigNumber], {}, ethers.BigNumber>(
+        abi, '0x334a0193'
+    ),
+    pendingVotesEpoch: new Func<[_: ethers.BigNumber], {}, ethers.BigNumber>(
+        abi, '0xbd72836d'
+    ),
     recomputeDaiVotes: new Func<[votingPositionId: ethers.BigNumber], {votingPositionId: ethers.BigNumber}, []>(
         abi, '0x94b0c536'
     ),
@@ -197,7 +203,7 @@ export const functions = {
     requestRandom: new Func<[], {}, []>(
         abi, '0xda9f7550'
     ),
-    rewardsForEpoch: new Func<[_: ethers.BigNumber, _: ethers.BigNumber], {}, ([yTokensSaldo: ethers.BigNumber, votes: ethers.BigNumber, yTokens: ethers.BigNumber, tokensAtBattleStart: ethers.BigNumber, pricePerShareAtBattleStart: ethers.BigNumber, pricePerShareCoef: ethers.BigNumber] & {yTokensSaldo: ethers.BigNumber, votes: ethers.BigNumber, yTokens: ethers.BigNumber, tokensAtBattleStart: ethers.BigNumber, pricePerShareAtBattleStart: ethers.BigNumber, pricePerShareCoef: ethers.BigNumber})>(
+    rewardsForEpoch: new Func<[_: ethers.BigNumber, _: ethers.BigNumber], {}, ([yTokensSaldo: ethers.BigNumber, votes: ethers.BigNumber, yTokens: ethers.BigNumber, tokensAtBattleStart: ethers.BigNumber, pricePerShareAtBattleStart: ethers.BigNumber, pricePerShareCoef: ethers.BigNumber, zooRewards: ethers.BigNumber] & {yTokensSaldo: ethers.BigNumber, votes: ethers.BigNumber, yTokens: ethers.BigNumber, tokensAtBattleStart: ethers.BigNumber, pricePerShareAtBattleStart: ethers.BigNumber, pricePerShareCoef: ethers.BigNumber, zooRewards: ethers.BigNumber})>(
         abi, '0x924298a6'
     ),
     secondStageDuration: new Func<[], {}, ethers.BigNumber>(
@@ -206,7 +212,7 @@ export const functions = {
     sharesToTokens: new Func<[sharesAmount: ethers.BigNumber], {sharesAmount: ethers.BigNumber}, ethers.BigNumber>(
         abi, '0x27def4fd'
     ),
-    stakingPositionsValues: new Func<[_: ethers.BigNumber], {}, ([startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, lastRewardedEpoch: ethers.BigNumber, lastUpdateEpoch: ethers.BigNumber, collection: string, lastEpochOfIncentiveReward: ethers.BigNumber] & {startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, lastRewardedEpoch: ethers.BigNumber, lastUpdateEpoch: ethers.BigNumber, collection: string, lastEpochOfIncentiveReward: ethers.BigNumber})>(
+    stakingPositionsValues: new Func<[_: ethers.BigNumber], {}, ([startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, lastRewardedEpoch: ethers.BigNumber, lastUpdateEpoch: ethers.BigNumber, collection: string, lastEpochOfIncentiveReward: ethers.BigNumber, league: number] & {startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, lastRewardedEpoch: ethers.BigNumber, lastUpdateEpoch: ethers.BigNumber, collection: string, lastEpochOfIncentiveReward: ethers.BigNumber, league: number})>(
         abi, '0x8cc45764'
     ),
     team: new Func<[], {}, string>(
@@ -253,6 +259,9 @@ export const functions = {
     ),
     xZooRewards: new Func<[_: ethers.BigNumber], {}, ethers.BigNumber>(
         abi, '0x1c4f408a'
+    ),
+    zoo: new Func<[], {}, string>(
+        abi, '0x7b6a8777'
     ),
     zooFunctions: new Func<[], {}, string>(
         abi, '0xeb09da31'
@@ -331,7 +340,7 @@ export class Contract extends ContractBase {
         return this.eth_call(functions.getPendingStakerReward, [stakingPositionId])
     }
 
-    getPendingVoterReward(votingPositionId: ethers.BigNumber): Promise<([yTokens: ethers.BigNumber, _: ethers.BigNumber, _: ethers.BigNumber] & {yTokens: ethers.BigNumber})> {
+    getPendingVoterReward(votingPositionId: ethers.BigNumber): Promise<([yTokens: ethers.BigNumber, zooRewards: ethers.BigNumber, _: ethers.BigNumber] & {yTokens: ethers.BigNumber, zooRewards: ethers.BigNumber})> {
         return this.eth_call(functions.getPendingVoterReward, [votingPositionId])
     }
 
@@ -395,7 +404,15 @@ export class Contract extends ContractBase {
         return this.eth_call(functions.pairsInEpoch, [arg0, arg1])
     }
 
-    rewardsForEpoch(arg0: ethers.BigNumber, arg1: ethers.BigNumber): Promise<([yTokensSaldo: ethers.BigNumber, votes: ethers.BigNumber, yTokens: ethers.BigNumber, tokensAtBattleStart: ethers.BigNumber, pricePerShareAtBattleStart: ethers.BigNumber, pricePerShareCoef: ethers.BigNumber] & {yTokensSaldo: ethers.BigNumber, votes: ethers.BigNumber, yTokens: ethers.BigNumber, tokensAtBattleStart: ethers.BigNumber, pricePerShareAtBattleStart: ethers.BigNumber, pricePerShareCoef: ethers.BigNumber})> {
+    pendingVotes(arg0: ethers.BigNumber): Promise<ethers.BigNumber> {
+        return this.eth_call(functions.pendingVotes, [arg0])
+    }
+
+    pendingVotesEpoch(arg0: ethers.BigNumber): Promise<ethers.BigNumber> {
+        return this.eth_call(functions.pendingVotesEpoch, [arg0])
+    }
+
+    rewardsForEpoch(arg0: ethers.BigNumber, arg1: ethers.BigNumber): Promise<([yTokensSaldo: ethers.BigNumber, votes: ethers.BigNumber, yTokens: ethers.BigNumber, tokensAtBattleStart: ethers.BigNumber, pricePerShareAtBattleStart: ethers.BigNumber, pricePerShareCoef: ethers.BigNumber, zooRewards: ethers.BigNumber] & {yTokensSaldo: ethers.BigNumber, votes: ethers.BigNumber, yTokens: ethers.BigNumber, tokensAtBattleStart: ethers.BigNumber, pricePerShareAtBattleStart: ethers.BigNumber, pricePerShareCoef: ethers.BigNumber, zooRewards: ethers.BigNumber})> {
         return this.eth_call(functions.rewardsForEpoch, [arg0, arg1])
     }
 
@@ -403,7 +420,7 @@ export class Contract extends ContractBase {
         return this.eth_call(functions.secondStageDuration, [])
     }
 
-    stakingPositionsValues(arg0: ethers.BigNumber): Promise<([startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, lastRewardedEpoch: ethers.BigNumber, lastUpdateEpoch: ethers.BigNumber, collection: string, lastEpochOfIncentiveReward: ethers.BigNumber] & {startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, lastRewardedEpoch: ethers.BigNumber, lastUpdateEpoch: ethers.BigNumber, collection: string, lastEpochOfIncentiveReward: ethers.BigNumber})> {
+    stakingPositionsValues(arg0: ethers.BigNumber): Promise<([startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, lastRewardedEpoch: ethers.BigNumber, lastUpdateEpoch: ethers.BigNumber, collection: string, lastEpochOfIncentiveReward: ethers.BigNumber, league: number] & {startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, lastRewardedEpoch: ethers.BigNumber, lastUpdateEpoch: ethers.BigNumber, collection: string, lastEpochOfIncentiveReward: ethers.BigNumber, league: number})> {
         return this.eth_call(functions.stakingPositionsValues, [arg0])
     }
 
@@ -441,6 +458,10 @@ export class Contract extends ContractBase {
 
     xZooRewards(arg0: ethers.BigNumber): Promise<ethers.BigNumber> {
         return this.eth_call(functions.xZooRewards, [arg0])
+    }
+
+    zoo(): Promise<string> {
+        return this.eth_call(functions.zoo, [])
     }
 
     zooFunctions(): Promise<string> {

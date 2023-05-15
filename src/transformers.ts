@@ -46,10 +46,6 @@ import {
   X_ZOO_ARBITRUM,
 } from './contract'
 import { BigNumber } from 'ethers'
-<<<<<<< HEAD
-import { fetchNftScan, getArbitrumNftAPI } from './nft-scan'
-=======
->>>>>>> 00a4f9cbf39fae47ca3c03ee520382cdd7da6231
 import { EvmBlock } from '@subsquid/evm-processor'
 import { SupportedChainId, fetchNftScan, getArbitrumApi, saveToBackend } from './nft-scan'
 

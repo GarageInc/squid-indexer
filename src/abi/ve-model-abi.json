@@ -2,10 +2,7 @@
   {
     "inputs": [
       { "internalType": "address", "name": "_zoo", "type": "address" },
-      { "internalType": "uint256", "name": "_duration", "type": "uint256" },
-      { "internalType": "uint256", "name": "_minTimelock", "type": "uint256" },
-      { "internalType": "uint256", "name": "_maxTimelock", "type": "uint256" },
-      { "internalType": "uint256", "name": "_incentiveRewardsDuration", "type": "uint256" }
+      { "internalType": "uint256", "name": "_endEpochOfIncentiveRewards", "type": "uint256" }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
@@ -119,6 +116,13 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "arena",
+    "outputs": [{ "internalType": "contract INftBattleArena", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [{ "internalType": "address", "name": "owner", "type": "address" }],
     "name": "balanceOf",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
@@ -133,20 +137,6 @@
     "name": "batchAllowNewContract",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "", "type": "address" },
-      { "internalType": "uint256", "name": "", "type": "uint256" }
-    ],
-    "name": "collectionRecords",
-    "outputs": [
-      { "internalType": "uint256", "name": "decayRate", "type": "uint256" },
-      { "internalType": "uint256", "name": "rateOfIncrease", "type": "uint256" },
-      { "internalType": "uint256", "name": "weightAtTheStart", "type": "uint256" }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -174,13 +164,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "epochDuration",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [{ "internalType": "uint256", "name": "tokenId", "type": "uint256" }],
     "name": "getApproved",
     "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
@@ -188,20 +171,10 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint256", "name": "timestamp", "type": "uint256" }],
-    "name": "getEpochNumber",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "collection", "type": "address" },
-      { "internalType": "uint256", "name": "epochIndex", "type": "uint256" }
-    ],
-    "name": "getVectorForEpoch",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
+    "inputs": [{ "internalType": "address", "name": "nftBattleArena", "type": "address" }],
+    "name": "init",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -211,27 +184,6 @@
     ],
     "name": "isApprovedForAll",
     "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "name": "lastUpdatedEpochsForCollection",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "maxTimelock",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "minTimelock",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -254,26 +206,6 @@
     "name": "ownerOf",
     "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "collection", "type": "address" },
-      { "internalType": "uint256", "name": "epochIndex", "type": "uint256" }
-    ],
-    "name": "poolWeight",
-    "outputs": [{ "internalType": "uint256", "name": "weight", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "uint256", "name": "positionId", "type": "uint256" },
-      { "internalType": "uint256", "name": "lockTime", "type": "uint256" }
-    ],
-    "name": "prolongate",
-    "outputs": [],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   { "inputs": [], "name": "renounceOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
@@ -325,13 +257,6 @@
     "name": "setRoyalteRecipient",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "startDate",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -391,13 +316,6 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "address", "name": "collection", "type": "address" }],
-    "name": "updateCurrentEpochAndReturnPoolWeight",
-    "outputs": [{ "internalType": "uint256", "name": "weight", "type": "uint256" }],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "vePositionIndex",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
@@ -408,7 +326,6 @@
     "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "name": "vePositions",
     "outputs": [
-      { "internalType": "uint256", "name": "expirationDate", "type": "uint256" },
       { "internalType": "uint256", "name": "zooLocked", "type": "uint256" },
       { "internalType": "address", "name": "collection", "type": "address" },
       { "internalType": "uint256", "name": "decayRate", "type": "uint256" }
@@ -419,8 +336,7 @@
   {
     "inputs": [
       { "internalType": "address", "name": "collection", "type": "address" },
-      { "internalType": "uint256", "name": "amount", "type": "uint256" },
-      { "internalType": "uint256", "name": "lockTime", "type": "uint256" }
+      { "internalType": "uint256", "name": "amount", "type": "uint256" }
     ],
     "name": "voteForNftCollection",
     "outputs": [],

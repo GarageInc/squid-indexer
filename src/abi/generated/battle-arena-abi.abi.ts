@@ -624,6 +624,23 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
+        "name": "addVotesToVeZoo",
+        "constant": false,
+        "payable": false,
+        "inputs": [
+            {
+                "type": "address",
+                "name": "collection"
+            },
+            {
+                "type": "uint256",
+                "name": "amount"
+            }
+        ],
+        "outputs": []
+    },
+    {
+        "type": "function",
         "name": "addZooToVoting",
         "constant": false,
         "payable": false,
@@ -868,6 +885,19 @@ export const ABI_JSON = [
         "outputs": [
             {
                 "type": "address"
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "endEpochOfIncentiveRewards",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [],
+        "outputs": [
+            {
+                "type": "uint256"
             }
         ]
     },
@@ -1411,6 +1441,23 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
+        "name": "removeVotesFromVeZoo",
+        "constant": false,
+        "payable": false,
+        "inputs": [
+            {
+                "type": "address",
+                "name": "collection"
+            },
+            {
+                "type": "uint256",
+                "name": "amount"
+            }
+        ],
+        "outputs": []
+    },
+    {
+        "type": "function",
         "name": "requestRandom",
         "constant": false,
         "payable": false,
@@ -1459,6 +1506,10 @@ export const ABI_JSON = [
             {
                 "type": "uint256",
                 "name": "zooRewards"
+            },
+            {
+                "type": "uint8",
+                "name": "league"
             }
         ]
     },
@@ -1528,10 +1579,6 @@ export const ABI_JSON = [
             {
                 "type": "uint256",
                 "name": "lastEpochOfIncentiveReward"
-            },
-            {
-                "type": "uint8",
-                "name": "league"
             }
         ]
     },
@@ -1847,6 +1894,23 @@ export const ABI_JSON = [
         "outputs": [
             {
                 "type": "address"
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "zooTokensRewardDebt",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [
+            {
+                "type": "uint256"
+            }
+        ],
+        "outputs": [
+            {
+                "type": "uint256"
             }
         ]
     },

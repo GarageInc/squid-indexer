@@ -9,19 +9,7 @@ export const ABI_JSON = [
             },
             {
                 "type": "uint256",
-                "name": "_duration"
-            },
-            {
-                "type": "uint256",
-                "name": "_minTimelock"
-            },
-            {
-                "type": "uint256",
-                "name": "_maxTimelock"
-            },
-            {
-                "type": "uint256",
-                "name": "_incentiveRewardsDuration"
+                "name": "_endEpochOfIncentiveRewards"
             }
         ]
     },
@@ -249,6 +237,19 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
+        "name": "arena",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [],
+        "outputs": [
+            {
+                "type": "address"
+            }
+        ]
+    },
+    {
+        "type": "function",
         "name": "balanceOf",
         "constant": true,
         "stateMutability": "view",
@@ -281,35 +282,6 @@ export const ABI_JSON = [
             }
         ],
         "outputs": []
-    },
-    {
-        "type": "function",
-        "name": "collectionRecords",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [
-            {
-                "type": "address"
-            },
-            {
-                "type": "uint256"
-            }
-        ],
-        "outputs": [
-            {
-                "type": "uint256",
-                "name": "decayRate"
-            },
-            {
-                "type": "uint256",
-                "name": "rateOfIncrease"
-            },
-            {
-                "type": "uint256",
-                "name": "weightAtTheStart"
-            }
-        ]
     },
     {
         "type": "function",
@@ -360,19 +332,6 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
-        "name": "epochDuration",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [],
-        "outputs": [
-            {
-                "type": "uint256"
-            }
-        ]
-    },
-    {
-        "type": "function",
         "name": "getApproved",
         "constant": true,
         "stateMutability": "view",
@@ -391,43 +350,16 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
-        "name": "getEpochNumber",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [
-            {
-                "type": "uint256",
-                "name": "timestamp"
-            }
-        ],
-        "outputs": [
-            {
-                "type": "uint256"
-            }
-        ]
-    },
-    {
-        "type": "function",
-        "name": "getVectorForEpoch",
-        "constant": true,
-        "stateMutability": "view",
+        "name": "init",
+        "constant": false,
         "payable": false,
         "inputs": [
             {
                 "type": "address",
-                "name": "collection"
-            },
-            {
-                "type": "uint256",
-                "name": "epochIndex"
+                "name": "nftBattleArena"
             }
         ],
-        "outputs": [
-            {
-                "type": "uint256"
-            }
-        ]
+        "outputs": []
     },
     {
         "type": "function",
@@ -448,49 +380,6 @@ export const ABI_JSON = [
         "outputs": [
             {
                 "type": "bool"
-            }
-        ]
-    },
-    {
-        "type": "function",
-        "name": "lastUpdatedEpochsForCollection",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [
-            {
-                "type": "address"
-            }
-        ],
-        "outputs": [
-            {
-                "type": "uint256"
-            }
-        ]
-    },
-    {
-        "type": "function",
-        "name": "maxTimelock",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [],
-        "outputs": [
-            {
-                "type": "uint256"
-            }
-        ]
-    },
-    {
-        "type": "function",
-        "name": "minTimelock",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [],
-        "outputs": [
-            {
-                "type": "uint256"
             }
         ]
     },
@@ -537,46 +426,6 @@ export const ABI_JSON = [
                 "type": "address"
             }
         ]
-    },
-    {
-        "type": "function",
-        "name": "poolWeight",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [
-            {
-                "type": "address",
-                "name": "collection"
-            },
-            {
-                "type": "uint256",
-                "name": "epochIndex"
-            }
-        ],
-        "outputs": [
-            {
-                "type": "uint256",
-                "name": "weight"
-            }
-        ]
-    },
-    {
-        "type": "function",
-        "name": "prolongate",
-        "constant": false,
-        "payable": false,
-        "inputs": [
-            {
-                "type": "uint256",
-                "name": "positionId"
-            },
-            {
-                "type": "uint256",
-                "name": "lockTime"
-            }
-        ],
-        "outputs": []
     },
     {
         "type": "function",
@@ -682,19 +531,6 @@ export const ABI_JSON = [
             }
         ],
         "outputs": []
-    },
-    {
-        "type": "function",
-        "name": "startDate",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [],
-        "outputs": [
-            {
-                "type": "uint256"
-            }
-        ]
     },
     {
         "type": "function",
@@ -814,24 +650,6 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
-        "name": "updateCurrentEpochAndReturnPoolWeight",
-        "constant": false,
-        "payable": false,
-        "inputs": [
-            {
-                "type": "address",
-                "name": "collection"
-            }
-        ],
-        "outputs": [
-            {
-                "type": "uint256",
-                "name": "weight"
-            }
-        ]
-    },
-    {
-        "type": "function",
         "name": "vePositionIndex",
         "constant": true,
         "stateMutability": "view",
@@ -855,10 +673,6 @@ export const ABI_JSON = [
             }
         ],
         "outputs": [
-            {
-                "type": "uint256",
-                "name": "expirationDate"
-            },
             {
                 "type": "uint256",
                 "name": "zooLocked"
@@ -886,10 +700,6 @@ export const ABI_JSON = [
             {
                 "type": "uint256",
                 "name": "amount"
-            },
-            {
-                "type": "uint256",
-                "name": "lockTime"
             }
         ],
         "outputs": []

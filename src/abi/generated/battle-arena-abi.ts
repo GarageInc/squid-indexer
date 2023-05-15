@@ -62,6 +62,9 @@ export const functions = {
     addDaiToVoting: new Func<[votingPositionId: ethers.BigNumber, voter: string, amount: ethers.BigNumber, _yTokens: ethers.BigNumber], {votingPositionId: ethers.BigNumber, voter: string, amount: ethers.BigNumber, _yTokens: ethers.BigNumber}, ethers.BigNumber>(
         abi, '0x388c01f9'
     ),
+    addVotesToVeZoo: new Func<[collection: string, amount: ethers.BigNumber], {collection: string, amount: ethers.BigNumber}, []>(
+        abi, '0x1ce3b455'
+    ),
     addZooToVoting: new Func<[votingPositionId: ethers.BigNumber, voter: string, amount: ethers.BigNumber], {votingPositionId: ethers.BigNumber, voter: string, amount: ethers.BigNumber}, ethers.BigNumber>(
         abi, '0x40ae78bb'
     ),
@@ -100,6 +103,9 @@ export const functions = {
     ),
     dai: new Func<[], {}, string>(
         abi, '0xf4b9fa75'
+    ),
+    endEpochOfIncentiveRewards: new Func<[], {}, ethers.BigNumber>(
+        abi, '0xf6065663'
     ),
     epochDuration: new Func<[], {}, ethers.BigNumber>(
         abi, '0x4ff0876a'
@@ -200,10 +206,13 @@ export const functions = {
     removeStakerPosition: new Func<[stakingPositionId: ethers.BigNumber, staker: string], {stakingPositionId: ethers.BigNumber, staker: string}, []>(
         abi, '0x302c60de'
     ),
+    removeVotesFromVeZoo: new Func<[collection: string, amount: ethers.BigNumber], {collection: string, amount: ethers.BigNumber}, []>(
+        abi, '0xdca1bb94'
+    ),
     requestRandom: new Func<[], {}, []>(
         abi, '0xda9f7550'
     ),
-    rewardsForEpoch: new Func<[_: ethers.BigNumber, _: ethers.BigNumber], {}, ([yTokensSaldo: ethers.BigNumber, votes: ethers.BigNumber, yTokens: ethers.BigNumber, tokensAtBattleStart: ethers.BigNumber, pricePerShareAtBattleStart: ethers.BigNumber, pricePerShareCoef: ethers.BigNumber, zooRewards: ethers.BigNumber] & {yTokensSaldo: ethers.BigNumber, votes: ethers.BigNumber, yTokens: ethers.BigNumber, tokensAtBattleStart: ethers.BigNumber, pricePerShareAtBattleStart: ethers.BigNumber, pricePerShareCoef: ethers.BigNumber, zooRewards: ethers.BigNumber})>(
+    rewardsForEpoch: new Func<[_: ethers.BigNumber, _: ethers.BigNumber], {}, ([yTokensSaldo: ethers.BigNumber, votes: ethers.BigNumber, yTokens: ethers.BigNumber, tokensAtBattleStart: ethers.BigNumber, pricePerShareAtBattleStart: ethers.BigNumber, pricePerShareCoef: ethers.BigNumber, zooRewards: ethers.BigNumber, league: number] & {yTokensSaldo: ethers.BigNumber, votes: ethers.BigNumber, yTokens: ethers.BigNumber, tokensAtBattleStart: ethers.BigNumber, pricePerShareAtBattleStart: ethers.BigNumber, pricePerShareCoef: ethers.BigNumber, zooRewards: ethers.BigNumber, league: number})>(
         abi, '0x924298a6'
     ),
     secondStageDuration: new Func<[], {}, ethers.BigNumber>(
@@ -212,7 +221,7 @@ export const functions = {
     sharesToTokens: new Func<[sharesAmount: ethers.BigNumber], {sharesAmount: ethers.BigNumber}, ethers.BigNumber>(
         abi, '0x27def4fd'
     ),
-    stakingPositionsValues: new Func<[_: ethers.BigNumber], {}, ([startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, lastRewardedEpoch: ethers.BigNumber, lastUpdateEpoch: ethers.BigNumber, collection: string, lastEpochOfIncentiveReward: ethers.BigNumber, league: number] & {startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, lastRewardedEpoch: ethers.BigNumber, lastUpdateEpoch: ethers.BigNumber, collection: string, lastEpochOfIncentiveReward: ethers.BigNumber, league: number})>(
+    stakingPositionsValues: new Func<[_: ethers.BigNumber], {}, ([startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, lastRewardedEpoch: ethers.BigNumber, lastUpdateEpoch: ethers.BigNumber, collection: string, lastEpochOfIncentiveReward: ethers.BigNumber] & {startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, lastRewardedEpoch: ethers.BigNumber, lastUpdateEpoch: ethers.BigNumber, collection: string, lastEpochOfIncentiveReward: ethers.BigNumber})>(
         abi, '0x8cc45764'
     ),
     team: new Func<[], {}, string>(
@@ -269,6 +278,9 @@ export const functions = {
     zooGovernance: new Func<[], {}, string>(
         abi, '0x5df9c36b'
     ),
+    zooTokensRewardDebt: new Func<[_: ethers.BigNumber], {}, ethers.BigNumber>(
+        abi, '0xa2e0706a'
+    ),
     zooVoteRate: new Func<[], {}, ethers.BigNumber>(
         abi, '0xb1f702f3'
     ),
@@ -298,6 +310,10 @@ export class Contract extends ContractBase {
 
     dai(): Promise<string> {
         return this.eth_call(functions.dai, [])
+    }
+
+    endEpochOfIncentiveRewards(): Promise<ethers.BigNumber> {
+        return this.eth_call(functions.endEpochOfIncentiveRewards, [])
     }
 
     epochDuration(): Promise<ethers.BigNumber> {
@@ -412,7 +428,7 @@ export class Contract extends ContractBase {
         return this.eth_call(functions.pendingVotesEpoch, [arg0])
     }
 
-    rewardsForEpoch(arg0: ethers.BigNumber, arg1: ethers.BigNumber): Promise<([yTokensSaldo: ethers.BigNumber, votes: ethers.BigNumber, yTokens: ethers.BigNumber, tokensAtBattleStart: ethers.BigNumber, pricePerShareAtBattleStart: ethers.BigNumber, pricePerShareCoef: ethers.BigNumber, zooRewards: ethers.BigNumber] & {yTokensSaldo: ethers.BigNumber, votes: ethers.BigNumber, yTokens: ethers.BigNumber, tokensAtBattleStart: ethers.BigNumber, pricePerShareAtBattleStart: ethers.BigNumber, pricePerShareCoef: ethers.BigNumber, zooRewards: ethers.BigNumber})> {
+    rewardsForEpoch(arg0: ethers.BigNumber, arg1: ethers.BigNumber): Promise<([yTokensSaldo: ethers.BigNumber, votes: ethers.BigNumber, yTokens: ethers.BigNumber, tokensAtBattleStart: ethers.BigNumber, pricePerShareAtBattleStart: ethers.BigNumber, pricePerShareCoef: ethers.BigNumber, zooRewards: ethers.BigNumber, league: number] & {yTokensSaldo: ethers.BigNumber, votes: ethers.BigNumber, yTokens: ethers.BigNumber, tokensAtBattleStart: ethers.BigNumber, pricePerShareAtBattleStart: ethers.BigNumber, pricePerShareCoef: ethers.BigNumber, zooRewards: ethers.BigNumber, league: number})> {
         return this.eth_call(functions.rewardsForEpoch, [arg0, arg1])
     }
 
@@ -420,7 +436,7 @@ export class Contract extends ContractBase {
         return this.eth_call(functions.secondStageDuration, [])
     }
 
-    stakingPositionsValues(arg0: ethers.BigNumber): Promise<([startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, lastRewardedEpoch: ethers.BigNumber, lastUpdateEpoch: ethers.BigNumber, collection: string, lastEpochOfIncentiveReward: ethers.BigNumber, league: number] & {startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, lastRewardedEpoch: ethers.BigNumber, lastUpdateEpoch: ethers.BigNumber, collection: string, lastEpochOfIncentiveReward: ethers.BigNumber, league: number})> {
+    stakingPositionsValues(arg0: ethers.BigNumber): Promise<([startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, lastRewardedEpoch: ethers.BigNumber, lastUpdateEpoch: ethers.BigNumber, collection: string, lastEpochOfIncentiveReward: ethers.BigNumber] & {startEpoch: ethers.BigNumber, endEpoch: ethers.BigNumber, lastRewardedEpoch: ethers.BigNumber, lastUpdateEpoch: ethers.BigNumber, collection: string, lastEpochOfIncentiveReward: ethers.BigNumber})> {
         return this.eth_call(functions.stakingPositionsValues, [arg0])
     }
 
@@ -470,6 +486,10 @@ export class Contract extends ContractBase {
 
     zooGovernance(): Promise<string> {
         return this.eth_call(functions.zooGovernance, [])
+    }
+
+    zooTokensRewardDebt(arg0: ethers.BigNumber): Promise<ethers.BigNumber> {
+        return this.eth_call(functions.zooTokensRewardDebt, [arg0])
     }
 
     zooVoteRate(): Promise<ethers.BigNumber> {

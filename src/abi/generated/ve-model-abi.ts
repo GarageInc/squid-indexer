@@ -41,14 +41,14 @@ export const functions = {
     approve: new Func<[to: string, tokenId: ethers.BigNumber], {to: string, tokenId: ethers.BigNumber}, []>(
         abi, '0x095ea7b3'
     ),
+    arena: new Func<[], {}, string>(
+        abi, '0xfd3705f9'
+    ),
     balanceOf: new Func<[owner: string], {owner: string}, ethers.BigNumber>(
         abi, '0x70a08231'
     ),
     batchAllowNewContract: new Func<[tokens: Array<string>, royalteRecipients: Array<string>], {tokens: Array<string>, royalteRecipients: Array<string>}, []>(
         abi, '0x9f94ad9c'
-    ),
-    collectionRecords: new Func<[_: string, _: ethers.BigNumber], {}, ([decayRate: ethers.BigNumber, rateOfIncrease: ethers.BigNumber, weightAtTheStart: ethers.BigNumber] & {decayRate: ethers.BigNumber, rateOfIncrease: ethers.BigNumber, weightAtTheStart: ethers.BigNumber})>(
-        abi, '0xd13d9cab'
     ),
     disallowContractFromStaking: new Func<[collection: string, recipient: string], {collection: string, recipient: string}, []>(
         abi, '0x2f6ea097'
@@ -59,29 +59,14 @@ export const functions = {
     endEpochOfIncentiveRewards: new Func<[], {}, ethers.BigNumber>(
         abi, '0xf6065663'
     ),
-    epochDuration: new Func<[], {}, ethers.BigNumber>(
-        abi, '0x4ff0876a'
-    ),
     getApproved: new Func<[tokenId: ethers.BigNumber], {tokenId: ethers.BigNumber}, string>(
         abi, '0x081812fc'
     ),
-    getEpochNumber: new Func<[timestamp: ethers.BigNumber], {timestamp: ethers.BigNumber}, ethers.BigNumber>(
-        abi, '0x1c552f00'
-    ),
-    getVectorForEpoch: new Func<[collection: string, epochIndex: ethers.BigNumber], {collection: string, epochIndex: ethers.BigNumber}, ethers.BigNumber>(
-        abi, '0x5364600c'
+    init: new Func<[nftBattleArena: string], {nftBattleArena: string}, []>(
+        abi, '0x19ab453c'
     ),
     isApprovedForAll: new Func<[owner: string, operator: string], {owner: string, operator: string}, boolean>(
         abi, '0xe985e9c5'
-    ),
-    lastUpdatedEpochsForCollection: new Func<[_: string], {}, ethers.BigNumber>(
-        abi, '0x1a70ff3b'
-    ),
-    maxTimelock: new Func<[], {}, ethers.BigNumber>(
-        abi, '0xbc1fd34b'
-    ),
-    minTimelock: new Func<[], {}, ethers.BigNumber>(
-        abi, '0x25429e7d'
     ),
     name: new Func<[], {}, string>(
         abi, '0x06fdde03'
@@ -91,12 +76,6 @@ export const functions = {
     ),
     ownerOf: new Func<[tokenId: ethers.BigNumber], {tokenId: ethers.BigNumber}, string>(
         abi, '0x6352211e'
-    ),
-    poolWeight: new Func<[collection: string, epochIndex: ethers.BigNumber], {collection: string, epochIndex: ethers.BigNumber}, ethers.BigNumber>(
-        abi, '0xda452523'
-    ),
-    prolongate: new Func<[positionId: ethers.BigNumber, lockTime: ethers.BigNumber], {positionId: ethers.BigNumber, lockTime: ethers.BigNumber}, []>(
-        abi, '0xba34b2b1'
     ),
     renounceOwnership: new Func<[], {}, []>(
         abi, '0x715018a6'
@@ -115,9 +94,6 @@ export const functions = {
     ),
     setRoyalteRecipient: new Func<[collection: string, recipient: string], {collection: string, recipient: string}, []>(
         abi, '0x5cfd894b'
-    ),
-    startDate: new Func<[], {}, ethers.BigNumber>(
-        abi, '0x0b97bc86'
     ),
     supportsInterface: new Func<[interfaceId: string], {interfaceId: string}, boolean>(
         abi, '0x01ffc9a7'
@@ -140,17 +116,14 @@ export const functions = {
     unlockZoo: new Func<[positionId: ethers.BigNumber], {positionId: ethers.BigNumber}, []>(
         abi, '0xe608ba3c'
     ),
-    updateCurrentEpochAndReturnPoolWeight: new Func<[collection: string], {collection: string}, ethers.BigNumber>(
-        abi, '0xc23ce493'
-    ),
     vePositionIndex: new Func<[], {}, ethers.BigNumber>(
         abi, '0x141d7e8b'
     ),
-    vePositions: new Func<[_: ethers.BigNumber], {}, ([expirationDate: ethers.BigNumber, zooLocked: ethers.BigNumber, collection: string, decayRate: ethers.BigNumber] & {expirationDate: ethers.BigNumber, zooLocked: ethers.BigNumber, collection: string, decayRate: ethers.BigNumber})>(
+    vePositions: new Func<[_: ethers.BigNumber], {}, ([zooLocked: ethers.BigNumber, collection: string, decayRate: ethers.BigNumber] & {zooLocked: ethers.BigNumber, collection: string, decayRate: ethers.BigNumber})>(
         abi, '0xc87489ab'
     ),
-    voteForNftCollection: new Func<[collection: string, amount: ethers.BigNumber, lockTime: ethers.BigNumber], {collection: string, amount: ethers.BigNumber, lockTime: ethers.BigNumber}, []>(
-        abi, '0x768e7f15'
+    voteForNftCollection: new Func<[collection: string, amount: ethers.BigNumber], {collection: string, amount: ethers.BigNumber}, []>(
+        abi, '0x8917e685'
     ),
     zoo: new Func<[], {}, string>(
         abi, '0x7b6a8777'
@@ -159,12 +132,12 @@ export const functions = {
 
 export class Contract extends ContractBase {
 
-    balanceOf(owner: string): Promise<ethers.BigNumber> {
-        return this.eth_call(functions.balanceOf, [owner])
+    arena(): Promise<string> {
+        return this.eth_call(functions.arena, [])
     }
 
-    collectionRecords(arg0: string, arg1: ethers.BigNumber): Promise<([decayRate: ethers.BigNumber, rateOfIncrease: ethers.BigNumber, weightAtTheStart: ethers.BigNumber] & {decayRate: ethers.BigNumber, rateOfIncrease: ethers.BigNumber, weightAtTheStart: ethers.BigNumber})> {
-        return this.eth_call(functions.collectionRecords, [arg0, arg1])
+    balanceOf(owner: string): Promise<ethers.BigNumber> {
+        return this.eth_call(functions.balanceOf, [owner])
     }
 
     eligibleCollections(arg0: string): Promise<boolean> {
@@ -175,36 +148,12 @@ export class Contract extends ContractBase {
         return this.eth_call(functions.endEpochOfIncentiveRewards, [])
     }
 
-    epochDuration(): Promise<ethers.BigNumber> {
-        return this.eth_call(functions.epochDuration, [])
-    }
-
     getApproved(tokenId: ethers.BigNumber): Promise<string> {
         return this.eth_call(functions.getApproved, [tokenId])
     }
 
-    getEpochNumber(timestamp: ethers.BigNumber): Promise<ethers.BigNumber> {
-        return this.eth_call(functions.getEpochNumber, [timestamp])
-    }
-
-    getVectorForEpoch(collection: string, epochIndex: ethers.BigNumber): Promise<ethers.BigNumber> {
-        return this.eth_call(functions.getVectorForEpoch, [collection, epochIndex])
-    }
-
     isApprovedForAll(owner: string, operator: string): Promise<boolean> {
         return this.eth_call(functions.isApprovedForAll, [owner, operator])
-    }
-
-    lastUpdatedEpochsForCollection(arg0: string): Promise<ethers.BigNumber> {
-        return this.eth_call(functions.lastUpdatedEpochsForCollection, [arg0])
-    }
-
-    maxTimelock(): Promise<ethers.BigNumber> {
-        return this.eth_call(functions.maxTimelock, [])
-    }
-
-    minTimelock(): Promise<ethers.BigNumber> {
-        return this.eth_call(functions.minTimelock, [])
     }
 
     name(): Promise<string> {
@@ -219,16 +168,8 @@ export class Contract extends ContractBase {
         return this.eth_call(functions.ownerOf, [tokenId])
     }
 
-    poolWeight(collection: string, epochIndex: ethers.BigNumber): Promise<ethers.BigNumber> {
-        return this.eth_call(functions.poolWeight, [collection, epochIndex])
-    }
-
     royalteRecipient(arg0: string): Promise<string> {
         return this.eth_call(functions.royalteRecipient, [arg0])
-    }
-
-    startDate(): Promise<ethers.BigNumber> {
-        return this.eth_call(functions.startDate, [])
     }
 
     supportsInterface(interfaceId: string): Promise<boolean> {
@@ -251,7 +192,7 @@ export class Contract extends ContractBase {
         return this.eth_call(functions.vePositionIndex, [])
     }
 
-    vePositions(arg0: ethers.BigNumber): Promise<([expirationDate: ethers.BigNumber, zooLocked: ethers.BigNumber, collection: string, decayRate: ethers.BigNumber] & {expirationDate: ethers.BigNumber, zooLocked: ethers.BigNumber, collection: string, decayRate: ethers.BigNumber})> {
+    vePositions(arg0: ethers.BigNumber): Promise<([zooLocked: ethers.BigNumber, collection: string, decayRate: ethers.BigNumber] & {zooLocked: ethers.BigNumber, collection: string, decayRate: ethers.BigNumber})> {
         return this.eth_call(functions.vePositions, [arg0])
     }
 

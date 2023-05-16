@@ -1398,6 +1398,26 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
+        "name": "poolWeight",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [
+            {
+                "type": "address"
+            },
+            {
+                "type": "uint256"
+            }
+        ],
+        "outputs": [
+            {
+                "type": "uint256"
+            }
+        ]
+    },
+    {
+        "type": "function",
         "name": "recomputeDaiVotes",
         "constant": false,
         "payable": false,

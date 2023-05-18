@@ -1098,19 +1098,23 @@ const saveNftScanProject = async (ctx: Context, eventId: string, token: string, 
   if (tokenSaved) {
     return tokenSaved
   } else {
-    const result: any = await fetchNftScan(url)
+    try {
+      const result: any = await fetchNftScan(url)
 
-    if (+result?.code === 200) {
-      const project = new NftScanTokens({
-        id: eventId,
-        tokenId: BigInt(id.toString()),
-        contract: token.toLowerCase(),
-        meta: JSON.stringify(result.data),
-      })
+      if (+result?.code === 200 && result.data) {
+        const project = new NftScanTokens({
+          id: eventId,
+          tokenId: BigInt(id.toString()),
+          contract: token.toLowerCase(),
+          meta: JSON.stringify(result.data),
+        })
 
-      await ctx.store.save([project])
+        await ctx.store.save([project])
 
-      await saveToBackend(token, id, SupportedChainId.ARBITRUM_ONE)
+        await saveToBackend(token, id, SupportedChainId.ARBITRUM_ONE)
+      }
+    } catch (e) {
+      console.error(e)
     }
   }
 }

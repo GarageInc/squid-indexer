@@ -159,85 +159,10 @@ type FaucetZooGiven @entity {
   transactionHash: String!
 }
 
-type XZooStaked @entity {
-  id: ID!
-  staker: String! @index
-  beneficiary: String! @index
-  amount: BigInt!
-  positionId: BigInt!
-  timestamp: DateTime! @index
-  transactionHash: String!
-  author: String! @index
-}
-
-type XZooWithdrawed @entity {
-  id: ID!
-  staker: String! @index
-  beneficiary: String! @index
-  amount: BigInt!
-  positionId: BigInt!
-  timestamp: DateTime! @index
-  transactionHash: String!
-}
-
-type XZooClaimed @entity {
-  id: ID!
-  staker: String! @index
-  beneficiary: String! @index
-  amount: BigInt!
-  positionId: BigInt!
-  timestamp: DateTime! @index
-  transactionHash: String!
-}
-
 type Stats @entity {
   id: ID!
   value: BigInt!
   updatedAt: DateTime! @index
-}
-
-type JackpotStaked @entity {
-  id: ID!
-  type: String! @index
-  positionId: BigInt!
-  jackpotPositionId: BigInt! @index
-  beneficiary: String! @index
-  timestamp: DateTime! @index
-  transactionHash: String!
-  isDeleted: Boolean!
-  author: String! @index
-}
-
-type JackpotUnstaked @entity {
-  id: ID!
-  type: String! @index
-  jackpotPositionId: BigInt!
-  zooPositionId: BigInt!
-  owner: String! @index
-  beneficiary: String! @index
-  timestamp: DateTime! @index
-  transactionHash: String!
-}
-
-type JackpotWinnerChoosed @entity {
-  id: ID!
-  type: String! @index
-  winner: BigInt!
-  epoch: BigInt! @index
-  timestamp: DateTime! @index
-  transactionHash: String!
-}
-
-type JackpotClaimed @entity {
-  id: ID!
-  type: String! @index
-  positionId: BigInt!
-  epoch: BigInt!
-  owner: String! @index
-  beneficiary: String! @index
-  rewards: BigInt!
-  timestamp: DateTime! @index
-  transactionHash: String!
 }
 
 type TransferErc721 @entity {

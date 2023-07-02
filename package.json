@@ -14,8 +14,6 @@
     "abi:staker": "npx squid-evm-typegen src/abi/generated src/abi/battle-staker-abi.json",
     "abi:voter": "npx squid-evm-typegen src/abi/generated src/abi/battle-voter-abi.json",
     "abi:erc20": "npx squid-evm-typegen src/abi/generated src/abi/erc20.json",
-    "abi:xzoo": "npx squid-evm-typegen src/abi/generated src/abi/xZoo.json",
-    "abi:jackpot": "npx squid-evm-typegen src/abi/generated src/abi/jackpot.json",
     "abi:erc721": "npx squid-evm-typegen src/abi/generated src/abi/erc721.json",
     "abi:ve-model": "npx squid-evm-typegen src/abi/generated src/abi/ve-model-abi.json",
     "codegen": "npx squid-typeorm-codegen",

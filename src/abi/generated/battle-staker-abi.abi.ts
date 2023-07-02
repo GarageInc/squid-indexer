@@ -18,6 +18,14 @@ export const ABI_JSON = [
             {
                 "type": "address",
                 "name": "_zoo"
+            },
+            {
+                "type": "address",
+                "name": "baseZooFunctions"
+            },
+            {
+                "type": "address",
+                "name": "_team"
             }
         ]
     },
@@ -488,7 +496,8 @@ export const ABI_JSON = [
         "type": "function",
         "name": "stakeNft",
         "constant": false,
-        "payable": false,
+        "stateMutability": "payable",
+        "payable": true,
         "inputs": [
             {
                 "type": "address",
@@ -529,6 +538,19 @@ export const ABI_JSON = [
         "outputs": [
             {
                 "type": "string"
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "team",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [],
+        "outputs": [
+            {
+                "type": "address"
             }
         ]
     },
@@ -600,6 +622,19 @@ export const ABI_JSON = [
     {
         "type": "function",
         "name": "zoo",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [],
+        "outputs": [
+            {
+                "type": "address"
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "zooFunctions",
         "constant": true,
         "stateMutability": "view",
         "payable": false,

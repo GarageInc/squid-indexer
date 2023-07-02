@@ -25,10 +25,6 @@ export const ABI_JSON = [
             },
             {
                 "type": "address",
-                "name": "_teamAddress"
-            },
-            {
-                "type": "address",
                 "name": "_nftStakingPosition"
             },
             {
@@ -1071,9 +1067,6 @@ export const ABI_JSON = [
             {
                 "type": "uint256",
                 "name": "zooRewards"
-            },
-            {
-                "type": "uint256"
             }
         ]
     },
@@ -1099,18 +1092,6 @@ export const ABI_JSON = [
         "inputs": [
             {
                 "type": "address",
-                "name": "_xZoo"
-            },
-            {
-                "type": "address",
-                "name": "_jackpotA"
-            },
-            {
-                "type": "address",
-                "name": "_jackpotB"
-            },
-            {
-                "type": "address",
                 "name": "_veBal"
             },
             {
@@ -1127,49 +1108,6 @@ export const ABI_JSON = [
             }
         ],
         "outputs": []
-    },
-    {
-        "type": "function",
-        "name": "jackpotA",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [],
-        "outputs": [
-            {
-                "type": "address"
-            }
-        ]
-    },
-    {
-        "type": "function",
-        "name": "jackpotB",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [],
-        "outputs": [
-            {
-                "type": "address"
-            }
-        ]
-    },
-    {
-        "type": "function",
-        "name": "jackpotRewardsAtEpoch",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [
-            {
-                "type": "uint256"
-            }
-        ],
-        "outputs": [
-            {
-                "type": "uint256"
-            }
-        ]
     },
     {
         "type": "function",
@@ -1243,6 +1181,19 @@ export const ABI_JSON = [
     {
         "type": "function",
         "name": "numberOfNftsWithNonZeroVotes",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [],
+        "outputs": [
+            {
+                "type": "uint256"
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "numberOfNftsWithNonZeroVotesPending",
         "constant": true,
         "stateMutability": "view",
         "payable": false,
@@ -1604,19 +1555,6 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
-        "name": "team",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [],
-        "outputs": [
-            {
-                "type": "address"
-            }
-        ]
-    },
-    {
-        "type": "function",
         "name": "thirdStageDuration",
         "constant": true,
         "stateMutability": "view",
@@ -1729,6 +1667,23 @@ export const ABI_JSON = [
         "outputs": [
             {
                 "type": "address"
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "voterIncentiveDebt",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [
+            {
+                "type": "uint256"
+            }
+        ],
+        "outputs": [
+            {
+                "type": "uint256"
             }
         ]
     },
@@ -1847,36 +1802,6 @@ export const ABI_JSON = [
             }
         ],
         "outputs": []
-    },
-    {
-        "type": "function",
-        "name": "xZoo",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [],
-        "outputs": [
-            {
-                "type": "address"
-            }
-        ]
-    },
-    {
-        "type": "function",
-        "name": "xZooRewards",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [
-            {
-                "type": "uint256"
-            }
-        ],
-        "outputs": [
-            {
-                "type": "uint256"
-            }
-        ]
     },
     {
         "type": "function",

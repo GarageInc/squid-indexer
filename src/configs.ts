@@ -1,6 +1,6 @@
 import { lookupArchive } from '@subsquid/archive-registry'
 import { EvmBatchProcessor, LogHandlerContext, BatchHandlerContext, BatchProcessorItem } from '@subsquid/evm-processor'
-import { LogDataRequest, LogRequest, TransactionRequest } from '@subsquid/evm-processor/lib/interfaces/dataSelection'
+import { LogDataRequest } from '@subsquid/evm-processor/lib/interfaces/dataSelection'
 import { TypeormDatabase, Store } from '@subsquid/typeorm-store'
 import {
   CHAIN_NODE,
@@ -8,9 +8,6 @@ import {
   BATTLE_VOTER_ARBITRUM,
   BATTLE_STAKER_ARBITRUM,
   VE_MODEL_ARBITRUM,
-  X_ZOO_ARBITRUM,
-  JACKPOT_A_ARBITRUM,
-  JACKPOT_B_ARBITRUM,
   fsGLP,
 } from './contract'
 import {
@@ -30,13 +27,6 @@ import {
   ClaimedIncentiveRewardFromStakingT,
   VotedForCollectionT,
   ZooUnlockedT,
-  xZooClaimedT,
-  XZooStakedT,
-  xZooWithdrawnT,
-  JackpotClaimedT,
-  JackpotStakedT,
-  JackpotUnstakedT,
-  JackpotWinnedT,
   TransferERC721T,
   TransferErc20T,
 } from './events'
@@ -131,51 +121,6 @@ processor.addLog(VE_MODEL_ARBITRUM, {
   data: DATA_TEMPLATE,
 })
 
-processor.addLog(JACKPOT_A_ARBITRUM, {
-  filter: [[JackpotClaimedT.topic]],
-  data: DATA_TEMPLATE,
-})
-processor.addLog(JACKPOT_A_ARBITRUM, {
-  filter: [[JackpotStakedT.topic]],
-  data: DATA_TEMPLATE,
-})
-
-processor.addLog(JACKPOT_A_ARBITRUM, {
-  filter: [[JackpotUnstakedT.topic]],
-  data: DATA_TEMPLATE,
-})
-processor.addLog(JACKPOT_A_ARBITRUM, {
-  filter: [[JackpotWinnedT.topic]],
-  data: DATA_TEMPLATE,
-})
-
-processor.addLog(JACKPOT_B_ARBITRUM, {
-  filter: [[JackpotClaimedT.topic]],
-  data: DATA_TEMPLATE,
-})
-processor.addLog(JACKPOT_B_ARBITRUM, {
-  filter: [[JackpotStakedT.topic]],
-  data: DATA_TEMPLATE,
-})
-
-processor.addLog(JACKPOT_B_ARBITRUM, {
-  filter: [[JackpotUnstakedT.topic]],
-  data: DATA_TEMPLATE,
-})
-processor.addLog(JACKPOT_B_ARBITRUM, {
-  filter: [[JackpotWinnedT.topic]],
-  data: DATA_TEMPLATE,
-})
-
-processor.addLog(JACKPOT_A_ARBITRUM, {
-  filter: [[TransferERC721T.topic]],
-  data: DATA_TEMPLATE,
-})
-processor.addLog(JACKPOT_B_ARBITRUM, {
-  filter: [[TransferERC721T.topic]],
-  data: DATA_TEMPLATE,
-})
-
 processor.addLog(BATTLE_VOTER_ARBITRUM, {
   filter: [[TransferERC721T.topic]],
   data: DATA_TEMPLATE,
@@ -185,28 +130,8 @@ processor.addLog(BATTLE_STAKER_ARBITRUM, {
   data: DATA_TEMPLATE,
 })
 
-processor.addLog(X_ZOO_ARBITRUM, {
-  filter: [[TransferERC721T.topic]],
-  data: DATA_TEMPLATE,
-})
-
 processor.addLog(fsGLP, {
   filter: [[TransferErc20T.topic]],
-  data: DATA_TEMPLATE,
-})
-
-processor.addLog(X_ZOO_ARBITRUM, {
-  filter: [[xZooClaimedT.topic]],
-  data: DATA_TEMPLATE,
-})
-
-processor.addLog(X_ZOO_ARBITRUM, {
-  filter: [[XZooStakedT.topic]],
-  data: DATA_TEMPLATE,
-})
-
-processor.addLog(X_ZOO_ARBITRUM, {
-  filter: [[xZooWithdrawnT.topic]],
   data: DATA_TEMPLATE,
 })
 

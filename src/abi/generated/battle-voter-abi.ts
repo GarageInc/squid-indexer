@@ -65,6 +65,9 @@ export const functions = {
     getApproved: new Func<[tokenId: ethers.BigNumber], {tokenId: ethers.BigNumber}, string>(
         abi, '0x081812fc'
     ),
+    isAllowedToSwapVotes: new Func<[_: ethers.BigNumber], {}, boolean>(
+        abi, '0x56b8e713'
+    ),
     isApprovedForAll: new Func<[owner: string, operator: string], {owner: string, operator: string}, boolean>(
         abi, '0xe985e9c5'
     ),
@@ -101,14 +104,17 @@ export const functions = {
     supportsInterface: new Func<[interfaceId: string], {interfaceId: string}, boolean>(
         abi, '0x01ffc9a7'
     ),
-    swapVotesFromPositionForOwner: new Func<[votingPositionId: ethers.BigNumber, daiNumber: ethers.BigNumber, newStakingPositionId: ethers.BigNumber, beneficiary: string, newVotingPosition: ethers.BigNumber], {votingPositionId: ethers.BigNumber, daiNumber: ethers.BigNumber, newStakingPositionId: ethers.BigNumber, beneficiary: string, newVotingPosition: ethers.BigNumber}, []>(
-        abi, '0x20718895'
+    swapVotesFromPositionForOwner: new Func<[votingPositionId: ethers.BigNumber, daiNumber: ethers.BigNumber, newStakingPositionId: ethers.BigNumber, beneficiary: string, newVotingPosition: ethers.BigNumber, allowToSwapVotes: boolean], {votingPositionId: ethers.BigNumber, daiNumber: ethers.BigNumber, newStakingPositionId: ethers.BigNumber, beneficiary: string, newVotingPosition: ethers.BigNumber, allowToSwapVotes: boolean}, []>(
+        abi, '0xbeef4d85'
     ),
-    swapVotesFromPositionForUnstackedNft: new Func<[votingPositionId: ethers.BigNumber, daiNumber: ethers.BigNumber, newStakingPositionId: ethers.BigNumber, beneficiary: string, newVotingPosition: ethers.BigNumber], {votingPositionId: ethers.BigNumber, daiNumber: ethers.BigNumber, newStakingPositionId: ethers.BigNumber, beneficiary: string, newVotingPosition: ethers.BigNumber}, []>(
-        abi, '0x6a787a89'
+    swapVotesFromPositionForUnstackedNft: new Func<[votingPositionId: ethers.BigNumber, daiNumber: ethers.BigNumber], {votingPositionId: ethers.BigNumber, daiNumber: ethers.BigNumber}, []>(
+        abi, '0x298341a7'
     ),
     symbol: new Func<[], {}, string>(
         abi, '0x95d89b41'
+    ),
+    team: new Func<[], {}, string>(
+        abi, '0x85f2aef2'
     ),
     tokenURI: new Func<[tokenId: ethers.BigNumber], {tokenId: ethers.BigNumber}, string>(
         abi, '0xc87b56dd'
@@ -128,6 +134,9 @@ export const functions = {
     zoo: new Func<[], {}, string>(
         abi, '0x7b6a8777'
     ),
+    zooFunctions: new Func<[], {}, string>(
+        abi, '0xeb09da31'
+    ),
 }
 
 export class Contract extends ContractBase {
@@ -142,6 +151,10 @@ export class Contract extends ContractBase {
 
     getApproved(tokenId: ethers.BigNumber): Promise<string> {
         return this.eth_call(functions.getApproved, [tokenId])
+    }
+
+    isAllowedToSwapVotes(arg0: ethers.BigNumber): Promise<boolean> {
+        return this.eth_call(functions.isAllowedToSwapVotes, [arg0])
     }
 
     isApprovedForAll(owner: string, operator: string): Promise<boolean> {
@@ -176,11 +189,19 @@ export class Contract extends ContractBase {
         return this.eth_call(functions.symbol, [])
     }
 
+    team(): Promise<string> {
+        return this.eth_call(functions.team, [])
+    }
+
     tokenURI(tokenId: ethers.BigNumber): Promise<string> {
         return this.eth_call(functions.tokenURI, [tokenId])
     }
 
     zoo(): Promise<string> {
         return this.eth_call(functions.zoo, [])
+    }
+
+    zooFunctions(): Promise<string> {
+        return this.eth_call(functions.zooFunctions, [])
     }
 }

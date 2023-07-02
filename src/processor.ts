@@ -1,10 +1,6 @@
-import { EvmBatchProcessor, BlockHandlerContext, EvmBlock, LogItem, BatchHandlerContext } from '@subsquid/evm-processor'
+import { EvmBlock } from '@subsquid/evm-processor'
 import * as erc20 from './abi/generated/erc20'
 import {
-  VE_MODEL_ARBITRUM,
-  X_ZOO_ARBITRUM,
-  JACKPOT_A_ARBITRUM,
-  JACKPOT_B_ARBITRUM,
   BATTLE_VOTER_ARBITRUM,
   BATTLE_STAKER_ARBITRUM,
   fsGLP,
@@ -19,11 +15,6 @@ import {
   saveClaimedStaking,
   saveClaimedVoting,
   saveCollectionVoted,
-  saveJackpotsClaimed,
-  saveJackpotsStaked,
-  saveJackpotsUnStaked,
-  saveJackpotsWinned,
-  saveJackpotTransferred,
   savePaired,
   saveStaked,
   saveStakingsTransferred,
@@ -33,14 +24,10 @@ import {
   saveWinner,
   saveWithdrawedDai,
   saveWithdrawedZoo,
-  saveXZooClaimed,
-  saveXZooStaked,
-  saveXZooTransferred,
-  saveXZooWithdrawn,
   saveZooUnlocked,
   saveTransfersERC20,
 } from './transformers'
-import { database, processor, Context, LogEventItem, LogContext } from './configs'
+import { database, processor, Context, LogContext } from './configs'
 import {
   CreatedStakerPositionT,
   RemovedStakerPositionT,
@@ -58,13 +45,6 @@ import {
   ClaimedIncentiveRewardFromVotingT,
   VotedForCollectionT,
   ZooUnlockedT,
-  XZooStakedT,
-  xZooWithdrawnT,
-  xZooClaimedT,
-  JackpotStakedT,
-  JackpotUnstakedT,
-  JackpotWinnedT,
-  JackpotClaimedT,
   TransferERC721T,
   TransferErc20T,
 } from './events'
@@ -73,15 +53,9 @@ import { BigNumber } from 'ethers'
 
 const hasIn = (item: LogContext, topic: string) => item.evmLog.topics.indexOf(topic) !== -1
 
-const isJackpotA = (item: LogContext) => item.evmLog?.address.toLowerCase() === JACKPOT_A_ARBITRUM
-
-const isJackpotB = (item: LogContext) => item.evmLog?.address.toLowerCase() === JACKPOT_B_ARBITRUM
-
 const isVoter = (item: LogContext) => item.evmLog?.address.toLowerCase() === BATTLE_VOTER_ARBITRUM
 
 const isStaker = (item: LogContext) => item.evmLog?.address.toLowerCase() === BATTLE_STAKER_ARBITRUM
-
-const isXZoo = (item: LogContext) => item.evmLog?.address.toLowerCase() === X_ZOO_ARBITRUM
 
 const isRewards = (item: LogContext) => item.evmLog?.address.toLowerCase() === fsGLP
 
@@ -110,25 +84,8 @@ processor.run(database, async (ctx: Context) => {
   const votedCollection = []
   const zooUnlocked = []
 
-  const xZooStakedEvents = []
-  const xZooWithdrawnEvents = []
-  const xZooClaimedEvents = []
-
-  const jackpotAClaimed = []
-  const jackpotAStaked = []
-  const jackpotAUnstaked = []
-  const jackpotAWinned = []
-
-  const jackpotBClaimed = []
-  const jackpotBStaked = []
-  const jackpotBUnstaked = []
-  const jackpotBWinned = []
-
   const votingsTransferred = []
   const stakerTransferred = []
-  const jackpotATransferred = []
-  const jackpotBTransferred = []
-  const xZooTransferred = []
 
   const rewardsTransferred = []
 
@@ -199,48 +156,6 @@ processor.run(database, async (ctx: Context) => {
           zooUnlocked.push(handler(block.header, logCtx, ZooUnlockedT))
         }
 
-        if (hasIn(logCtx, XZooStakedT.topic)) {
-          xZooStakedEvents.push(handler(block.header, logCtx, XZooStakedT))
-        }
-        if (hasIn(logCtx, xZooWithdrawnT.topic)) {
-          xZooWithdrawnEvents.push(handler(block.header, logCtx, xZooWithdrawnT))
-        }
-        if (hasIn(logCtx, xZooClaimedT.topic)) {
-          xZooClaimedEvents.push(handler(block.header, logCtx, xZooClaimedT))
-        }
-
-        if (hasIn(logCtx, JackpotStakedT.topic)) {
-          if (isJackpotA(logCtx)) {
-            jackpotAStaked.push(handler(block.header, logCtx, JackpotStakedT))
-          } else if (isJackpotB(logCtx)) {
-            jackpotBStaked.push(handler(block.header, logCtx, JackpotStakedT))
-          }
-        }
-
-        if (hasIn(logCtx, JackpotUnstakedT.topic)) {
-          if (isJackpotA(logCtx)) {
-            jackpotAUnstaked.push(handler(block.header, logCtx, JackpotUnstakedT))
-          } else if (isJackpotB(logCtx)) {
-            jackpotBUnstaked.push(handler(block.header, logCtx, JackpotUnstakedT))
-          }
-        }
-
-        if (hasIn(logCtx, JackpotWinnedT.topic)) {
-          if (isJackpotA(logCtx)) {
-            jackpotAWinned.push(handler(block.header, logCtx, JackpotWinnedT))
-          } else if (isJackpotB(logCtx)) {
-            jackpotBWinned.push(handler(block.header, logCtx, JackpotWinnedT))
-          }
-        }
-
-        if (hasIn(logCtx, JackpotClaimedT.topic)) {
-          if (isJackpotA(logCtx)) {
-            jackpotAClaimed.push(handler(block.header, logCtx, JackpotClaimedT))
-          } else if (isJackpotB(logCtx)) {
-            jackpotBClaimed.push(handler(block.header, logCtx, JackpotClaimedT))
-          }
-        }
-
         if (hasIn(logCtx, TransferERC721T.topic)) {
           /*if (item.evmTxHash === '0x8e0633aba23fd8bc91f38b5eff8de4c82dfab3573f0a8e3945d4e992413acc80') {
             console.log('------>')
@@ -251,13 +166,7 @@ processor.run(database, async (ctx: Context) => {
             votingsTransferred.push(handler(block.header, logCtx, TransferERC721T))
           } else if (isStaker(logCtx)) {
             stakerTransferred.push(handler(block.header, logCtx, TransferERC721T))
-          } else if (isXZoo(logCtx)) {
-            xZooTransferred.push(handler(block.header, logCtx, TransferERC721T))
-          } else if (isJackpotA(logCtx)) {
-            jackpotATransferred.push(handler(block.header, logCtx, TransferERC721T))
-          } else if (isJackpotB(logCtx)) {
-            jackpotBTransferred.push(handler(block.header, logCtx, TransferERC721T))
-          }
+          } 
         }
 
         if (hasIn(logCtx, TransferErc20T.topic)) {
@@ -304,32 +213,10 @@ processor.run(database, async (ctx: Context) => {
   await saveZooUnlocked(ctx, zooUnlocked)
   /* VE MODEL END */
 
-  /* JACKPOTS START */
-  await saveJackpotsStaked(ctx, jackpotAStaked, 'A')
-  await saveJackpotsStaked(ctx, jackpotBStaked, 'B')
-
-  await saveJackpotsClaimed(ctx, jackpotAClaimed, 'A')
-  await saveJackpotsClaimed(ctx, jackpotBClaimed, 'B')
-
-  await saveJackpotsUnStaked(ctx, jackpotAUnstaked, 'A')
-  await saveJackpotsUnStaked(ctx, jackpotBUnstaked, 'B')
-
-  await saveJackpotsWinned(ctx, jackpotAWinned, 'A')
-  await saveJackpotsWinned(ctx, jackpotBWinned, 'B')
-
-  await saveXZooStaked(ctx, xZooStakedEvents)
-  await saveXZooClaimed(ctx, xZooClaimedEvents)
-  await saveXZooWithdrawn(ctx, xZooWithdrawnEvents)
-  /* JACKPOTS END */
-
   /* TRANSFERS ERC721 START */
   await saveVotingsTransferred(ctx, votingsTransferred)
   await saveStakingsTransferred(ctx, stakerTransferred)
 
-  await saveJackpotTransferred(ctx, jackpotATransferred, 'A')
-  await saveJackpotTransferred(ctx, jackpotBTransferred, 'B')
-
-  await saveXZooTransferred(ctx, xZooTransferred)
   /* TRANSFERS ERC721 END */
 
   /* TRANSFERS ERC20 START */

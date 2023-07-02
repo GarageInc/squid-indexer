@@ -22,6 +22,14 @@ export const ABI_JSON = [
             {
                 "type": "address",
                 "name": "_lpZoo"
+            },
+            {
+                "type": "address",
+                "name": "baseZooFunctions"
+            },
+            {
+                "type": "address",
+                "name": "_team"
             }
         ]
     },
@@ -151,7 +159,8 @@ export const ABI_JSON = [
         "type": "function",
         "name": "addDaiToPosition",
         "constant": false,
-        "payable": false,
+        "stateMutability": "payable",
+        "payable": true,
         "inputs": [
             {
                 "type": "uint256",
@@ -173,7 +182,8 @@ export const ABI_JSON = [
         "type": "function",
         "name": "addZooToPosition",
         "constant": false,
-        "payable": false,
+        "stateMutability": "payable",
+        "payable": true,
         "inputs": [
             {
                 "type": "uint256",
@@ -358,7 +368,8 @@ export const ABI_JSON = [
         "type": "function",
         "name": "createNewVotingPosition",
         "constant": false,
-        "payable": false,
+        "stateMutability": "payable",
+        "payable": true,
         "inputs": [
             {
                 "type": "uint256",
@@ -403,6 +414,23 @@ export const ABI_JSON = [
         "outputs": [
             {
                 "type": "address"
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "isAllowedToSwapVotes",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [
+            {
+                "type": "uint256"
+            }
+        ],
+        "outputs": [
+            {
+                "type": "bool"
             }
         ]
     },
@@ -625,6 +653,10 @@ export const ABI_JSON = [
             {
                 "type": "uint256",
                 "name": "newVotingPosition"
+            },
+            {
+                "type": "bool",
+                "name": "allowToSwapVotes"
             }
         ],
         "outputs": []
@@ -642,18 +674,6 @@ export const ABI_JSON = [
             {
                 "type": "uint256",
                 "name": "daiNumber"
-            },
-            {
-                "type": "uint256",
-                "name": "newStakingPositionId"
-            },
-            {
-                "type": "address",
-                "name": "beneficiary"
-            },
-            {
-                "type": "uint256",
-                "name": "newVotingPosition"
             }
         ],
         "outputs": []
@@ -668,6 +688,19 @@ export const ABI_JSON = [
         "outputs": [
             {
                 "type": "string"
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "team",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [],
+        "outputs": [
+            {
+                "type": "address"
             }
         ]
     },
@@ -768,6 +801,19 @@ export const ABI_JSON = [
     {
         "type": "function",
         "name": "zoo",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [],
+        "outputs": [
+            {
+                "type": "address"
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "zooFunctions",
         "constant": true,
         "stateMutability": "view",
         "payable": false,

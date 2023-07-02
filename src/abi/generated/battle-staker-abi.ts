@@ -95,6 +95,9 @@ export const functions = {
     symbol: new Func<[], {}, string>(
         abi, '0x95d89b41'
     ),
+    team: new Func<[], {}, string>(
+        abi, '0x85f2aef2'
+    ),
     tokenURI: new Func<[tokenId: ethers.BigNumber], {tokenId: ethers.BigNumber}, string>(
         abi, '0xc87b56dd'
     ),
@@ -109,6 +112,9 @@ export const functions = {
     ),
     zoo: new Func<[], {}, string>(
         abi, '0x7b6a8777'
+    ),
+    zooFunctions: new Func<[], {}, string>(
+        abi, '0xeb09da31'
     ),
 }
 
@@ -158,11 +164,19 @@ export class Contract extends ContractBase {
         return this.eth_call(functions.symbol, [])
     }
 
+    team(): Promise<string> {
+        return this.eth_call(functions.team, [])
+    }
+
     tokenURI(tokenId: ethers.BigNumber): Promise<string> {
         return this.eth_call(functions.tokenURI, [tokenId])
     }
 
     zoo(): Promise<string> {
         return this.eth_call(functions.zoo, [])
+    }
+
+    zooFunctions(): Promise<string> {
+        return this.eth_call(functions.zooFunctions, [])
     }
 }

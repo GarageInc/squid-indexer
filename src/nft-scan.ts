@@ -6,7 +6,7 @@ export const SupportedChainId = {
   ARBITRUM_ONE: 42161,
 }
 
-export const X_NFTSCAN = 'cuM8mT3aegGUGrpnWlZZg7R6'
+export const X_NFTSCAN = 'rQB9CURvvzljLfntrYixcWH0'
 
 export const fetchNftScan = (url: string) =>
   fetch(url, {

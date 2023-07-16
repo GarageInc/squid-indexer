@@ -404,8 +404,8 @@ export async function saveUnStaked(
     block: SubstrateBlock
   }[]
 ) {
-  const transfers: Set<RemovedStakerPosition> = new Set()
-  const created: Set<CreatedStakerPosition> = new Set()
+  const removed: Set<RemovedStakerPosition> = new Set()
+  const updated: Set<CreatedStakerPosition> = new Set()
 
   for (const transferData of transfersData) {
     const { e, event, block } = transferData
@@ -425,14 +425,14 @@ export async function saveUnStaked(
 
     if (item) {
       item.isDeleted = true
-      created.add(item)
+      updated.add(item)
     }
 
-    transfers.add(transfer)
+    removed.add(transfer)
   }
 
-  await ctx.store.save([...transfers])
-  await ctx.store.save([...created])
+  await ctx.store.save([...removed])
+  await ctx.store.save([...updated])
 }
 
 export async function saveVoted(

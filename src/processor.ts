@@ -1,7 +1,5 @@
 import { EvmLogEvent, SubstrateBlock } from '@subsquid/substrate-processor'
-import * as erc20 from './abi/generated/erc20'
 import {
-  VE_MODEL_MOONBEAM,
   X_ZOO_MOONBEAM,
   JACKPOT_A_MOONBEAM,
   JACKPOT_B_MOONBEAM,
@@ -20,7 +18,6 @@ import {
   saveClaimedStaking,
   saveClaimedVoting,
   saveCollectionVoted,
-  saveFaucetGiven,
   saveJackpotsClaimed,
   saveJackpotsStaked,
   saveJackpotsUnStaked,
@@ -73,11 +70,6 @@ import {
 } from './events'
 import { LogEvent } from './abi/generated/abi.support'
 
-interface IArenaEvmEvent {
-  topic: string
-  decode: (data: any) => any
-}
-
 const hasIn = (item: any, topic: string) =>
   item.event.args && item.event.args.log && item.event.args.log.topics.indexOf(topic) !== -1
 
@@ -89,15 +81,7 @@ const isVoter = (item: any) => item.event?.args?.log?.address.toLowerCase() === 
 
 const isStaker = (item: any) => item.event?.args?.log?.address.toLowerCase() === BATTLE_STAKER_MOONBEAM
 
-const isVeModel = (item: any) => item.event?.args?.log?.address.toLowerCase() === VE_MODEL_MOONBEAM
-
 const isXZoo = (item: any) => item.event?.args?.log?.address.toLowerCase() === X_ZOO_MOONBEAM
-
-const isErc20InBattles = (item: {
-  e: ReturnType<typeof erc20.events.Transfer.decode>
-  event: EvmLogEvent
-  block: SubstrateBlock
-}) => item.e.from.toLowerCase() === BATTLE_STAKER_MOONBEAM || item.e.from.toLowerCase() === BATTLE_VOTER_MOONBEAM
 
 const isWell = (item: any) => item.event?.args?.log?.address.toLowerCase() === WELL_MOONBEAM
 
@@ -292,10 +276,6 @@ processor.run(database, async (ctx: Context) => {
       }
     }
   }
-
-  /* FAUCET START */
-  await saveFaucetGiven(ctx, given)
-  /* FAUCET END */
 
   /* BATTLE START */
   await saveStaked(ctx, staked)

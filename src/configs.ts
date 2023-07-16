@@ -30,7 +30,6 @@ import {
   ClaimedIncentiveRewardFromStakingT,
   VotedForCollectionT,
   ZooUnlockedT,
-  ZooGivenT,
   xZooClaimedT,
   XZooStakedT,
   xZooWithdrawnT,

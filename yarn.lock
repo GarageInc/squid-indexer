@@ -632,12 +632,12 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@keyv/redis@~2.5.5":
-  version "2.5.6"
-  resolved "https://registry.npmjs.org/@keyv/redis/-/redis-2.5.6.tgz"
-  integrity sha512-WxR9x/TjGptVM5Vi1IyMqtZ+iAPMY8jh2NkGrHWnvrtGUDll4PyY2GbXkOTC0msGVXuV1JqPEHIM7M648O+Pfg==
+"@keyv/redis@~2.5.8":
+  version "2.5.8"
+  resolved "https://registry.npmjs.org/@keyv/redis/-/redis-2.5.8.tgz"
+  integrity sha512-WweuUZqZN2ETcseV6r1AEum1qG6eR5poNhkZ4CIpWBOjMasT2ArTKWyIPxxYllKUS2A8wKv1l8+AqH6Jpzk7Ug==
   dependencies:
-    ioredis "^5.3.1"
+    ioredis "^5.3.2"
 
 "@kwsites/file-exists@^1.1.1":
   version "1.1.1"
@@ -1107,21 +1107,20 @@
   resolved "https://registry.npmjs.org/@sqltools/formatter/-/formatter-1.2.5.tgz"
   integrity sha512-Uy0+khmZqUrUGm5dmMqVlnvufZRSK0FbYzVgp0UMstm+F5+W2/jnEEQyc9vo1ZR/E5ZI/B1WjjoTqBqwJL6Krw==
 
-"@subsquid/archive-registry@2.1.10":
-  version "2.1.10"
-  resolved "https://registry.npmjs.org/@subsquid/archive-registry/-/archive-registry-2.1.10.tgz"
-  integrity sha512-tjHsBUuxFJ67GkEH0Qo823P8yLoIfd4Q82YFhO5gMUYXsRya6rWjFKzsbo+7G0kuqtC065jBwh/3zWExjkOJhg==
+"@subsquid/archive-registry@3.2.0":
+  version "3.2.0"
+  resolved "https://registry.npmjs.org/@subsquid/archive-registry/-/archive-registry-3.2.0.tgz"
+  integrity sha512-qEzFODDVwEx+3cdmk4LPAKoLzjcBcqvhhLovEWOUKxN+S9SZaOWYHf7yq1pi48X6nUSVLmK7rofBx+pS4hIU7Q==
   dependencies:
     "@subsquid/util-internal" "^1.0.0"
     commander "^10.0.0"
     easy-table "^1.2.0"
-    node-abort-controller "^2"
-    node-fetch "^2"
+    sync-fetch "^0.5.2"
 
-"@subsquid/cli@2.2.1":
-  version "2.2.1"
-  resolved "https://registry.npmjs.org/@subsquid/cli/-/cli-2.2.1.tgz"
-  integrity sha512-W48KPV8aX0pzQhf/qtqXCORQ38sI/N8zyLLv1oFB0RocuGn5MpTivPt/xwZnVemmE7iB6BbxBdayUVp2+1ygiQ==
+"@subsquid/cli@2.4.3":
+  version "2.4.3"
+  resolved "https://registry.npmjs.org/@subsquid/cli/-/cli-2.4.3.tgz"
+  integrity sha512-1mBsJgxvXN17OqqlQTH6JxPKbpzwUN08340WJkPKMoB7fgP16a6Yk2/+8d/fKlEqfABXL3xKE0qG88b3Ko3tZg==
   dependencies:
     "@oclif/core" "^1.26.1"
     "@oclif/plugin-autocomplete" "^1.4.2"
@@ -1161,53 +1160,60 @@
     glob "^8.1.0"
     supports-color "^8.1.1"
 
-"@subsquid/evm-typegen@2.1.1":
-  version "2.1.1"
-  resolved "https://registry.npmjs.org/@subsquid/evm-typegen/-/evm-typegen-2.1.1.tgz"
-  integrity sha512-v906DTqNLs6L/g8FdoMKkpSXrM0O3M/LZPnCZyU8xcRrUGqtQl+PWA17MEbPvhofptqOTMhB9hS/guMM91jyPA==
+"@subsquid/evm-typegen@3.2.0":
+  version "3.2.0"
+  resolved "https://registry.npmjs.org/@subsquid/evm-typegen/-/evm-typegen-3.2.0.tgz"
+  integrity sha512-2I2hWwKZmLmvvpBs3ggdGI/jhtub9Cg8MALmwI2WGO36dXmRlI+B01H8hHzgOwNpq0U5eThtjLzZ38xPoqGFag==
   dependencies:
-    "@ethersproject/abi" "^5.7.0"
-    "@ethersproject/address" "^5.7.0"
-    "@subsquid/logger" "^0.3.1"
-    "@subsquid/util-internal" "^1.1.0"
-    "@subsquid/util-internal-code-printer" "^0.1.1"
-    "@subsquid/util-internal-commander" "^0.0.2"
-    "@subsquid/util-internal-http-client" "^0.1.0"
-    commander "^10.0.0"
+    "@subsquid/http-client" "^1.2.0"
+    "@subsquid/logger" "^1.2.0"
+    "@subsquid/util-internal" "^2.3.0"
+    "@subsquid/util-internal-code-printer" "^1.2.0"
+    "@subsquid/util-internal-commander" "^1.2.0"
+    commander "^10.0.1"
 
 "@subsquid/graphiql-console@^0.3.0":
   version "0.3.0"
   resolved "https://registry.npmjs.org/@subsquid/graphiql-console/-/graphiql-console-0.3.0.tgz"
   integrity sha512-C89mus6IXnNi0xMQrZqUFBZwLj8tbuq9lye8Gq/lHmmERAUpi6UsWEyLdJLx2mneZzF3JtY8eNiiZ16jmjtvfw==
 
-"@subsquid/graphql-server@3.3.2":
-  version "3.3.2"
-  resolved "https://registry.npmjs.org/@subsquid/graphql-server/-/graphql-server-3.3.2.tgz"
-  integrity sha512-sJbOqvUrIej34bodz2jYPgOCB8GxwdqmMYEkbk6jz4OAwGS103bUYzypAtk35zxJYL9xzFRPhIXrNOaa9glXQw==
+"@subsquid/graphql-server@4.2.0":
+  version "4.2.0"
+  resolved "https://registry.npmjs.org/@subsquid/graphql-server/-/graphql-server-4.2.0.tgz"
+  integrity sha512-U8ENVIgTVFCfqvxb24leuuYeHTDuQGoWKn+MvuQNZMFI2zu6HGW4ZaaYAfi1e1Z/NZpWKLf1YW92K+dce5D/Ww==
   dependencies:
     "@apollo/utils.keyvadapter" "~1.1.2"
     "@apollo/utils.keyvaluecache" "~1.0.2"
     "@graphql-tools/merge" "^8"
     "@graphql-tools/schema" "^8"
     "@graphql-tools/utils" "^8"
-    "@keyv/redis" "~2.5.5"
-    "@subsquid/logger" "^0.3.1"
-    "@subsquid/openreader" "^3.1.7"
-    "@subsquid/typeorm-config" "^2.0.2"
-    "@subsquid/util-internal" "^1.1.0"
-    "@subsquid/util-internal-commander" "^0.0.2"
-    "@subsquid/util-internal-http-server" "^0.1.1"
-    apollo-server-core "^3.11.1"
-    apollo-server-express "^3.11.1"
+    "@keyv/redis" "~2.5.8"
+    "@subsquid/logger" "^1.2.0"
+    "@subsquid/openreader" "^4.2.0"
+    "@subsquid/typeorm-config" "^3.2.0"
+    "@subsquid/util-internal" "^2.3.0"
+    "@subsquid/util-internal-commander" "^1.2.0"
+    "@subsquid/util-internal-http-server" "^1.2.0"
+    apollo-server-core "^3.12.0"
+    apollo-server-express "^3.12.0"
     apollo-server-plugin-response-cache "~3.7.1"
-    commander "^10.0.0"
-    dotenv "^16.0.3"
+    commander "^10.0.1"
+    dotenv "^16.1.4"
     express "^4.18.2"
     graphql "^15.8.0"
-    graphql-ws "^5.11.3"
+    graphql-ws "^5.13.1"
     keyv "~4.5.2"
-    pg "^8.9.0"
-    ws "^8.12.0"
+    pg "^8.11.0"
+    ws "^8.13.0"
+
+"@subsquid/http-client@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.npmjs.org/@subsquid/http-client/-/http-client-1.2.0.tgz"
+  integrity sha512-UBKqFLw9aJ5JMzg9mOCNSnhfftqMnuCYjH9Y53GAiYXF9PNSHusWD1V4Ma8LNgqhlhfHZYSPN5PnnwuJHnDEkg==
+  dependencies:
+    "@subsquid/logger" "^1.2.0"
+    "@subsquid/util-internal" "^2.3.0"
+    node-fetch "^3.3.1"
 
 "@subsquid/logger@^0.3.1":
   version "0.3.1"
@@ -1218,29 +1224,38 @@
     "@subsquid/util-internal-json" "^0.2.1"
     supports-color "^8.1.1"
 
-"@subsquid/openreader@^3.1.7":
-  version "3.1.7"
-  resolved "https://registry.npmjs.org/@subsquid/openreader/-/openreader-3.1.7.tgz"
-  integrity sha512-Ma1RAFk4dtmcRfcL/ys9Kq7qaEWvKH0TCbd5vcijwfnPu7GpOhU/3wYtegrwhQiWg1AaDavd9ub9jLPvur0FFQ==
+"@subsquid/logger@^1.2.0", "@subsquid/logger@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.npmjs.org/@subsquid/logger/-/logger-1.3.0.tgz"
+  integrity sha512-1aCaFzGXrzW4bioiv6hPX+vsKO2EsiqFKcWedRW9G+0nnelAfhw5lGsyCvMzfkuk2xUCRA6vWwOReVK3BPW0Zg==
+  dependencies:
+    "@subsquid/util-internal-hex" "^1.2.0"
+    "@subsquid/util-internal-json" "^1.2.0"
+    supports-color "^8.1.1"
+
+"@subsquid/openreader@^4.2.0", "@subsquid/openreader@^4.3.0":
+  version "4.3.0"
+  resolved "https://registry.npmjs.org/@subsquid/openreader/-/openreader-4.3.0.tgz"
+  integrity sha512-rZ/qG1mhfUU2vigTxSslKF0VkxiddT/beCM2JZlDIJ10jOFijSiLUSKYBh3wUDahsbHmzKE+4r6dUZaEDj9sbw==
   dependencies:
     "@graphql-tools/merge" "^8"
     "@subsquid/graphiql-console" "^0.3.0"
-    "@subsquid/logger" "^0.3.1"
-    "@subsquid/util-internal" "^1.1.0"
-    "@subsquid/util-internal-commander" "^0.0.2"
-    "@subsquid/util-internal-hex" "^0.0.2"
-    "@subsquid/util-internal-http-server" "^0.1.1"
-    "@subsquid/util-naming" "^0.0.2"
-    apollo-server-core "^3.11.1"
-    apollo-server-express "^3.11.1"
-    commander "^10.0.0"
-    deep-equal "^2.2.0"
+    "@subsquid/logger" "^1.3.0"
+    "@subsquid/util-internal" "^2.3.1"
+    "@subsquid/util-internal-commander" "^1.2.0"
+    "@subsquid/util-internal-hex" "^1.2.0"
+    "@subsquid/util-internal-http-server" "^1.2.0"
+    "@subsquid/util-naming" "^1.2.0"
+    apollo-server-core "^3.12.0"
+    apollo-server-express "^3.12.0"
+    commander "^10.0.1"
+    deep-equal "^2.2.1"
     express "^4.18.2"
     graphql "^15.8.0"
     graphql-parse-resolve-info "^4.13.0"
-    graphql-ws "^5.11.3"
-    pg "^8.9.0"
-    ws "^8.12.0"
+    graphql-ws "^5.13.1"
+    pg "^8.11.0"
+    ws "^8.13.0"
 
 "@subsquid/rpc-client@^2.0.0":
   version "2.0.0"
@@ -1296,9 +1311,9 @@
     "@subsquid/util-internal" "^1.1.0"
     "@subsquid/util-naming" "^0.0.2"
 
-"@subsquid/substrate-processor@2.4.1":
+"@subsquid/substrate-processor@^2.4.1":
   version "2.4.1"
-  resolved "https://registry.npmjs.org/@subsquid/substrate-processor/-/substrate-processor-2.4.1.tgz"
+  resolved "https://registry.yarnpkg.com/@subsquid/substrate-processor/-/substrate-processor-2.4.1.tgz#f2643e49500facfef38da3b708d8c3033b749c3c"
   integrity sha512-vFHDbiovCC/BDb03ui55M5Cf638Qcb9YZVKDs2xTltFMpT9lQM1Rs+bpaCne3AqAS5SY03A/PUKNu4jxl8fXTQ==
   dependencies:
     "@subsquid/logger" "^0.3.1"
@@ -1333,16 +1348,16 @@
     "@subsquid/util-naming" "^0.0.2"
     commander "^10.0.0"
 
-"@subsquid/typeorm-codegen@0.3.3":
-  version "0.3.3"
-  resolved "https://registry.npmjs.org/@subsquid/typeorm-codegen/-/typeorm-codegen-0.3.3.tgz"
-  integrity sha512-wKUZjAOp7RaD5lZB5q544vGrRtRbLWn9mf0bCjrLN0DrwlT+lQwZV1BV0JRrStSJreaqyz7rWYWwkAUABn6fGA==
+"@subsquid/typeorm-codegen@1.3.0":
+  version "1.3.0"
+  resolved "https://registry.npmjs.org/@subsquid/typeorm-codegen/-/typeorm-codegen-1.3.0.tgz"
+  integrity sha512-dcZ6f4BbzwssfPdIBeP81GL6eucJYd9cnjFmdxZ/ZeehPuWZ+MHjxz1JzPBEyVBjcA8XfZ824AF0WTwqhy5o9A==
   dependencies:
-    "@subsquid/openreader" "^3.1.7"
-    "@subsquid/util-internal" "^1.1.0"
-    "@subsquid/util-internal-code-printer" "^0.1.1"
-    "@subsquid/util-naming" "^0.0.2"
-    commander "^10.0.0"
+    "@subsquid/openreader" "^4.3.0"
+    "@subsquid/util-internal" "^2.3.1"
+    "@subsquid/util-internal-code-printer" "^1.2.0"
+    "@subsquid/util-naming" "^1.2.0"
+    commander "^10.0.1"
 
 "@subsquid/typeorm-config@^2.0.2":
   version "2.0.2"
@@ -1351,24 +1366,31 @@
   dependencies:
     "@subsquid/util-naming" "^0.0.2"
 
-"@subsquid/typeorm-migration@0.1.6":
-  version "0.1.6"
-  resolved "https://registry.npmjs.org/@subsquid/typeorm-migration/-/typeorm-migration-0.1.6.tgz"
-  integrity sha512-4J4VDJ96zf5b1qF7faHfcaK4x8oNmVXACJwzv/JidloNqt9TUkdkEnlXIpIw1oxijtzWByncnAW9jHU+gcO59Q==
+"@subsquid/typeorm-config@^3.2.0":
+  version "3.2.0"
+  resolved "https://registry.npmjs.org/@subsquid/typeorm-config/-/typeorm-config-3.2.0.tgz"
+  integrity sha512-tINfnZN/LHy4qVi0JAAOS//rSuNJgHiXN4eGj8i26XDwRWrl9/O+WNuO7RSBhW+rpnSIFH0V0plRyCKNov08fA==
   dependencies:
-    "@subsquid/typeorm-config" "^2.0.2"
-    "@subsquid/util-internal" "^1.1.0"
-    "@subsquid/util-internal-code-printer" "^0.1.1"
-    commander "^10.0.0"
-    dotenv "^16.0.3"
+    "@subsquid/util-naming" "^1.2.0"
 
-"@subsquid/typeorm-store@0.2.2":
-  version "0.2.2"
-  resolved "https://registry.npmjs.org/@subsquid/typeorm-store/-/typeorm-store-0.2.2.tgz"
-  integrity sha512-mzqiJCPFT/KBuwNuNAK8D3Wmf5Hws27wvYWw/bXAAT47rxAERz3oLMsAs/dSjXT30F63kMcQfJzvp5FOsa3Ohw==
+"@subsquid/typeorm-migration@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.npmjs.org/@subsquid/typeorm-migration/-/typeorm-migration-1.2.0.tgz"
+  integrity sha512-+PpcNYo1sm+hdsX+HgMLXvE5ypuWhGsvoQcmi4HOiY8GsKiS4R4p/ARU0pNd4/kLFmOR+zlNIZqKP5U168L1qw==
   dependencies:
-    "@subsquid/typeorm-config" "^2.0.2"
-    "@subsquid/util-internal" "^1.1.0"
+    "@subsquid/typeorm-config" "^3.2.0"
+    "@subsquid/util-internal" "^2.3.0"
+    "@subsquid/util-internal-code-printer" "^1.2.0"
+    commander "^10.0.1"
+    dotenv "^16.1.4"
+
+"@subsquid/typeorm-store@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@subsquid/typeorm-store/-/typeorm-store-1.2.1.tgz#5050ce41ded69c61de138cf1b9ffff2afbc35430"
+  integrity sha512-pRTztUUUQ7y0f6iTlPBGI/DZ7wnSaKX/0CP76S5d+TAzhtTTAht6PS8CoTmO2zM/bQSDvLfIMssitAQx2r9QTA==
+  dependencies:
+    "@subsquid/typeorm-config" "^3.2.0"
+    "@subsquid/util-internal" "^2.3.1"
 
 "@subsquid/util-internal-binary-heap@^0.0.0":
   version "0.0.0"
@@ -1380,10 +1402,20 @@
   resolved "https://registry.npmjs.org/@subsquid/util-internal-code-printer/-/util-internal-code-printer-0.1.1.tgz"
   integrity sha512-367YmYeLoLaOiBdlrYElEC4AeM4Kx0XYWM9mA9VBllGvT9qWNnGllaJ+mY9UBhlhWQtCbUnTRtHXhjR5qL8g1w==
 
+"@subsquid/util-internal-code-printer@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.npmjs.org/@subsquid/util-internal-code-printer/-/util-internal-code-printer-1.2.0.tgz"
+  integrity sha512-UZgNiYs5C/aSBYXXi9LgWyjJ2Uy/0uYowNq8Hx4OhraJq8OoqS5Ef0K/RMf7+4tpgvuArocJUcpvtRCKWewvbA==
+
 "@subsquid/util-internal-commander@^0.0.2":
   version "0.0.2"
   resolved "https://registry.npmjs.org/@subsquid/util-internal-commander/-/util-internal-commander-0.0.2.tgz"
   integrity sha512-midCpkwu7NaXGhr0MiyQsJlIj284/0mAFBvVG8gRHqqRqb71GIAQq+aRcUSv8KNnAiRWnXK1OPak+gc40V9btw==
+
+"@subsquid/util-internal-commander@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.npmjs.org/@subsquid/util-internal-commander/-/util-internal-commander-1.2.0.tgz"
+  integrity sha512-6Is1bpr/NwKLEEUEuE7HciQWFN69Cp95Dq/BivTyNT8sUBZMidLwe7U/zYpqN8dq3Vm0him7HpRrzNXiwQi05A==
 
 "@subsquid/util-internal-config@^1.0.1":
   version "1.0.1"
@@ -1403,6 +1435,11 @@
   resolved "https://registry.npmjs.org/@subsquid/util-internal-hex/-/util-internal-hex-0.0.2.tgz"
   integrity sha512-EgqYmZjJ6ox885tXBObEAZQZImpRc5pFzQeOLEh78gGPTc39IH3VI4BG0zaomStvgBx+e25M7Y2cc+ae+ttuXQ==
 
+"@subsquid/util-internal-hex@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.npmjs.org/@subsquid/util-internal-hex/-/util-internal-hex-1.2.0.tgz"
+  integrity sha512-5Xf1Zp52gQlkNTeWFLGaf5ChXNCrOcz/nMYtylYASnfjEWXX8XutdDrUpz/YVQH88MP8CiQ/xkKprXAE9csqfg==
+
 "@subsquid/util-internal-http-client@^0.1.0":
   version "0.1.0"
   resolved "https://registry.npmjs.org/@subsquid/util-internal-http-client/-/util-internal-http-client-0.1.0.tgz"
@@ -1419,12 +1456,26 @@
   dependencies:
     stoppable "^1.1.0"
 
+"@subsquid/util-internal-http-server@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.npmjs.org/@subsquid/util-internal-http-server/-/util-internal-http-server-1.2.0.tgz"
+  integrity sha512-eaOreTdStkB405Lg07CNmoi7BmUVYyHLsNiMcvH+CUyiqI4dwkGd5JwXJek+GbEvaixiKF3t7Km/SX8bH2BJEA==
+  dependencies:
+    stoppable "^1.1.0"
+
 "@subsquid/util-internal-json@^0.2.1":
   version "0.2.1"
   resolved "https://registry.npmjs.org/@subsquid/util-internal-json/-/util-internal-json-0.2.1.tgz"
   integrity sha512-X9bhhKWBcaeZekGEiE15i8xwfq07/aIYDhA+JFdiVT3aygdb9b57V85USuArd6oh3jjHeQ2SBgj6B5rd8m8vlA==
   dependencies:
     "@subsquid/util-internal-hex" "^0.0.2"
+
+"@subsquid/util-internal-json@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.npmjs.org/@subsquid/util-internal-json/-/util-internal-json-1.2.0.tgz"
+  integrity sha512-r9DlJWs6GFF4uS486QTeBmmrMAFqUdSgOmx/HfxkOfEO/iSVaoh2n8FKKw0uQyCVmnsDvoz8v6COOovL4blZWA==
+  dependencies:
+    "@subsquid/util-internal-hex" "^1.2.0"
 
 "@subsquid/util-internal-prometheus-server@^0.0.3":
   version "0.0.3"
@@ -1455,10 +1506,23 @@
   resolved "https://registry.npmjs.org/@subsquid/util-internal/-/util-internal-1.1.0.tgz"
   integrity sha512-O6m666RDcWEw4vb3bmeNZKlAa1rGOHQvS0nhZFTBXnxZpqK/pU5N0jrQ7X/3is0pY2RKxFoxTurZjhv4QdxtqA==
 
+"@subsquid/util-internal@^2.3.0", "@subsquid/util-internal@^2.3.1":
+  version "2.3.1"
+  resolved "https://registry.npmjs.org/@subsquid/util-internal/-/util-internal-2.3.1.tgz"
+  integrity sha512-eNjkaZB9IrqHF1K8mv3zeiJH+q8fvttfe10VPO9W4nethHxDIwDVQ4IpBmkSwza2YazwTxGu83I1g9n9PqjCJw==
+
 "@subsquid/util-naming@^0.0.2":
   version "0.0.2"
   resolved "https://registry.npmjs.org/@subsquid/util-naming/-/util-naming-0.0.2.tgz"
   integrity sha512-t23kWD5kdRi03HXAhMSO1SesmM6dyD8kmMKfBR5SoFScij0Z2zf4dZ/jQT0bH9V59r4eZvv+NxR5XC+uR8GBAQ==
+  dependencies:
+    camelcase "^6.3.0"
+    inflected "^2.1.0"
+
+"@subsquid/util-naming@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.npmjs.org/@subsquid/util-naming/-/util-naming-1.2.0.tgz"
+  integrity sha512-mFFFh3CLd4IOm5OIl0tyhGvL6s+LQqtGgq8mD4oCZuzC2IhRNJ7D1KAv8JTZsxzOhHfLeibF2xvdN5jBwSLEyg==
   dependencies:
     camelcase "^6.3.0"
     inflected "^2.1.0"
@@ -1925,7 +1989,7 @@ apollo-reporting-protobuf@^3.4.0:
   dependencies:
     "@apollo/protobufjs" "1.2.6"
 
-apollo-server-core@^3.11.1, apollo-server-core@^3.12.0:
+apollo-server-core@^3.12.0:
   version "3.12.0"
   resolved "https://registry.npmjs.org/apollo-server-core/-/apollo-server-core-3.12.0.tgz"
   integrity sha512-hq7iH6Cgldgmnjs9FVSZeKWRpi0/ZR+iJ1arzeD2VXGxxgk1mAm/cz1Tx0TYgegZI+FvvrRl0UhKEx7sLnIxIg==
@@ -1966,7 +2030,7 @@ apollo-server-errors@^3.3.1:
   resolved "https://registry.npmjs.org/apollo-server-errors/-/apollo-server-errors-3.3.1.tgz"
   integrity sha512-xnZJ5QWs6FixHICXHxUfm+ZWqqxrNuPlQ+kj5m6RtEgIpekOPssH/SD9gf2B4HuWV0QozorrygwZnux8POvyPA==
 
-apollo-server-express@^3.11.1:
+apollo-server-express@^3.12.0:
   version "3.12.0"
   resolved "https://registry.npmjs.org/apollo-server-express/-/apollo-server-express-3.12.0.tgz"
   integrity sha512-m8FaGPUfDOEGSm7QRWRmUUGjG/vqvpQoorkId9/FXkC57fz/A59kEdrzkMt9538Xgsa5AV+X4MEWLJhTvlW3LQ==
@@ -2051,6 +2115,14 @@ argparse@^2.0.1:
   version "2.0.1"
   resolved "https://registry.npmjs.org/argparse/-/argparse-2.0.1.tgz"
   integrity sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==
+
+array-buffer-byte-length@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/array-buffer-byte-length/-/array-buffer-byte-length-1.0.0.tgz"
+  integrity sha512-LPuwb2P+NrQw3XhxGc36+XSvuBPopovXYTR9Ew++Du9Yb/bx5AzBfrIsBoj0EZUifjQU+sHL21sseZ3jerWO/A==
+  dependencies:
+    call-bind "^1.0.2"
+    is-array-buffer "^3.0.1"
 
 array-differ@^3.0.0:
   version "3.0.0"
@@ -2712,10 +2784,10 @@ commander@7.1.0:
   resolved "https://registry.npmjs.org/commander/-/commander-7.1.0.tgz"
   integrity sha512-pRxBna3MJe6HKnBGsDyMv8ETbptw3axEdYHoqNh7gu5oDcew8fs0xnivZGm06Ogk8zGAJ9VX+OPEr2GXEQK4dg==
 
-commander@^10.0.0:
-  version "10.0.0"
-  resolved "https://registry.npmjs.org/commander/-/commander-10.0.0.tgz"
-  integrity sha512-zS5PnTI22FIRM6ylNW8G4Ap0IEOyk62fhLSD0+uHRT9McRCLGpkVNvao4bjimpK/GShynyQkFFxHhwMcETmduA==
+commander@^10.0.0, commander@^10.0.1:
+  version "10.0.1"
+  resolved "https://registry.npmjs.org/commander/-/commander-10.0.1.tgz"
+  integrity sha512-y4Mg2tXshplEbSGzx7amzPwKKOCGuoSRP/CjEdwwk0FOGlUbq6lKuoyDZTNZkmxHdJtp54hdfY/JUrdL7Xfdug==
 
 commander@^2.20.3:
   version "2.20.3"
@@ -2896,16 +2968,17 @@ decode-uri-component@^0.2.2:
   resolved "https://registry.npmjs.org/decode-uri-component/-/decode-uri-component-0.2.2.tgz"
   integrity sha512-FqUYQ+8o158GyGTrMFJms9qh3CqTKvAqgqsTnkLI8sKu0028orqBhxNMFkFen0zGyg6epACD32pjVk58ngIErQ==
 
-deep-equal@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.npmjs.org/deep-equal/-/deep-equal-2.2.0.tgz"
-  integrity sha512-RdpzE0Hv4lhowpIUKKMJfeH6C1pXdtT1/it80ubgWqwI3qpuxUBpC1S4hnHg+zjnuOoDkzUtUCEEkG+XG5l3Mw==
+deep-equal@^2.2.1:
+  version "2.2.2"
+  resolved "https://registry.npmjs.org/deep-equal/-/deep-equal-2.2.2.tgz"
+  integrity sha512-xjVyBf0w5vH0I42jdAZzOKVldmPgSulmiyPRywoyq7HXC9qdgo17kxJE+rdnif5Tz6+pIrpJI8dCpMNLIGkUiA==
   dependencies:
+    array-buffer-byte-length "^1.0.0"
     call-bind "^1.0.2"
-    es-get-iterator "^1.1.2"
-    get-intrinsic "^1.1.3"
+    es-get-iterator "^1.1.3"
+    get-intrinsic "^1.2.1"
     is-arguments "^1.1.1"
-    is-array-buffer "^3.0.1"
+    is-array-buffer "^3.0.2"
     is-date-object "^1.0.5"
     is-regex "^1.1.4"
     is-shared-array-buffer "^1.0.2"
@@ -2913,7 +2986,7 @@ deep-equal@^2.2.0:
     object-is "^1.1.5"
     object-keys "^1.1.1"
     object.assign "^4.1.4"
-    regexp.prototype.flags "^1.4.3"
+    regexp.prototype.flags "^1.5.0"
     side-channel "^1.0.4"
     which-boxed-primitive "^1.0.2"
     which-collection "^1.0.1"
@@ -2936,10 +3009,10 @@ defaults@^1.0.3:
   dependencies:
     clone "^1.0.2"
 
-define-properties@^1.1.3, define-properties@^1.1.4:
-  version "1.1.4"
-  resolved "https://registry.npmjs.org/define-properties/-/define-properties-1.1.4.tgz"
-  integrity sha512-uckOqKcfaVvtBdsVkdPv3XjveQJsNQqmhXgRi8uhvWWuPYZCNlzT8qAyblUgNoXdHdjMTzAqeGjAoli8f+bzPA==
+define-properties@^1.1.3, define-properties@^1.1.4, define-properties@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.npmjs.org/define-properties/-/define-properties-1.2.0.tgz"
+  integrity sha512-xvqAVKGfT1+UAvPwKTVw/njhdQ8ZhXK4lI0bCIuCMrp2up9nPnaDftrLtmpTazqd1o+UY4zgzU+avtMbDP+ldA==
   dependencies:
     has-property-descriptors "^1.0.0"
     object-keys "^1.1.1"
@@ -3023,10 +3096,10 @@ doctrine@^3.0.0:
   dependencies:
     esutils "^2.0.2"
 
-dotenv@^16.0.0, dotenv@^16.0.3:
-  version "16.0.3"
-  resolved "https://registry.npmjs.org/dotenv/-/dotenv-16.0.3.tgz"
-  integrity sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==
+dotenv@^16.0.0, dotenv@^16.0.3, dotenv@^16.1.4:
+  version "16.3.1"
+  resolved "https://registry.npmjs.org/dotenv/-/dotenv-16.3.1.tgz"
+  integrity sha512-IPzF4w4/Rd94bA9imS68tZBaYyBWSCE47V1RGuMrB94iyTOIEwRmVL2x/4An+6mETpLrKJ5hQkB8W4kFAadeIQ==
 
 drawille-blessed-contrib@>=0.0.1:
   version "1.0.0"
@@ -3160,7 +3233,7 @@ es-abstract@^1.19.0, es-abstract@^1.19.1, es-abstract@^1.19.2, es-abstract@^1.19
     string.prototype.trimstart "^1.0.5"
     unbox-primitive "^1.0.2"
 
-es-get-iterator@^1.1.2:
+es-get-iterator@^1.1.3:
   version "1.1.3"
   resolved "https://registry.npmjs.org/es-get-iterator/-/es-get-iterator-1.1.3.tgz"
   integrity sha512-sPZmqHBe6JIiTfN5q2pEi//TwxmAFHwj/XEuYjTuse78i8KxaqMTTzxPoFKuzRpDpTJ+0NAbpfenkmH2rePtuw==
@@ -3852,7 +3925,7 @@ functional-red-black-tree@^1.0.1:
   resolved "https://registry.npmjs.org/functional-red-black-tree/-/functional-red-black-tree-1.0.1.tgz"
   integrity sha512-dsKNQNdj6xA3T+QlADDA7mOSlX0qiMINjn0cgr+eGHGsbSHzTabcIogz2+p/iqP1Xs6EP/sS2SbqH+brGTbq0g==
 
-functions-have-names@^1.2.2:
+functions-have-names@^1.2.2, functions-have-names@^1.2.3:
   version "1.2.3"
   resolved "https://registry.npmjs.org/functions-have-names/-/functions-have-names-1.2.3.tgz"
   integrity sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==
@@ -3891,13 +3964,14 @@ get-caller-file@^2.0.5:
   resolved "https://registry.npmjs.org/get-caller-file/-/get-caller-file-2.0.5.tgz"
   integrity sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==
 
-get-intrinsic@^1.0.2, get-intrinsic@^1.1.1, get-intrinsic@^1.1.3, get-intrinsic@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.npmjs.org/get-intrinsic/-/get-intrinsic-1.2.0.tgz"
-  integrity sha512-L049y6nFOuom5wGyRc3/gdTLO94dySVKRACj1RmJZBQXlbTMhtNIgkWkUHq+jYmZvKf14EW1EoJnnjbmoHij0Q==
+get-intrinsic@^1.0.2, get-intrinsic@^1.1.1, get-intrinsic@^1.1.3, get-intrinsic@^1.2.0, get-intrinsic@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.npmjs.org/get-intrinsic/-/get-intrinsic-1.2.1.tgz"
+  integrity sha512-2DcsyfABl+gVHEfCOaTrWgyt+tb6MSEGmKq+kI5HwLbIYgjgmMcV8KQ41uaKz1xxUcn9tJtgFbQUEVcEbd0FYw==
   dependencies:
     function-bind "^1.1.1"
     has "^1.0.3"
+    has-proto "^1.0.1"
     has-symbols "^1.0.3"
 
 get-package-type@^0.1.0:
@@ -4053,10 +4127,10 @@ graphql-tag@^2.11.0:
   dependencies:
     tslib "^2.1.0"
 
-graphql-ws@^5.11.3:
-  version "5.12.0"
-  resolved "https://registry.npmjs.org/graphql-ws/-/graphql-ws-5.12.0.tgz"
-  integrity sha512-PA3ImUp8utrpEjoxBMhvxsjkStvFEdU0E1gEBREt8HZIWkxOUymwJBhFnBL7t/iHhUq1GVPeZevPinkZFENxTw==
+graphql-ws@^5.13.1:
+  version "5.14.0"
+  resolved "https://registry.npmjs.org/graphql-ws/-/graphql-ws-5.14.0.tgz"
+  integrity sha512-itrUTQZP/TgswR4GSSYuwWUzrE/w5GhbwM2GX3ic2U7aw33jgEsayfIlvaj7/GcIvZgNMzsPTrE5hqPuFUiE5g==
 
 graphql@^15.8.0:
   version "15.8.0"
@@ -4096,6 +4170,11 @@ has-property-descriptors@^1.0.0:
   integrity sha512-62DVLZGoiEBDHQyqG4w9xCuZ7eJEwNmJRWw2VY84Oedb7WFcA27fiEVe8oUQx9hAUJ4ekurquucTGwsyO1XGdQ==
   dependencies:
     get-intrinsic "^1.1.1"
+
+has-proto@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/has-proto/-/has-proto-1.0.1.tgz"
+  integrity sha512-7qE+iP+O+bgF9clE5+UoBFzE65mlBiVj3tKCrlNQ0Ogwm0BjpT/gK4SlLYDMybDh5I3TCTKnPPa0oMG7JDYrhg==
 
 has-symbols@^1.0.2, has-symbols@^1.0.3:
   version "1.0.3"
@@ -4348,10 +4427,10 @@ interpret@^1.0.0:
   resolved "https://registry.npmjs.org/interpret/-/interpret-1.4.0.tgz"
   integrity sha512-agE4QfB2Lkp9uICn7BAqoscw4SZP9kTE2hxiFI3jBPmXJfdqiahTbUuKGsMoN2GtqL9AxhYioAcVvgsb1HvRbA==
 
-ioredis@^5.3.1:
-  version "5.3.1"
-  resolved "https://registry.npmjs.org/ioredis/-/ioredis-5.3.1.tgz"
-  integrity sha512-C+IBcMysM6v52pTLItYMeV4Hz7uriGtoJdz7SSBDX6u+zwSYGirLdQh3L7t/OItWITcw3gTFMjJReYUwS4zihg==
+ioredis@^5.3.2:
+  version "5.3.2"
+  resolved "https://registry.npmjs.org/ioredis/-/ioredis-5.3.2.tgz"
+  integrity sha512-1DKMMzlIHM02eBBVOFQ1+AolGjs6+xEcM4PDL7NqOS6szq7H9jSaEkIUH6/a5Hl241LzW6JLSiAbNvTQjUupUA==
   dependencies:
     "@ioredis/commands" "^1.1.1"
     cluster-key-slot "^1.1.0"
@@ -4381,7 +4460,7 @@ is-arguments@^1.0.4, is-arguments@^1.1.1:
     call-bind "^1.0.2"
     has-tostringtag "^1.0.0"
 
-is-array-buffer@^3.0.1:
+is-array-buffer@^3.0.1, is-array-buffer@^3.0.2:
   version "3.0.2"
   resolved "https://registry.npmjs.org/is-array-buffer/-/is-array-buffer-3.0.2.tgz"
   integrity sha512-y+FyyR/w8vfIRq4eQcM1EYgSTnmHXPqaF+IgzgraytCFq5Xh8lllDVmAZolPJiZttZLeFSINPYMaEJ7/vWUa1w==
@@ -5265,11 +5344,6 @@ nice-try@^1.0.4:
   resolved "https://registry.npmjs.org/nice-try/-/nice-try-1.0.5.tgz"
   integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
 
-node-abort-controller@^2:
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/node-abort-controller/-/node-abort-controller-2.0.0.tgz"
-  integrity sha512-L8RfEgjBTHAISTuagw51PprVAqNZoG6KSB6LQ6H1bskMVkFs5E71IyjauLBv3XbuomJlguWF/VnRHdJ1gqiAqA==
-
 node-abort-controller@^3.0.1:
   version "3.1.1"
   resolved "https://registry.npmjs.org/node-abort-controller/-/node-abort-controller-3.1.1.tgz"
@@ -5287,14 +5361,14 @@ node-emoji@^1.11.0:
   dependencies:
     lodash "^4.17.21"
 
-node-fetch@2, node-fetch@^2, node-fetch@^2.6.7:
+node-fetch@2, node-fetch@^2.6.1, node-fetch@^2.6.7:
   version "2.6.8"
   resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.8.tgz"
   integrity sha512-RZ6dBYuj8dRSfxpUSu+NsdF1dpPpluJxwOp+6IoDp/sH2QNDSvurYsAa+F1WxY2RjA1iP93xhcsUoYbF2XBqVg==
   dependencies:
     whatwg-url "^5.0.0"
 
-node-fetch@^3.3.0:
+node-fetch@^3.3.0, node-fetch@^3.3.1:
   version "3.3.1"
   resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-3.3.1.tgz"
   integrity sha512-cRVc/kyto/7E5shrWca1Wsea4y6tL9iYJE5FBCius3JQfb/4P4I295PfhgbJQBLTx6lATE4z+wK0rPM4VS2uow==
@@ -5816,20 +5890,25 @@ path-type@^4.0.0:
   resolved "https://registry.npmjs.org/path-type/-/path-type-4.0.0.tgz"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
-pg-connection-string@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.npmjs.org/pg-connection-string/-/pg-connection-string-2.5.0.tgz"
-  integrity sha512-r5o/V/ORTA6TmUnyWZR9nCj1klXCO2CEKNRlVuJptZe85QuhFayC7WeMic7ndayT5IRIR0S0xFxFi2ousartlQ==
+pg-cloudflare@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.npmjs.org/pg-cloudflare/-/pg-cloudflare-1.1.1.tgz"
+  integrity sha512-xWPagP/4B6BgFO+EKz3JONXv3YDgvkbVrGw2mTo3D6tVDQRh1e7cqVGvyR3BE+eQgAvx1XhW/iEASj4/jCWl3Q==
+
+pg-connection-string@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.npmjs.org/pg-connection-string/-/pg-connection-string-2.6.1.tgz"
+  integrity sha512-w6ZzNu6oMmIzEAYVw+RLK0+nqHPt8K3ZnknKi+g48Ak2pr3dtljJW3o+D/n2zzCG07Zoe9VOX3aiKpj+BN0pjg==
 
 pg-int8@1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/pg-int8/-/pg-int8-1.0.1.tgz"
   integrity sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw==
 
-pg-pool@^3.6.0:
-  version "3.6.0"
-  resolved "https://registry.npmjs.org/pg-pool/-/pg-pool-3.6.0.tgz"
-  integrity sha512-clFRf2ksqd+F497kWFyM21tMjeikn60oGDmqMT8UBrynEwVEX/5R5xd2sdvdo1cZCFlguORNpVuqxIj+aK4cfQ==
+pg-pool@^3.6.1:
+  version "3.6.1"
+  resolved "https://registry.npmjs.org/pg-pool/-/pg-pool-3.6.1.tgz"
+  integrity sha512-jizsIzhkIitxCGfPRzJn1ZdcosIt3pz9Sh3V01fm1vZnbnCMgmGl5wvGGdNN2EL9Rmb0EcFoCkixH4Pu+sP9Og==
 
 pg-protocol@^1.6.0:
   version "1.6.0"
@@ -5847,18 +5926,20 @@ pg-types@^2.1.0:
     postgres-date "~1.0.4"
     postgres-interval "^1.1.0"
 
-pg@^8.7.3, pg@^8.9.0:
-  version "8.10.0"
-  resolved "https://registry.npmjs.org/pg/-/pg-8.10.0.tgz"
-  integrity sha512-ke7o7qSTMb47iwzOSaZMfeR7xToFdkE71ifIipOAAaLIM0DYzfOAXlgFFmYUIE2BcJtvnVlGCID84ZzCegE8CQ==
+pg@^8.11.0, pg@^8.7.3:
+  version "8.11.1"
+  resolved "https://registry.npmjs.org/pg/-/pg-8.11.1.tgz"
+  integrity sha512-utdq2obft07MxaDg0zBJI+l/M3mBRfIpEN3iSemsz0G5F2/VXx+XzqF4oxrbIZXQxt2AZzIUzyVg/YM6xOP/WQ==
   dependencies:
     buffer-writer "2.0.0"
     packet-reader "1.0.0"
-    pg-connection-string "^2.5.0"
-    pg-pool "^3.6.0"
+    pg-connection-string "^2.6.1"
+    pg-pool "^3.6.1"
     pg-protocol "^1.6.0"
     pg-types "^2.1.0"
     pgpass "1.x"
+  optionalDependencies:
+    pg-cloudflare "^1.1.1"
 
 pgpass@1.x:
   version "1.0.5"
@@ -6233,14 +6314,14 @@ reflect-metadata@^0.1.13:
   resolved "https://registry.npmjs.org/reflect-metadata/-/reflect-metadata-0.1.13.tgz"
   integrity sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==
 
-regexp.prototype.flags@^1.4.3:
-  version "1.4.3"
-  resolved "https://registry.npmjs.org/regexp.prototype.flags/-/regexp.prototype.flags-1.4.3.tgz"
-  integrity sha512-fjggEOO3slI6Wvgjwflkc4NFRCTZAu5CnNfBd5qOMYhWdn67nJBBu34/TkD++eeFmd8C9r9jfXJ27+nSiRkSUA==
+regexp.prototype.flags@^1.4.3, regexp.prototype.flags@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.npmjs.org/regexp.prototype.flags/-/regexp.prototype.flags-1.5.0.tgz"
+  integrity sha512-0SutC3pNudRKgquxGoRGIz946MZVHqbNfPjBdxeOhBrdgDKlRoXmYLQN9xRbrR09ZXWeGAdPuif7egofn6v5LA==
   dependencies:
     call-bind "^1.0.2"
-    define-properties "^1.1.3"
-    functions-have-names "^1.2.2"
+    define-properties "^1.2.0"
+    functions-have-names "^1.2.3"
 
 regexpp@^3.1.0:
   version "3.2.0"
@@ -6809,6 +6890,13 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://registry.npmjs.org/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
+sync-fetch@^0.5.2:
+  version "0.5.2"
+  resolved "https://registry.npmjs.org/sync-fetch/-/sync-fetch-0.5.2.tgz"
+  integrity sha512-6gBqqkHrYvkH65WI2bzrDwrIKmt3U10s4Exnz3dYuE5Ah62FIfNv/F63inrNhu2Nyh3GH5f42GKU3RrSJoaUyQ==
+  dependencies:
+    node-fetch "^2.6.1"
+
 table@^6.0.9:
   version "6.8.0"
   resolved "https://registry.npmjs.org/table/-/table-6.8.0.tgz"
@@ -7089,9 +7177,9 @@ typedarray-to-buffer@^3.1.5:
     is-typedarray "^1.0.0"
 
 typeorm@^0.3.6:
-  version "0.3.12"
-  resolved "https://registry.npmjs.org/typeorm/-/typeorm-0.3.12.tgz"
-  integrity sha512-sYSxBmCf1nJLLTcYtwqZ+lQIRtLPyUoO93rHTOKk9vJCyT4UfRtU7oRsJvfvKP3nnZTD1hzz2SEy2zwPEN6OyA==
+  version "0.3.17"
+  resolved "https://registry.npmjs.org/typeorm/-/typeorm-0.3.17.tgz"
+  integrity sha512-UDjUEwIQalO9tWw9O2A4GU+sT3oyoUXheHJy4ft+RFdnRdQctdQ34L9SqE2p7LdwzafHx1maxT+bqXON+Qnmig==
   dependencies:
     "@sqltools/formatter" "^1.2.5"
     app-root-path "^3.1.0"
@@ -7102,13 +7190,11 @@ typeorm@^0.3.6:
     debug "^4.3.4"
     dotenv "^16.0.3"
     glob "^8.1.0"
-    js-yaml "^4.1.0"
     mkdirp "^2.1.3"
     reflect-metadata "^0.1.13"
     sha.js "^2.4.11"
     tslib "^2.5.0"
     uuid "^9.0.0"
-    xml2js "^0.4.23"
     yargs "^17.6.2"
 
 typescript@4.8.2:
@@ -7489,7 +7575,7 @@ ws@7.4.6:
   resolved "https://registry.npmjs.org/ws/-/ws-7.4.6.tgz"
   integrity sha512-YmhHDO4MzaDLB+M9ym/mDA5z0naX8j7SIlT8f8z+I0VtzsRbekxEutHSme7NPS2qE8StCYQNUnfWdXta/Yu85A==
 
-ws@^8.12.0:
+ws@^8.13.0:
   version "8.13.0"
   resolved "https://registry.npmjs.org/ws/-/ws-8.13.0.tgz"
   integrity sha512-x9vcZYTrFPC7aSIbj7sRCYo7L/Xb8Iy+pW0ng0wt2vCJv7M9HOMy0UoN3rr+IFC7hb7vXoqS+P9ktyLLLhO+LA==
@@ -7506,19 +7592,6 @@ xml2js@0.4.19, xml2js@^0.4.5:
   dependencies:
     sax ">=0.6.0"
     xmlbuilder "~9.0.1"
-
-xml2js@^0.4.23:
-  version "0.4.23"
-  resolved "https://registry.npmjs.org/xml2js/-/xml2js-0.4.23.tgz"
-  integrity sha512-ySPiMjM0+pLDftHgXY4By0uswI3SPKLDw/i3UXbnO8M/p28zqexCUoPmQFrYD+/1BzhGJSs2i1ERWKJAtiLrug==
-  dependencies:
-    sax ">=0.6.0"
-    xmlbuilder "~11.0.0"
-
-xmlbuilder@~11.0.0:
-  version "11.0.1"
-  resolved "https://registry.npmjs.org/xmlbuilder/-/xmlbuilder-11.0.1.tgz"
-  integrity sha512-fDlsI/kFEx7gLvbecc0/ohLG50fugQp8ryHzMTuW9vSa1GJ0XYWKnhsUx7oie3G98+r56aTQIUB4kht42R3JvA==
 
 xmlbuilder@~9.0.1:
   version "9.0.7"

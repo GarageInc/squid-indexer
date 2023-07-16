@@ -1,5 +1,5 @@
 import { lookupArchive } from '@subsquid/archive-registry'
-import { SubstrateBatchProcessor, BatchProcessorItem, BatchContext } from '@subsquid/substrate-processor'
+import { SubstrateBatchProcessor, BatchProcessorItem, DataHandlerContext as BatchContext } from 'squid-sdk/substrate/substrate-processor/src'
 import { TypeormDatabase, Store } from '@subsquid/typeorm-store'
 import {
   CHAIN_NODE,

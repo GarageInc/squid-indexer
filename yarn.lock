@@ -1107,9 +1107,9 @@
   resolved "https://registry.npmjs.org/@sqltools/formatter/-/formatter-1.2.5.tgz"
   integrity sha512-Uy0+khmZqUrUGm5dmMqVlnvufZRSK0FbYzVgp0UMstm+F5+W2/jnEEQyc9vo1ZR/E5ZI/B1WjjoTqBqwJL6Krw==
 
-"@subsquid/archive-registry@3.2.0":
+"@subsquid/archive-registry@^3.2.0":
   version "3.2.0"
-  resolved "https://registry.npmjs.org/@subsquid/archive-registry/-/archive-registry-3.2.0.tgz"
+  resolved "https://registry.yarnpkg.com/@subsquid/archive-registry/-/archive-registry-3.2.0.tgz#3f47b9d309c49d5e3e798f01fa7f6353920e99ea"
   integrity sha512-qEzFODDVwEx+3cdmk4LPAKoLzjcBcqvhhLovEWOUKxN+S9SZaOWYHf7yq1pi48X6nUSVLmK7rofBx+pS4hIU7Q==
   dependencies:
     "@subsquid/util-internal" "^1.0.0"
@@ -1117,9 +1117,9 @@
     easy-table "^1.2.0"
     sync-fetch "^0.5.2"
 
-"@subsquid/cli@2.4.3":
+"@subsquid/cli@^2.4.3":
   version "2.4.3"
-  resolved "https://registry.npmjs.org/@subsquid/cli/-/cli-2.4.3.tgz"
+  resolved "https://registry.yarnpkg.com/@subsquid/cli/-/cli-2.4.3.tgz#c1adb6a805234b94bebd26708e345e8b7945868c"
   integrity sha512-1mBsJgxvXN17OqqlQTH6JxPKbpzwUN08340WJkPKMoB7fgP16a6Yk2/+8d/fKlEqfABXL3xKE0qG88b3Ko3tZg==
   dependencies:
     "@oclif/core" "^1.26.1"
@@ -1160,9 +1160,9 @@
     glob "^8.1.0"
     supports-color "^8.1.1"
 
-"@subsquid/evm-typegen@3.2.0":
+"@subsquid/evm-typegen@^3.2.0":
   version "3.2.0"
-  resolved "https://registry.npmjs.org/@subsquid/evm-typegen/-/evm-typegen-3.2.0.tgz"
+  resolved "https://registry.yarnpkg.com/@subsquid/evm-typegen/-/evm-typegen-3.2.0.tgz#1aad352d67da47ad8fd135c258b07667fde8b899"
   integrity sha512-2I2hWwKZmLmvvpBs3ggdGI/jhtub9Cg8MALmwI2WGO36dXmRlI+B01H8hHzgOwNpq0U5eThtjLzZ38xPoqGFag==
   dependencies:
     "@subsquid/http-client" "^1.2.0"
@@ -1177,9 +1177,9 @@
   resolved "https://registry.npmjs.org/@subsquid/graphiql-console/-/graphiql-console-0.3.0.tgz"
   integrity sha512-C89mus6IXnNi0xMQrZqUFBZwLj8tbuq9lye8Gq/lHmmERAUpi6UsWEyLdJLx2mneZzF3JtY8eNiiZ16jmjtvfw==
 
-"@subsquid/graphql-server@4.2.0":
+"@subsquid/graphql-server@^4.2.0":
   version "4.2.0"
-  resolved "https://registry.npmjs.org/@subsquid/graphql-server/-/graphql-server-4.2.0.tgz"
+  resolved "https://registry.yarnpkg.com/@subsquid/graphql-server/-/graphql-server-4.2.0.tgz#f15e2d228976e1a9479266565ebd4de9a40ce6f8"
   integrity sha512-U8ENVIgTVFCfqvxb24leuuYeHTDuQGoWKn+MvuQNZMFI2zu6HGW4ZaaYAfi1e1Z/NZpWKLf1YW92K+dce5D/Ww==
   dependencies:
     "@apollo/utils.keyvadapter" "~1.1.2"
@@ -1281,9 +1281,9 @@
     base-x "^4.0.0"
     blake2b "^2.1.4"
 
-"@subsquid/ss58@0.1.4":
+"@subsquid/ss58@^0.1.4":
   version "0.1.4"
-  resolved "https://registry.npmjs.org/@subsquid/ss58/-/ss58-0.1.4.tgz"
+  resolved "https://registry.yarnpkg.com/@subsquid/ss58/-/ss58-0.1.4.tgz#a7198a433bb720aba019aa47cefe828f36d24c25"
   integrity sha512-YM7Wt+upN8M5IZ9tr+yxHafBOWCcvJzXz4rlC62SM7VCP++ErqbBtui03yROussGTSAjBObXgzVljYypG0kawQ==
   dependencies:
     "@subsquid/ss58-codec" "^0.1.2"
@@ -1373,9 +1373,9 @@
   dependencies:
     "@subsquid/util-naming" "^1.2.0"
 
-"@subsquid/typeorm-migration@1.2.0":
+"@subsquid/typeorm-migration@^1.2.0":
   version "1.2.0"
-  resolved "https://registry.npmjs.org/@subsquid/typeorm-migration/-/typeorm-migration-1.2.0.tgz"
+  resolved "https://registry.yarnpkg.com/@subsquid/typeorm-migration/-/typeorm-migration-1.2.0.tgz#feb7d29bfd9850c7e9564d3b8b1faab3b578d22e"
   integrity sha512-+PpcNYo1sm+hdsX+HgMLXvE5ypuWhGsvoQcmi4HOiY8GsKiS4R4p/ARU0pNd4/kLFmOR+zlNIZqKP5U168L1qw==
   dependencies:
     "@subsquid/typeorm-config" "^3.2.0"
@@ -6678,6 +6678,10 @@ sprintf-js@~1.0.2:
   version "1.0.3"
   resolved "https://registry.npmjs.org/sprintf-js/-/sprintf-js-1.0.3.tgz"
   integrity sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==
+
+"squid-sdk@https://github.com/subsquid/squid-sdk.git":
+  version "0.0.0"
+  resolved "https://github.com/subsquid/squid-sdk.git#f95c73c31eb9c2c2c5283d7420da06b59987be82"
 
 ssri@^8.0.0, ssri@^8.0.1:
   version "8.0.1"

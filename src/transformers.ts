@@ -1,4 +1,4 @@
-import { EvmLogEvent, SubstrateBlock } from '@subsquid/substrate-processor'
+import { EvmLogEvent, SubstrateBlock } from 'squid-sdk/substrate/substrate-processor/src'
 import { Context } from './configs'
 import { Store } from '@subsquid/typeorm-store'
 import {

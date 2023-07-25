@@ -55,6 +55,7 @@ const DATA_TEMPLATE = {
 
 export const processor = new EvmBatchProcessor()
   .setBlockRange({ from: FROM })
+  .setFinalityConfirmation(12)
   .setDataSource({
     chain: CHAIN_NODE,
     archive: lookupArchive('arbitrum'),

@@ -1,5 +1,5 @@
-module.exports = class Data1688283537772 {
-    name = 'Data1688283537772'
+module.exports = class Data1690304642005 {
+    name = 'Data1690304642005'
 
     async up(db) {
         await db.query(`CREATE TABLE "added_dai_to_voting" ("id" character varying NOT NULL, "current_epoch" numeric NOT NULL, "voter" text NOT NULL, "staking_position_id" numeric NOT NULL, "voting_position_id" numeric NOT NULL, "amount" numeric NOT NULL, "votes" numeric NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, CONSTRAINT "PK_9e1e399cbc921bb8d6aedb65ad5" PRIMARY KEY ("id"))`)
@@ -16,7 +16,7 @@ module.exports = class Data1688283537772 {
         await db.query(`CREATE INDEX "IDX_a690e45e1a07bb659032aae2b4" ON "chosen_winner" ("fighter1") `)
         await db.query(`CREATE INDEX "IDX_d526c1302a941f6995ff9dceb1" ON "chosen_winner" ("fighter2") `)
         await db.query(`CREATE INDEX "IDX_ba74943f62ec5cb7972ffef29e" ON "chosen_winner" ("timestamp") `)
-        await db.query(`CREATE TABLE "created_staker_position" ("id" character varying NOT NULL, "current_epoch" numeric NOT NULL, "staker" text NOT NULL, "staking_position_id" numeric NOT NULL, "is_deleted" boolean NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, "author" text NOT NULL, "project_id" character varying, CONSTRAINT "PK_4210a7c4e3f2e4db712229ac488" PRIMARY KEY ("id"))`)
+        await db.query(`CREATE TABLE "created_staker_position" ("id" character varying NOT NULL, "current_epoch" numeric NOT NULL, "staker" text NOT NULL, "staking_position_id" numeric NOT NULL, "is_deleted" boolean NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, "author" text NOT NULL, "league" integer NOT NULL, "project_id" character varying, CONSTRAINT "PK_4210a7c4e3f2e4db712229ac488" PRIMARY KEY ("id"))`)
         await db.query(`CREATE INDEX "IDX_74c8ec6c442f5ad702b05dc4aa" ON "created_staker_position" ("current_epoch") `)
         await db.query(`CREATE INDEX "IDX_f1ff9db18d1ac2b5b6a99bbd6e" ON "created_staker_position" ("staker") `)
         await db.query(`CREATE INDEX "IDX_f98be95299cd02d3ebc94a8adb" ON "created_staker_position" ("timestamp") `)

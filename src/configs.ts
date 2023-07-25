@@ -1,6 +1,4 @@
 import { lookupArchive } from '@subsquid/archive-registry'
-import { EvmBatchProcessor, LogHandlerContext, BatchHandlerContext, BatchProcessorItem } from '@subsquid/evm-processor'
-import { LogDataRequest } from '@subsquid/evm-processor/lib/interfaces/dataSelection'
 import { TypeormDatabase, Store } from '@subsquid/typeorm-store'
 import {
   CHAIN_NODE,
@@ -30,12 +28,21 @@ import {
   TransferERC721T,
   TransferErc20T,
 } from './events'
+import {
+  BlockHeader,
+  DataHandlerContext,
+  EvmBatchProcessor,
+  EvmBatchProcessorFields,
+  Log as _Log,
+  Transaction as _Transaction,
+} from '@subsquid/evm-processor'
+
 
 const FROM = 89064036
 
 export const database = new TypeormDatabase()
 
-const DATA_TEMPLATE: LogDataRequest = {
+const DATA_TEMPLATE = {
   evmLog: {
     data: true,
     topics: true,
@@ -52,102 +59,71 @@ export const processor = new EvmBatchProcessor()
     chain: CHAIN_NODE,
     archive: lookupArchive('arbitrum'),
   })
-  .addLog(BATTLE_ARENA_ARBITRUM, {
-    filter: [[CreatedStakerPositionT.topic]],
-    data: DATA_TEMPLATE,
-  })
-  .addLog(BATTLE_ARENA_ARBITRUM, {
-    filter: [[RemovedStakerPositionT.topic]],
-    data: DATA_TEMPLATE,
-  })
-  .addLog(BATTLE_ARENA_ARBITRUM, {
-    filter: [[CreatedVotingPositionT.topic]],
-    data: DATA_TEMPLATE,
-  })
-  .addLog(BATTLE_ARENA_ARBITRUM, {
-    filter: [[LiquidatedVotingPositionT.topic]],
-    data: DATA_TEMPLATE,
-  })
-  .addLog(BATTLE_ARENA_ARBITRUM, {
-    filter: [[AddedDaiToVotingT.topic]],
-    data: DATA_TEMPLATE,
-  })
-  .addLog(BATTLE_ARENA_ARBITRUM, {
-    filter: [[AddedZooToVotingT.topic]],
-    data: DATA_TEMPLATE,
-  })
-  .addLog(BATTLE_ARENA_ARBITRUM, {
-    filter: [[WithdrawedDaiFromVotingT.topic]],
-    data: DATA_TEMPLATE,
-  })
-  .addLog(BATTLE_ARENA_ARBITRUM, {
-    filter: [[WithdrawedZooFromVotingT.topic]],
-    data: DATA_TEMPLATE,
-  })
-  .addLog(BATTLE_ARENA_ARBITRUM, {
-    filter: [[PairedNftT.topic]],
-    data: DATA_TEMPLATE,
-  })
-  .addLog(BATTLE_ARENA_ARBITRUM, {
-    filter: [[ChosenWinnerT.topic]],
-    data: DATA_TEMPLATE,
-  })
-  .addLog(BATTLE_ARENA_ARBITRUM, {
-    filter: [[ClaimedRewardFromStakingT.topic]],
-    data: DATA_TEMPLATE,
-  })
-  .addLog(BATTLE_ARENA_ARBITRUM, {
-    filter: [[ClaimedRewardFromVotingT.topic]],
-    data: DATA_TEMPLATE,
-  })
 
-processor.addLog(BATTLE_VOTER_ARBITRUM, {
-  filter: [[ClaimedIncentiveRewardFromVotingT.topic]],
-  data: DATA_TEMPLATE,
-})
-
-processor.addLog(BATTLE_STAKER_ARBITRUM, {
-  filter: [[ClaimedIncentiveRewardFromStakingT.topic]],
-  data: DATA_TEMPLATE,
-})
-
-processor.addLog(VE_MODEL_ARBITRUM, {
-  filter: [[VotedForCollectionT.topic]],
-  data: DATA_TEMPLATE,
-})
-
-processor.addLog(VE_MODEL_ARBITRUM, {
-  filter: [[ZooUnlockedT.topic]],
-  data: DATA_TEMPLATE,
-})
-
-processor.addLog(BATTLE_VOTER_ARBITRUM, {
-  filter: [[TransferERC721T.topic]],
-  data: DATA_TEMPLATE,
-})
-processor.addLog(BATTLE_STAKER_ARBITRUM, {
-  filter: [[TransferERC721T.topic]],
-  data: DATA_TEMPLATE,
-})
-
-processor.addLog(fsGLP, {
-  filter: [[TransferErc20T.topic]],
-  data: DATA_TEMPLATE,
-})
-
-export type LogEventItem = BatchProcessorItem<typeof processor>
-export type Context = BatchHandlerContext<Store, LogEventItem>
-
-export type LogContext = LogHandlerContext<
-  Store,
-  {
-    evmLog: {
+  .setFields({
+    log: {
+      topics: true,
       data: true
-      topics: true
-    }
+    },
     transaction: {
-      hash: true
-      from: true
+      input: true,
+      hash: true,
+      from: true,
     }
+  })
+  .addLog({address: [BATTLE_ARENA_ARBITRUM], topic0: [CreatedStakerPositionT.topic], transaction: true})
+
+  .addLog({address: [BATTLE_ARENA_ARBITRUM], topic0: [RemovedStakerPositionT.topic], transaction: true})
+  .addLog({address: [BATTLE_ARENA_ARBITRUM], topic0: [CreatedVotingPositionT.topic], transaction: true})
+  .addLog({address: [BATTLE_ARENA_ARBITRUM], topic0: [LiquidatedVotingPositionT.topic], transaction: true})
+  .addLog({address: [BATTLE_ARENA_ARBITRUM], topic0: [AddedDaiToVotingT.topic], transaction: true})
+  .addLog({address: [BATTLE_ARENA_ARBITRUM], topic0: [AddedZooToVotingT.topic], transaction: true})
+  .addLog({address: [BATTLE_ARENA_ARBITRUM], topic0: [WithdrawedDaiFromVotingT.topic], transaction: true})
+  .addLog({address: [BATTLE_ARENA_ARBITRUM], topic0: [WithdrawedZooFromVotingT.topic], transaction: true})
+  .addLog({address: [BATTLE_ARENA_ARBITRUM], topic0: [PairedNftT.topic], transaction: true})
+  .addLog({address: [BATTLE_ARENA_ARBITRUM], topic0: [ChosenWinnerT.topic], transaction: true})
+  .addLog({address: [BATTLE_ARENA_ARBITRUM], topic0: [ClaimedRewardFromStakingT.topic], transaction: true})
+  .addLog({address: [BATTLE_ARENA_ARBITRUM], topic0: [ClaimedRewardFromVotingT.topic], transaction: true})
+
+  .addLog({address: [BATTLE_VOTER_ARBITRUM], topic0: [ClaimedIncentiveRewardFromVotingT.topic], transaction: true})
+  .addLog({address: [BATTLE_STAKER_ARBITRUM], topic0: [ClaimedIncentiveRewardFromStakingT.topic], transaction: true})
+  .addLog({address: [VE_MODEL_ARBITRUM], topic0: [VotedForCollectionT.topic], transaction: true})
+  .addLog({address: [VE_MODEL_ARBITRUM], topic0: [ZooUnlockedT.topic], transaction: true})
+  .addLog({address: [BATTLE_VOTER_ARBITRUM], topic0: [TransferERC721T.topic], transaction: true})
+  .addLog({address: [BATTLE_STAKER_ARBITRUM], topic0: [TransferERC721T.topic], transaction: true})
+  .addLog({address: [fsGLP], topic0: [TransferErc20T.topic], transaction: true})
+
+export type Fields = EvmBatchProcessorFields<typeof processor>
+export type Block = BlockHeader<Fields>
+export type Log = _Log<Fields>
+export type Transaction = _Transaction<Fields>
+export type ProcessorContext<Store> = DataHandlerContext<Store, Fields>
+
+export type Context = DataHandlerContext<Store, { log: { topics: true; data: true }; transaction: { input: true; hash: true; from: true } }>
+
+export interface LogContext {
+  id: string;
+  logIndex: number;
+  transactionIndex: number;
+  address: string;
+  data: string;
+  topics: string[];
+  block: {
+      id: string;
+      hash: string;
+      height: number;
+      parentHash: string;
+      timestamp: number;
+  };
+  transaction?: {
+    hash: string
   }
->
+}
+
+export interface IBlockHeader {
+  id: string;
+  hash: string;
+  height: number;
+  parentHash: string;
+  timestamp: number;
+}

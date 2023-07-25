@@ -1,0 +1,294 @@
+[
+    {
+      "anonymous": false,
+      "inputs": [
+        { "indexed": true, "internalType": "address", "name": "previousOwner", "type": "address" },
+        { "indexed": true, "internalType": "address", "name": "newOwner", "type": "address" }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "arenaFee",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "battles",
+      "outputs": [{ "internalType": "contract NftBattleArena", "name": "", "type": "address" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "bronzeLeague",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "bronzeZooRewards",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "computePseudoRandom",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
+      "name": "computeVotesByDai",
+      "outputs": [{ "internalType": "uint256", "name": "votes", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
+      "name": "computeVotesByZoo",
+      "outputs": [{ "internalType": "uint256", "name": "votes", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "uint256", "name": "votesForA", "type": "uint256" },
+        { "internalType": "uint256", "name": "votesForB", "type": "uint256" },
+        { "internalType": "uint256", "name": "random", "type": "uint256" }
+      ],
+      "name": "decideWins",
+      "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "fifthStageDuration",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "firstStageDuration",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "fourthStageDuration",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getArenaFee",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [{ "internalType": "uint8", "name": "league", "type": "uint8" }],
+      "name": "getLeagueZooRewards",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [{ "internalType": "uint256", "name": "votes", "type": "uint256" }],
+      "name": "getNftLeague",
+      "outputs": [{ "internalType": "uint8", "name": "", "type": "uint8" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getRandomResult",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [{ "internalType": "uint256", "name": "epoch", "type": "uint256" }],
+      "name": "getRandomResultByEpoch",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getStageDurations",
+      "outputs": [
+        { "internalType": "uint256", "name": "", "type": "uint256" },
+        { "internalType": "uint256", "name": "", "type": "uint256" },
+        { "internalType": "uint256", "name": "", "type": "uint256" },
+        { "internalType": "uint256", "name": "", "type": "uint256" },
+        { "internalType": "uint256", "name": "", "type": "uint256" },
+        { "internalType": "uint256", "name": "epochDuration", "type": "uint256" }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "goldLeague",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "goldZooRewards",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "address payable", "name": "_nftBattleArena", "type": "address" },
+        { "internalType": "address", "name": "owner", "type": "address" }
+      ],
+      "name": "init",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "isRandomRequested",
+      "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "masterZooRewards",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "platinumLeague",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "platinumZooRewards",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "name": "randomNumberByEpoch",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    { "inputs": [], "name": "renounceOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
+    { "inputs": [], "name": "requestRandomNumber", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
+    { "inputs": [], "name": "resetRandom", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
+    {
+      "inputs": [],
+      "name": "secondStageDuration",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [{ "internalType": "uint256", "name": "_arenaFee", "type": "uint256" }],
+      "name": "setArenaFee",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [{ "internalType": "uint256[]", "name": "amount", "type": "uint256[]" }],
+      "name": "setLeagueRange",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "enum Stage", "name": "stage", "type": "uint8" },
+        { "internalType": "uint256", "name": "duration", "type": "uint256" }
+      ],
+      "name": "setStageDuration",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "uint8", "name": "league", "type": "uint8" },
+        { "internalType": "uint256", "name": "zooRewards", "type": "uint256" }
+      ],
+      "name": "setZooRewards",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "silverLeague",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "silverZooRewards",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "thirdStageDuration",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "woodenLeague",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "woodenZooRewards",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ]
+  

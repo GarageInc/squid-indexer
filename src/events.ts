@@ -2,7 +2,6 @@ import * as arenaAbi from './abi/generated/battle-arena-abi'
 import * as stakerAbi from './abi/generated/battle-staker-abi'
 import * as voterAbi from './abi/generated/battle-voter-abi'
 import * as vemodelAbi from './abi/generated/ve-model-abi'
-import * as faucetAbi from './abi/generated/battle-faucet-abi'
 import * as erc721 from './abi/generated/erc721'
 import * as erc20 from './abi/generated/erc20'
 
@@ -23,8 +22,6 @@ export const ClaimedIncentiveRewardFromVotingT = voterAbi.events.ClaimedIncentiv
 
 export const VotedForCollectionT = vemodelAbi.events.VotedForCollection
 export const ZooUnlockedT = vemodelAbi.events.ZooUnlocked
-
-export const ZooGivenT = faucetAbi.events.ZooGiven
 
 export const TransferERC721T = erc721.events.Transfer
 

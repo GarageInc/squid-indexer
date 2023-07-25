@@ -2,10 +2,10 @@ import * as ethers from 'ethers'
 import {LogEvent, Func, ContractBase} from './abi.support'
 import {ABI_JSON} from './ve-model-abi.abi'
 
-export const abi = new ethers.utils.Interface(ABI_JSON);
+export const abi = new ethers.Interface(ABI_JSON);
 
 export const events = {
-    Approval: new LogEvent<([owner: string, approved: string, tokenId: ethers.BigNumber] & {owner: string, approved: string, tokenId: ethers.BigNumber})>(
+    Approval: new LogEvent<([owner: string, approved: string, tokenId: bigint] & {owner: string, approved: string, tokenId: bigint})>(
         abi, '0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925'
     ),
     ApprovalForAll: new LogEvent<([owner: string, operator: string, approved: boolean] & {owner: string, operator: string, approved: boolean})>(
@@ -23,13 +23,13 @@ export const events = {
     RoyalteRecipientChanged: new LogEvent<([collection: string, recipient: string] & {collection: string, recipient: string})>(
         abi, '0x6f0fdbd47473e03fab56da29ca709c25e097617616ec19757e8e686962a923bb'
     ),
-    Transfer: new LogEvent<([from: string, to: string, tokenId: ethers.BigNumber] & {from: string, to: string, tokenId: ethers.BigNumber})>(
+    Transfer: new LogEvent<([from: string, to: string, tokenId: bigint] & {from: string, to: string, tokenId: bigint})>(
         abi, '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
     ),
-    VotedForCollection: new LogEvent<([collection: string, voter: string, amount: ethers.BigNumber, positionId: ethers.BigNumber] & {collection: string, voter: string, amount: ethers.BigNumber, positionId: ethers.BigNumber})>(
+    VotedForCollection: new LogEvent<([collection: string, voter: string, amount: bigint, positionId: bigint] & {collection: string, voter: string, amount: bigint, positionId: bigint})>(
         abi, '0x93ecaff21ddd137f6b58113bb9d38c2deceb49a6de98ca29260756dc5322c5e5'
     ),
-    ZooUnlocked: new LogEvent<([voter: string, collection: string, amount: ethers.BigNumber, positionId: ethers.BigNumber] & {voter: string, collection: string, amount: ethers.BigNumber, positionId: ethers.BigNumber})>(
+    ZooUnlocked: new LogEvent<([voter: string, collection: string, amount: bigint, positionId: bigint] & {voter: string, collection: string, amount: bigint, positionId: bigint})>(
         abi, '0xa57ac690002d7c98f53310bae856dfdcfc2e886783284ffb51df5da0cfd5b636'
     ),
 }
@@ -38,13 +38,13 @@ export const functions = {
     allowNewContractForStaking: new Func<[collection: string, _royalteRecipient: string], {collection: string, _royalteRecipient: string}, []>(
         abi, '0xae11d18a'
     ),
-    approve: new Func<[to: string, tokenId: ethers.BigNumber], {to: string, tokenId: ethers.BigNumber}, []>(
+    approve: new Func<[to: string, tokenId: bigint], {to: string, tokenId: bigint}, []>(
         abi, '0x095ea7b3'
     ),
     arena: new Func<[], {}, string>(
         abi, '0xfd3705f9'
     ),
-    balanceOf: new Func<[owner: string], {owner: string}, ethers.BigNumber>(
+    balanceOf: new Func<[owner: string], {owner: string}, bigint>(
         abi, '0x70a08231'
     ),
     batchAllowNewContract: new Func<[tokens: Array<string>, royalteRecipients: Array<string>], {tokens: Array<string>, royalteRecipients: Array<string>}, []>(
@@ -56,10 +56,10 @@ export const functions = {
     eligibleCollections: new Func<[_: string], {}, boolean>(
         abi, '0x65845b78'
     ),
-    endEpochOfIncentiveRewards: new Func<[], {}, ethers.BigNumber>(
+    endEpochOfIncentiveRewards: new Func<[], {}, bigint>(
         abi, '0xf6065663'
     ),
-    getApproved: new Func<[tokenId: ethers.BigNumber], {tokenId: ethers.BigNumber}, string>(
+    getApproved: new Func<[tokenId: bigint], {tokenId: bigint}, string>(
         abi, '0x081812fc'
     ),
     init: new Func<[nftBattleArena: string], {nftBattleArena: string}, []>(
@@ -74,7 +74,7 @@ export const functions = {
     owner: new Func<[], {}, string>(
         abi, '0x8da5cb5b'
     ),
-    ownerOf: new Func<[tokenId: ethers.BigNumber], {tokenId: ethers.BigNumber}, string>(
+    ownerOf: new Func<[tokenId: bigint], {tokenId: bigint}, string>(
         abi, '0x6352211e'
     ),
     renounceOwnership: new Func<[], {}, []>(
@@ -83,10 +83,10 @@ export const functions = {
     royalteRecipient: new Func<[_: string], {}, string>(
         abi, '0xb79c5f5d'
     ),
-    'safeTransferFrom(address,address,uint256)': new Func<[from: string, to: string, tokenId: ethers.BigNumber], {from: string, to: string, tokenId: ethers.BigNumber}, []>(
+    'safeTransferFrom(address,address,uint256)': new Func<[from: string, to: string, tokenId: bigint], {from: string, to: string, tokenId: bigint}, []>(
         abi, '0x42842e0e'
     ),
-    'safeTransferFrom(address,address,uint256,bytes)': new Func<[from: string, to: string, tokenId: ethers.BigNumber, data: string], {from: string, to: string, tokenId: ethers.BigNumber, data: string}, []>(
+    'safeTransferFrom(address,address,uint256,bytes)': new Func<[from: string, to: string, tokenId: bigint, data: string], {from: string, to: string, tokenId: bigint, data: string}, []>(
         abi, '0xb88d4fde'
     ),
     setApprovalForAll: new Func<[operator: string, approved: boolean], {operator: string, approved: boolean}, []>(
@@ -101,28 +101,28 @@ export const functions = {
     symbol: new Func<[], {}, string>(
         abi, '0x95d89b41'
     ),
-    tokenOfOwnerByIndex: new Func<[_: string, _: ethers.BigNumber], {}, ethers.BigNumber>(
+    tokenOfOwnerByIndex: new Func<[_: string, _: bigint], {}, bigint>(
         abi, '0x2f745c59'
     ),
-    tokenURI: new Func<[tokenId: ethers.BigNumber], {tokenId: ethers.BigNumber}, string>(
+    tokenURI: new Func<[tokenId: bigint], {tokenId: bigint}, string>(
         abi, '0xc87b56dd'
     ),
-    transferFrom: new Func<[from: string, to: string, tokenId: ethers.BigNumber], {from: string, to: string, tokenId: ethers.BigNumber}, []>(
+    transferFrom: new Func<[from: string, to: string, tokenId: bigint], {from: string, to: string, tokenId: bigint}, []>(
         abi, '0x23b872dd'
     ),
     transferOwnership: new Func<[newOwner: string], {newOwner: string}, []>(
         abi, '0xf2fde38b'
     ),
-    unlockZoo: new Func<[positionId: ethers.BigNumber], {positionId: ethers.BigNumber}, []>(
+    unlockZoo: new Func<[positionId: bigint], {positionId: bigint}, []>(
         abi, '0xe608ba3c'
     ),
-    vePositionIndex: new Func<[], {}, ethers.BigNumber>(
+    vePositionIndex: new Func<[], {}, bigint>(
         abi, '0x141d7e8b'
     ),
-    vePositions: new Func<[_: ethers.BigNumber], {}, ([zooLocked: ethers.BigNumber, collection: string, decayRate: ethers.BigNumber] & {zooLocked: ethers.BigNumber, collection: string, decayRate: ethers.BigNumber})>(
+    vePositions: new Func<[_: bigint], {}, ([zooLocked: bigint, collection: string, decayRate: bigint] & {zooLocked: bigint, collection: string, decayRate: bigint})>(
         abi, '0xc87489ab'
     ),
-    voteForNftCollection: new Func<[collection: string, amount: ethers.BigNumber], {collection: string, amount: ethers.BigNumber}, []>(
+    voteForNftCollection: new Func<[collection: string, amount: bigint], {collection: string, amount: bigint}, []>(
         abi, '0x8917e685'
     ),
     zoo: new Func<[], {}, string>(
@@ -136,7 +136,7 @@ export class Contract extends ContractBase {
         return this.eth_call(functions.arena, [])
     }
 
-    balanceOf(owner: string): Promise<ethers.BigNumber> {
+    balanceOf(owner: string): Promise<bigint> {
         return this.eth_call(functions.balanceOf, [owner])
     }
 
@@ -144,11 +144,11 @@ export class Contract extends ContractBase {
         return this.eth_call(functions.eligibleCollections, [arg0])
     }
 
-    endEpochOfIncentiveRewards(): Promise<ethers.BigNumber> {
+    endEpochOfIncentiveRewards(): Promise<bigint> {
         return this.eth_call(functions.endEpochOfIncentiveRewards, [])
     }
 
-    getApproved(tokenId: ethers.BigNumber): Promise<string> {
+    getApproved(tokenId: bigint): Promise<string> {
         return this.eth_call(functions.getApproved, [tokenId])
     }
 
@@ -164,7 +164,7 @@ export class Contract extends ContractBase {
         return this.eth_call(functions.owner, [])
     }
 
-    ownerOf(tokenId: ethers.BigNumber): Promise<string> {
+    ownerOf(tokenId: bigint): Promise<string> {
         return this.eth_call(functions.ownerOf, [tokenId])
     }
 
@@ -180,19 +180,19 @@ export class Contract extends ContractBase {
         return this.eth_call(functions.symbol, [])
     }
 
-    tokenOfOwnerByIndex(arg0: string, arg1: ethers.BigNumber): Promise<ethers.BigNumber> {
+    tokenOfOwnerByIndex(arg0: string, arg1: bigint): Promise<bigint> {
         return this.eth_call(functions.tokenOfOwnerByIndex, [arg0, arg1])
     }
 
-    tokenURI(tokenId: ethers.BigNumber): Promise<string> {
+    tokenURI(tokenId: bigint): Promise<string> {
         return this.eth_call(functions.tokenURI, [tokenId])
     }
 
-    vePositionIndex(): Promise<ethers.BigNumber> {
+    vePositionIndex(): Promise<bigint> {
         return this.eth_call(functions.vePositionIndex, [])
     }
 
-    vePositions(arg0: ethers.BigNumber): Promise<([zooLocked: ethers.BigNumber, collection: string, decayRate: ethers.BigNumber] & {zooLocked: ethers.BigNumber, collection: string, decayRate: ethers.BigNumber})> {
+    vePositions(arg0: bigint): Promise<([zooLocked: bigint, collection: string, decayRate: bigint] & {zooLocked: bigint, collection: string, decayRate: bigint})> {
         return this.eth_call(functions.vePositions, [arg0])
     }
 

@@ -1,4 +1,4 @@
-import { BigNumber } from 'ethers'
+
 import fetch from 'node-fetch'
 
 export const SupportedChainId = {
@@ -23,7 +23,7 @@ export const getArbitrumApi = (token: string, id: string) =>
 
 const BACKEND_URL = 'https://stage-api.zoodao.com/v1/nfts/save'
 
-export const saveToBackend = async (token: string, id: BigNumber, chainId: number) => {
+export const saveToBackend = async (token: string, id: BigInt, chainId: number) => {
   return fetch(BACKEND_URL, {
     method: 'POST',
     headers: {

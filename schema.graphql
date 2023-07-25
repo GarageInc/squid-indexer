@@ -55,6 +55,7 @@ type CreatedStakerPosition @entity {
   project: Project!
   transactionHash: String!
   author: String! @index
+  league: Int!
 }
 
 type CreatedVotingPosition @entity {

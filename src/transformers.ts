@@ -1,4 +1,3 @@
-import { Context, LogContext } from './configs'
 import {
   AddedDaiToVoting,
   AddedZooToVoting,
@@ -8,7 +7,6 @@ import {
   ClaimedRewardFromVoting,
   CreatedStakerPosition,
   CreatedVotingPosition,
-  FaucetZooGiven,
   LiquidatedVotingPosition,
   NftScanTokens,
   PairedNft,
@@ -23,29 +21,53 @@ import {
 import * as arenaAbi from './abi/generated/battle-arena-abi'
 import * as voterAbi from './abi/generated/battle-voter-abi'
 import * as stakerAbi from './abi/generated/battle-staker-abi'
+import * as functionsAbi from './abi/generated/battle-functions-abi'
 import * as vemodelAbi from './abi/generated/ve-model-abi'
-import * as faucetAbi from './abi/generated/battle-faucet-abi'
 import * as erc721 from './abi/generated/erc721'
 import * as erc20 from './abi/generated/erc20'
 import { ZooUnlocked } from './model/generated/zooUnlocked.model'
 import { VotedForCollection } from './model/generated/votedForCollection.model'
 import {
+  BATTLE_FUNCTIONS_ARBITRUM,
   BATTLE_STAKER_ARBITRUM,
   BATTLE_VOTER_ARBITRUM,
 } from './contract'
-import { BigNumber } from 'ethers'
-import { EvmBlock } from '@subsquid/evm-processor'
 import { SupportedChainId, fetchNftScan, getArbitrumApi, saveToBackend } from './nft-scan'
+import { Context, IBlockHeader, LogContext } from './configs'
 
 const makeId = (event: LogContext) =>
-  `${event.transaction.hash}-${event.evmLog.transactionIndex}-${event.evmLog.id}-${event.evmLog.index}`
+  `${getHash(event)}-${event.transactionIndex}-${event.id}-${event.logIndex}`
+
+const calculateLeague = async (ctx: Context, block: IBlockHeader, stakingPositionId: string) => {
+  const stakedPosition = await ctx.store.findOneBy(CreatedStakerPosition, {
+    stakingPositionId: BigInt(stakingPositionId),
+  })
+
+  if(stakedPosition){
+    const staker = new functionsAbi.Contract(ctx, { height: block.height }, BATTLE_FUNCTIONS_ARBITRUM)
+
+    const positions = await ctx.store.find(CreatedVotingPosition, {
+      where: {
+        stakingPositionId: BigInt(stakingPositionId),
+        isDeleted: false
+      }
+    })
+  
+    const allVotes = positions.reduce((acc, item) => {
+      return acc + item.votes
+    }, BigInt(0))
+
+    stakedPosition.league = await staker.getNftLeague(allVotes)
+    await ctx.store.save([stakedPosition])
+  }
+}
 
 export async function saveAddedDai<T>(
   ctx: Context,
   transfersData: {
     e: ReturnType<typeof arenaAbi.events.AddedDaiToVoting.decode>
     event: LogContext
-    block: EvmBlock
+    block: IBlockHeader
   }[]
 ) {
   const transfers: Set<AddedDaiToVoting> = new Set()
@@ -62,13 +84,18 @@ export async function saveAddedDai<T>(
       amount: BigInt(e.amount.toString()),
       votes: BigInt(e.votes.toString()),
       timestamp: new Date(block.timestamp),
-      transactionHash: event.transaction.hash,
+      transactionHash: getHash(event),
     })
 
     transfers.add(transfer)
   }
 
   await ctx.store.save([...transfers])
+
+  transfersData.forEach(async (transferData) => {
+    const { e,  block } = transferData
+    await calculateLeague(ctx, block, e.stakingPositionId.toString())
+  })
 }
 
 export async function saveAddedZoo(
@@ -76,7 +103,7 @@ export async function saveAddedZoo(
   transfersData: {
     e: ReturnType<typeof arenaAbi.events.AddedZooToVoting.decode>
     event: LogContext
-    block: EvmBlock
+    block: IBlockHeader
   }[]
 ) {
   const transfers: Set<AddedZooToVoting> = new Set()
@@ -93,13 +120,18 @@ export async function saveAddedZoo(
       amount: BigInt(e.amount.toString()),
       votes: BigInt(e.votes.toString()),
       timestamp: new Date(block.timestamp),
-      transactionHash: event.transaction.hash,
+      transactionHash: getHash(event),
     })
 
     transfers.add(transfer)
   }
 
   await ctx.store.save([...transfers])
+
+  transfersData.forEach(async (transferData) => {
+    const { e,  block } = transferData
+    await calculateLeague(ctx, block, e.stakingPositionId.toString())
+  })
 }
 
 export async function saveWithdrawedZoo(
@@ -107,7 +139,7 @@ export async function saveWithdrawedZoo(
   transfersData: {
     e: ReturnType<typeof arenaAbi.events.WithdrawedZooFromVoting.decode>
     event: LogContext
-    block: EvmBlock
+    block: IBlockHeader
   }[]
 ) {
   const transfers: Set<WithdrawedZooFromVoting> = new Set()
@@ -124,13 +156,18 @@ export async function saveWithdrawedZoo(
       zooNumber: BigInt(e.zooNumber.toString()),
       beneficiary: e.beneficiary.toLowerCase(),
       timestamp: new Date(block.timestamp),
-      transactionHash: event.transaction.hash,
+      transactionHash: getHash(event),
     })
 
     transfers.add(transfer)
   }
 
   await ctx.store.save([...transfers])
+
+  transfersData.forEach(async (transferData) => {
+    const { e,  block } = transferData
+    await calculateLeague(ctx, block, e.stakingPositionId.toString())
+  })
 }
 
 export async function saveWithdrawedDai(
@@ -138,7 +175,7 @@ export async function saveWithdrawedDai(
   transfersData: {
     e: ReturnType<typeof arenaAbi.events.WithdrawedDaiFromVoting.decode>
     event: LogContext
-    block: EvmBlock
+    block: IBlockHeader
   }[]
 ) {
   const transfers: Set<WithdrawedDaiFromVoting> = new Set()
@@ -155,18 +192,23 @@ export async function saveWithdrawedDai(
       daiNumber: BigInt(e.daiNumber.toString()),
       beneficiary: e.beneficiary.toLowerCase(),
       timestamp: new Date(block.timestamp),
-      transactionHash: event.transaction.hash,
+      transactionHash: getHash(event),
     })
 
     transfers.add(transfer)
   }
 
   await ctx.store.save([...transfers])
+
+  transfersData.forEach(async (transferData) => {
+    const { e,  block } = transferData
+    await calculateLeague(ctx, block, e.stakingPositionId.toString())
+  })
 }
 
 export async function savePaired(
   ctx: Context,
-  transfersData: { e: ReturnType<typeof arenaAbi.events.PairedNft.decode>; event: LogContext; block: EvmBlock }[]
+  transfersData: { e: ReturnType<typeof arenaAbi.events.PairedNft.decode>; event: LogContext; block: IBlockHeader }[]
 ) {
   const transfers: Set<PairedNft> = new Set()
 
@@ -185,7 +227,7 @@ export async function savePaired(
       currentEpoch: BigInt(e.currentEpoch.toString()),
       pairIndex: BigInt(e.pairIndex.toString()),
       timestamp: new Date(block.timestamp),
-      transactionHash: event.transaction.hash,
+      transactionHash: getHash(event),
     })
 
     transfers.add(transfer)
@@ -199,7 +241,7 @@ export async function saveWinner(
   transfersData: {
     e: ReturnType<typeof arenaAbi.events.ChosenWinner.decode>
     event: LogContext
-    block: EvmBlock
+    block: IBlockHeader
   }[]
 ) {
   const transfers: Set<ChosenWinner> = new Set()
@@ -216,7 +258,7 @@ export async function saveWinner(
       currentEpoch: BigInt(e.currentEpoch.toString()),
       pairIndex: BigInt(e.pairIndex.toString()),
       timestamp: new Date(block.timestamp),
-      transactionHash: event.transaction.hash,
+      transactionHash: getHash(event),
     })
 
     transfers.add(transfer)
@@ -230,7 +272,7 @@ export async function saveClaimedStaking(
   transfersData: {
     e: ReturnType<typeof arenaAbi.events.ClaimedRewardFromStaking.decode>
     event: LogContext
-    block: EvmBlock
+    block: IBlockHeader
   }[]
 ) {
   const transfers: Set<ClaimedRewardFromStaking> = new Set()
@@ -247,7 +289,7 @@ export async function saveClaimedStaking(
       stakingPositionId: BigInt(e.stakingPositionId.toString()),
       daiReward: BigInt(e.daiReward.toString()),
       timestamp: new Date(block.timestamp),
-      transactionHash: event.transaction.hash,
+      transactionHash: getHash(event),
     })
 
     transfers.add(transfer)
@@ -261,7 +303,7 @@ export async function saveClaimedIncentiveStaking(
   transfersData: {
     e: ReturnType<typeof stakerAbi.events.ClaimedIncentiveRewardFromVoting.decode>
     event: LogContext
-    block: EvmBlock
+    block: IBlockHeader
   }[]
 ) {
   const transfers: Set<ClaimedIncentiveRewardFromVoting> = new Set()
@@ -276,7 +318,7 @@ export async function saveClaimedIncentiveStaking(
       stakingPositionId: BigInt(e.stakingPositionId.toString()),
       zooReward: BigInt(e.zooReward.toString()),
       timestamp: new Date(block.timestamp),
-      transactionHash: event.transaction.hash,
+      transactionHash: getHash(event),
     })
 
     transfers.add(transfer)
@@ -290,7 +332,7 @@ export async function saveClaimedVoting(
   transfersData: {
     e: ReturnType<typeof arenaAbi.events.ClaimedRewardFromVoting.decode>
     event: LogContext
-    block: EvmBlock
+    block: IBlockHeader
   }[]
 ) {
   const transfers: Set<ClaimedRewardFromVoting> = new Set()
@@ -307,7 +349,7 @@ export async function saveClaimedVoting(
       votingPositionId: BigInt(e.votingPositionId.toString()),
       daiReward: BigInt(e.daiReward.toString()),
       timestamp: new Date(block.timestamp),
-      transactionHash: event.transaction.hash,
+      transactionHash: getHash(event),
     })
 
     transfers.add(transfer)
@@ -321,7 +363,7 @@ export async function saveClaimedIncentiveVoting(
   transfersData: {
     e: ReturnType<typeof voterAbi.events.ClaimedIncentiveRewardFromVoting.decode>
     event: LogContext
-    block: EvmBlock
+    block: IBlockHeader
   }[]
 ) {
   const transfers: Set<ClaimedIncentiveRewardFromVoting> = new Set()
@@ -336,7 +378,7 @@ export async function saveClaimedIncentiveVoting(
       votingPositionId: BigInt(e.votingPositionId.toString()),
       zooReward: BigInt(e.zooReward.toString()),
       timestamp: new Date(block.timestamp),
-      transactionHash: event.transaction.hash,
+      transactionHash: getHash(event),
     })
 
     transfers.add(transfer)
@@ -350,7 +392,7 @@ export async function saveStaked(
   transfersData: {
     e: ReturnType<typeof arenaAbi.events.CreatedStakerPosition.decode>
     event: LogContext
-    block: EvmBlock
+    block: IBlockHeader
   }[]
 ) {
   const transfers: Set<CreatedStakerPosition> = new Set()
@@ -373,7 +415,8 @@ export async function saveStaked(
       isDeleted: false,
       timestamp: new Date(block.timestamp),
       project: targetProject,
-      transactionHash: event.transaction.hash,
+      transactionHash: getHash(event),
+      league: 0
     })
 
     transfers.add(transfer)
@@ -391,7 +434,7 @@ export async function saveUnStaked(
   transfersData: {
     e: ReturnType<typeof arenaAbi.events.RemovedStakerPosition.decode>
     event: LogContext
-    block: EvmBlock
+    block: IBlockHeader
   }[]
 ) {
   const transfers: Set<RemovedStakerPosition> = new Set()
@@ -406,7 +449,7 @@ export async function saveUnStaked(
       currentEpoch: BigInt(e.currentEpoch.toString()),
       stakingPositionId: BigInt(e.stakingPositionId.toString()),
       timestamp: new Date(block.timestamp),
-      transactionHash: event.transaction.hash,
+      transactionHash: getHash(event),
     })
 
     const item = await ctx.store.findOneBy(CreatedStakerPosition, {
@@ -430,7 +473,7 @@ export async function saveVoted(
   transfersData: {
     e: ReturnType<typeof arenaAbi.events.CreatedVotingPosition.decode>
     event: LogContext
-    block: EvmBlock
+    block: IBlockHeader
   }[]
 ) {
   const transfers: Set<CreatedVotingPosition> = new Set()
@@ -455,7 +498,7 @@ export async function saveVoted(
       votingPositionId: BigInt(e.votingPositionId.toString()),
       isDeleted: false,
       timestamp: new Date(block.timestamp),
-      transactionHash: event.transaction.hash,
+      transactionHash: getHash(event),
       project: targetProject,
     })
 
@@ -474,7 +517,7 @@ export async function liquidateVoted(
   transfersData: {
     e: ReturnType<typeof arenaAbi.events.LiquidatedVotingPosition.decode>
     event: LogContext
-    block: EvmBlock
+    block: IBlockHeader
   }[]
 ) {
   const transfers: Set<LiquidatedVotingPosition> = new Set()
@@ -493,7 +536,7 @@ export async function liquidateVoted(
       zooReturned: BigInt(e.zooReturned.toString()),
       daiReceived: BigInt(e.daiReceived.toString()),
       timestamp: new Date(block.timestamp),
-      transactionHash: event.transaction.hash,
+      transactionHash: getHash(event),
     })
 
     const item = await ctx.store.findOneBy(CreatedVotingPosition, {
@@ -518,7 +561,7 @@ export async function saveZooUnlocked(
   transfersData: {
     e: ReturnType<typeof vemodelAbi.events.ZooUnlocked.decode>
     event: LogContext
-    block: EvmBlock
+    block: IBlockHeader
   }[]
 ) {
   const transfers: Set<ZooUnlocked> = new Set()
@@ -533,7 +576,7 @@ export async function saveZooUnlocked(
       collection: e.collection.toLowerCase(),
       voter: e.voter.toLowerCase(),
       timestamp: new Date(block.timestamp),
-      transactionHash: event.transaction.hash,
+      transactionHash: getHash(event),
       positionId: BigInt(e.positionId.toString()),
     })
 
@@ -559,7 +602,7 @@ export async function saveCollectionVoted(
   transfersData: {
     e: ReturnType<typeof vemodelAbi.events.VotedForCollection.decode>
     event: LogContext
-    block: EvmBlock
+    block: IBlockHeader
   }[]
 ) {
   const transfers: Set<VotedForCollection> = new Set()
@@ -576,7 +619,7 @@ export async function saveCollectionVoted(
     if (votingSaved) {
       votingSaved.amount = votingSaved.amount + BigInt(e.amount.toString())
       votingSaved.timestamp = new Date(block.timestamp)
-      votingSaved.transactionHash = event.transaction.hash
+      votingSaved.transactionHash = getHash(event) || event.block.hash
 
       votingSaved.voter = e.voter.toLowerCase()
       votingSaved.author = e.voter.toLowerCase()
@@ -591,7 +634,7 @@ export async function saveCollectionVoted(
         voter: e.voter.toLowerCase(),
         author: e.voter.toLowerCase(),
         timestamp: new Date(block.timestamp),
-        transactionHash: event.transaction.hash,
+        transactionHash: getHash(event),
         isDeleted: false,
       })
 
@@ -602,34 +645,9 @@ export async function saveCollectionVoted(
   await ctx.store.save([...transfers])
 }
 
-export async function saveFaucetGiven(
-  ctx: Context,
-  transfersData: {
-    e: ReturnType<typeof faucetAbi.events.ZooGiven.decode>
-    event: LogContext
-    block: EvmBlock
-  }[]
-) {
-  const transfers: Set<FaucetZooGiven> = new Set()
-
-  for (const transferData of transfersData) {
-    const { e, event, block } = transferData
-
-    const transfer = new FaucetZooGiven({
-      id: makeId(event),
-      user: e.user,
-      timestamp: new Date(block.timestamp),
-      transactionHash: event.transaction.hash,
-    })
-
-    transfers.add(transfer)
-  }
-
-  await ctx.store.save([...transfers])
-}
-async function getTargetProject(ctx: Context, positionId: string, block: EvmBlock, newId: string) {
+async function getTargetProject(ctx: Context, positionId: string, block: IBlockHeader, newId: string) {
   const staker = new stakerAbi.Contract(ctx, { height: block.height }, BATTLE_STAKER_ARBITRUM)
-  const data = await staker.positions(BigNumber.from(positionId))
+  const data = await staker.positions(BigInt(positionId))
 
   const { token, id } = data
 
@@ -670,31 +688,9 @@ async function getTargetProject(ctx: Context, positionId: string, block: EvmBloc
   }
 }
 
-const saveOrUpdateByKey = async (ctx: Context, key: string, amount: bigint) => {
-  const saved = await ctx.store.findOneBy(Stats, {
-    id: key,
-  })
-
-  if (saved) {
-    saved.value += amount
-
-    saved.updatedAt = new Date()
-
-    await ctx.store.save([saved])
-  } else {
-    const newStat = new Stats({
-      id: key,
-      value: amount,
-      updatedAt: new Date(),
-    })
-
-    await ctx.store.save([newStat])
-  }
-}
-
 export async function saveTransfersERC721(
   ctx: Context,
-  transfersData: { e: ReturnType<typeof erc721.events.Transfer.decode>; event: LogContext; block: EvmBlock }[],
+  transfersData: { e: ReturnType<typeof erc721.events.Transfer.decode>; event: LogContext; block: IBlockHeader }[],
   contract: string
 ) {
   const transfers: Set<TransferErc721> = new Set()
@@ -709,7 +705,7 @@ export async function saveTransfersERC721(
       to: e.to.toLowerCase(),
       tokenId: BigInt(e.tokenId.toString()),
       timestamp: new Date(block.timestamp),
-      transactionHash: event.transaction.hash,
+      transactionHash: getHash(event),
     })
 
     transfers.add(transfer)
@@ -720,7 +716,7 @@ export async function saveTransfersERC721(
 
 export async function saveTransfersERC20(
   ctx: Context,
-  transfersData: { e: ReturnType<typeof erc20.events.Transfer.decode>; event: LogContext; block: EvmBlock }[],
+  transfersData: { e: ReturnType<typeof erc20.events.Transfer.decode>; event: LogContext; block: IBlockHeader }[],
   contract: string
 ) {
   const transfers: Set<TransferErc20> = new Set()
@@ -735,7 +731,7 @@ export async function saveTransfersERC20(
       to: e.to.toLowerCase(),
       amount: BigInt(e.value.toString()),
       timestamp: new Date(block.timestamp),
-      transactionHash: event.transaction.hash,
+      transactionHash: getHash(event),
     })
 
     transfers.add(transfer)
@@ -746,7 +742,7 @@ export async function saveTransfersERC20(
 
 export const saveVotingsTransferred = async (
   ctx: Context,
-  transfersData: { e: ReturnType<typeof erc721.events.Transfer.decode>; event: LogContext; block: EvmBlock }[]
+  transfersData: { e: ReturnType<typeof erc721.events.Transfer.decode>; event: LogContext; block: IBlockHeader }[]
 ) => {
   await saveTransfersERC721(ctx, transfersData, BATTLE_VOTER_ARBITRUM)
 
@@ -766,7 +762,7 @@ export const saveVotingsTransferred = async (
 
 export const saveStakingsTransferred = async (
   ctx: Context,
-  transfersData: { e: ReturnType<typeof erc721.events.Transfer.decode>; event: LogContext; block: EvmBlock }[]
+  transfersData: { e: ReturnType<typeof erc721.events.Transfer.decode>; event: LogContext; block: IBlockHeader }[]
 ) => {
   await saveTransfersERC721(ctx, transfersData, BATTLE_STAKER_ARBITRUM)
 
@@ -786,7 +782,7 @@ export const saveStakingsTransferred = async (
   }
 }
 
-const saveNftScanProject = async (ctx: Context, eventId: string, token: string, id: BigNumber) => {
+const saveNftScanProject = async (ctx: Context, eventId: string, token: string, id: BigInt) => {
   const url = getArbitrumApi(token, id.toString())
 
   const tokenSaved = await ctx.store.findOneBy(NftScanTokens, {
@@ -817,3 +813,8 @@ const saveNftScanProject = async (ctx: Context, eventId: string, token: string, 
     }
   }
 }
+
+function getHash(event: LogContext): string | undefined {
+  return event.transaction?.hash || event.block.hash
+}
+

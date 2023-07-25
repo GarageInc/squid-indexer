@@ -1,5 +1,3 @@
-import { EvmBlock } from '@subsquid/evm-processor'
-import * as erc20 from './abi/generated/erc20'
 import {
   BATTLE_VOTER_ARBITRUM,
   BATTLE_STAKER_ARBITRUM,
@@ -27,7 +25,7 @@ import {
   saveZooUnlocked,
   saveTransfersERC20,
 } from './transformers'
-import { database, processor, Context, LogContext } from './configs'
+import { IBlockHeader, LogContext, database, processor } from './configs'
 import {
   CreatedStakerPositionT,
   RemovedStakerPositionT,
@@ -49,21 +47,32 @@ import {
   TransferErc20T,
 } from './events'
 import { LogEvent } from './abi/generated/abi.support'
-import { BigNumber } from 'ethers'
 
-const hasIn = (item: LogContext, topic: string) => item.evmLog.topics.indexOf(topic) !== -1
 
-const isVoter = (item: LogContext) => item.evmLog?.address.toLowerCase() === BATTLE_VOTER_ARBITRUM
+const hasIn = (item: LogContext, topic: string) => item.topics.indexOf(topic) !== -1
 
-const isStaker = (item: LogContext) => item.evmLog?.address.toLowerCase() === BATTLE_STAKER_ARBITRUM
+const isVoter = (item: LogContext) => item?.address.toLowerCase() === BATTLE_VOTER_ARBITRUM
 
-const isRewards = (item: LogContext) => item.evmLog?.address.toLowerCase() === fsGLP
+const isStaker = (item: LogContext) => item?.address.toLowerCase() === BATTLE_STAKER_ARBITRUM
 
-function handler<T>(block: EvmBlock, ctx: LogContext, log: LogEvent<T>) {
-  return { e: log.decode(ctx.evmLog), event: ctx, block: block }
+const isRewards = (item: LogContext) => item?.address.toLowerCase() === fsGLP
+
+function isFromArena(event: {
+  e: [from: string, to: string, value: bigint] & {
+    from: string
+    to: string
+    value: bigint
+  }
+  event: LogContext
+}) {
+  return event.e.from.toLowerCase() === BATTLE_ARENA_ARBITRUM
 }
 
-processor.run(database, async (ctx: Context) => {
+function handler<T>(block: IBlockHeader, ctx: LogContext, log: LogEvent<T>) {
+  return { e: log.decode(ctx), event: ctx, block: block }
+}
+
+processor.run(database, async (ctx) => {
   const staked = []
   const unstaked = []
   const voted = []
@@ -90,19 +99,10 @@ processor.run(database, async (ctx: Context) => {
   const rewardsTransferred = []
 
   for (const block of ctx.blocks) {
-    for (const item of block.items) {
-      if (item.kind === 'evmLog') {
-        // @ts-ignore
+    for (const item of block.logs) {
         const logCtx: LogContext = {
-          ...ctx,
-          block: block.header,
           ...item,
         }
-
-        /*console.log(
-          '---->',
-          block.items.map((i: any) => i)
-        )*/
         if (hasIn(logCtx, CreatedStakerPositionT.topic)) {
           staked.push(handler(block.header, logCtx, CreatedStakerPositionT))
         }
@@ -157,11 +157,6 @@ processor.run(database, async (ctx: Context) => {
         }
 
         if (hasIn(logCtx, TransferERC721T.topic)) {
-          /*if (item.evmTxHash === '0x8e0633aba23fd8bc91f38b5eff8de4c82dfab3573f0a8e3945d4e992413acc80') {
-            console.log('------>')
-
-            console.log(item, item, handler(block.header, logCtx, TransferT))
-          }*/
           if (isVoter(logCtx)) {
             votingsTransferred.push(handler(block.header, logCtx, TransferERC721T))
           } else if (isStaker(logCtx)) {
@@ -177,12 +172,8 @@ processor.run(database, async (ctx: Context) => {
             }
           }
         }
-      }
     }
   }
-
-  /* FAUCET START */
-  /* FAUCET END */
 
   /* BATTLE START */
   await saveStaked(ctx, staked)
@@ -224,14 +215,3 @@ processor.run(database, async (ctx: Context) => {
   /* TRANSFERS ERC20 END */
 })
 
-function isFromArena(event: {
-  e: [from: string, to: string, value: BigNumber] & {
-    from: string
-    to: string
-    value: BigNumber
-  }
-  event: LogContext
-  block: EvmBlock
-}) {
-  return event.e.from.toLowerCase() === BATTLE_ARENA_ARBITRUM
-}

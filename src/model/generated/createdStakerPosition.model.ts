@@ -39,4 +39,7 @@ export class CreatedStakerPosition {
     @Index_()
     @Column_("text", {nullable: false})
     author!: string
+
+    @Column_("int4", {nullable: false})
+    league!: number
 }

@@ -1,7 +1,6 @@
 import { lookupArchive } from '@subsquid/archive-registry'
 import { TypeormDatabase, Store } from '@subsquid/typeorm-store'
 import {
-  CHAIN_NODE,
   BATTLE_ARENA_ARBITRUM,
   BATTLE_VOTER_ARBITRUM,
   BATTLE_STAKER_ARBITRUM,
@@ -38,7 +37,7 @@ import {
 } from '@subsquid/evm-processor'
 
 
-const FROM = 89064036
+const FROM = 114954105
 
 export const database = new TypeormDatabase()
 
@@ -57,7 +56,7 @@ export const processor = new EvmBatchProcessor()
   .setBlockRange({ from: FROM })
   .setFinalityConfirmation(12)
   .setDataSource({
-    chain: CHAIN_NODE,
+    chain: process.env.RPC_ARBITRUM_ONE_HTTP,
     archive: lookupArchive('arbitrum'),
   })
 

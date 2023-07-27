@@ -37,20 +37,9 @@ import {
 } from '@subsquid/evm-processor'
 
 
-const FROM = 114954105
+const FROM = 111227304
 
 export const database = new TypeormDatabase()
-
-const DATA_TEMPLATE = {
-  evmLog: {
-    data: true,
-    topics: true,
-  },
-  transaction: {
-    hash: true,
-    from: true,
-  },
-}
 
 export const processor = new EvmBatchProcessor()
   .setBlockRange({ from: FROM })

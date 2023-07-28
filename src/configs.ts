@@ -2,7 +2,6 @@ import { lookupArchive } from '@subsquid/archive-registry'
 import { SubstrateBatchProcessor, BatchProcessorItem, DataHandlerContext as BatchContext } from 'squid-sdk/substrate/substrate-processor/src'
 import { TypeormDatabase, Store } from '@subsquid/typeorm-store'
 import {
-  CHAIN_NODE,
   BATTLE_ARENA_MOONBEAM,
   BATTLE_VOTER_MOONBEAM,
   BATTLE_STAKER_MOONBEAM,
@@ -47,7 +46,7 @@ export const database = new TypeormDatabase()
 export const processor = new SubstrateBatchProcessor()
   .setBlockRange({ from: FROM })
   .setDataSource({
-    chain: CHAIN_NODE,
+    chain: process.env.RPC_MOONBEAM_HTTP,
     archive: lookupArchive('moonbeam', { release: 'FireSquid', type: 'Substrate' }),
   })
   .setTypesBundle('moonbeam')

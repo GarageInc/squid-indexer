@@ -9,7 +9,15 @@ build:
 deploy:
   addons:
     postgres:
+    rpc:
+      - moonbeam:http
+
   processor:
     cmd: ['node', 'lib/processor']
   api:
     cmd: ['npx', 'squid-graphql-server']
+
+scale:
+  addons:
+    rpc:
+      max-rate: 30rps

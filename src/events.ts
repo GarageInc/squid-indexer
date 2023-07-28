@@ -41,5 +41,3 @@ export const TransferERC721T = erc721.events.Transfer
 
 export const TransferErc20T = erc20.events.Transfer
 
-console.log('TransferErc20T', TransferErc20T.topic)
-console.log('TransferERC721T', TransferERC721T.topic)

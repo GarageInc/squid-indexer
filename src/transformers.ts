@@ -605,8 +605,6 @@ export async function saveCollectionVoted(
     block: IBlockHeader
   }[]
 ) {
-  const transfers: Set<VotedForCollection> = new Set()
-
   for (const transferData of transfersData) {
     const { e, event, block } = transferData
 
@@ -624,7 +622,7 @@ export async function saveCollectionVoted(
       votingSaved.voter = e.voter.toLowerCase()
       votingSaved.author = e.voter.toLowerCase()
 
-      transfers.add(votingSaved)
+      await ctx.store.save([votingSaved])
     } else {
       const transfer = new VotedForCollection({
         id: makeId(event),
@@ -638,11 +636,10 @@ export async function saveCollectionVoted(
         isDeleted: false,
       })
 
-      transfers.add(transfer)
+      await ctx.store.save([transfer])
     }
   }
 
-  await ctx.store.save([...transfers])
 }
 
 async function getTargetProject(ctx: Context, positionId: string, block: IBlockHeader, newId: string) {

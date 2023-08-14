@@ -651,7 +651,8 @@ async function getTargetProject(ctx: Context, positionId: string, block: IBlockH
 
   const address = token.toLowerCase()
 
-  if(id.toString() === '0' || address === ZERO_ADDRESS){
+  const existing = id.toString() !== '0' && address !== ZERO_ADDRESS
+  if(existing){
     const contract = new erc721.Contract(ctx, { height: block.height }, address)
   
     const name = await contract.name()

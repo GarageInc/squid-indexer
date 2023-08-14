@@ -26,7 +26,7 @@
     "processor": "node -r dotenv/config lib/processor.js",
     "gql": "npx squid-graphql-server",
     "release": "npx sqd squid:release zoodao@10 --source https://github.com/GarageInc/squid-indexer#arbitrum",
-    "deploy-prod": "sqd deploy ."
+    "deploy-prod": "sqd deploy --org zoodao ."
   },
   "dependencies": {
     "@subsquid/archive-registry": "3.2.0",

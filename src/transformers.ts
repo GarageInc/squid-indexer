@@ -31,6 +31,7 @@ import {
   BATTLE_FUNCTIONS_ARBITRUM,
   BATTLE_STAKER_ARBITRUM,
   BATTLE_VOTER_ARBITRUM,
+  ZERO_ADDRESS,
 } from './contract'
 import { SupportedChainId, fetchNftScan, getArbitrumApi, saveToBackend } from './nft-scan'
 import { Context, IBlockHeader, LogContext } from './configs'
@@ -650,27 +651,38 @@ async function getTargetProject(ctx: Context, positionId: string, block: IBlockH
 
   const address = token.toLowerCase()
 
-  const contract = new erc721.Contract(ctx, { height: block.height }, address)
+  if(id.toString() === '0' || address === ZERO_ADDRESS){
+    const contract = new erc721.Contract(ctx, { height: block.height }, address)
+  
+    const name = await contract.name()
+    const symbol = await contract.symbol()
+  
+    const tokenSaved = await ctx.store.findOneBy(Project, {
+      address: address,
+    })
 
-  const name = await contract.name()
-  const symbol = await contract.symbol()
-
-  const tokenSaved = await ctx.store.findOneBy(Project, {
-    address: address,
-  })
-
-  if (tokenSaved) {
-    return {
-      project: tokenSaved,
-      token,
-      id,
+    if (tokenSaved) {
+      return {
+        project: tokenSaved,
+        token: address,
+        id,
+      }
+    } else {
+      const project = new Project({
+        id: newId,
+        address: address,
+        name: name,
+        symbol: symbol,
+      })
+  
+      await ctx.store.save([project])
     }
   } else {
     const project = new Project({
       id: newId,
       address: address,
-      name: name,
-      symbol: symbol,
+      name: 'ZOOBATTLE-PLACEHOLDER',
+      symbol: 'ZOOBATTLE',
     })
 
     await ctx.store.save([project])

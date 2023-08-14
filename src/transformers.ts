@@ -643,6 +643,40 @@ export async function saveCollectionVoted(
 
 }
 
+async function createOrUpdateProject(ctx: Context, address: string, id: any,newId: any,
+  name: string, symbol: string) {
+    
+  const tokenSaved = await ctx.store.findOneBy(Project, {
+    address: address,
+  })
+
+  if (tokenSaved) {
+    return {
+      project: tokenSaved,
+      token: address,
+      id,
+    }
+  } else {
+    const project = new Project({
+      id: newId,
+      address: address,
+      name: name,
+      symbol: symbol,
+    })
+
+    await ctx.store.save([project])
+
+    return { 
+      project: await ctx.store.findOneBy(Project, {
+        address: address,
+      }),
+      token: address,
+      id
+    }
+  }
+  
+}
+
 async function getTargetProject(ctx: Context, positionId: string, block: IBlockHeader, newId: string) {
   const staker = new stakerAbi.Contract(ctx, { height: block.height }, BATTLE_STAKER_ARBITRUM)
   const data = await staker.positions(BigInt(positionId))
@@ -658,43 +692,10 @@ async function getTargetProject(ctx: Context, positionId: string, block: IBlockH
     const name = await contract.name()
     const symbol = await contract.symbol()
   
-    const tokenSaved = await ctx.store.findOneBy(Project, {
-      address: address,
-    })
-
-    if (tokenSaved) {
-      return {
-        project: tokenSaved,
-        token: address,
-        id,
-      }
-    } else {
-      const project = new Project({
-        id: newId,
-        address: address,
-        name: name,
-        symbol: symbol,
-      })
-  
-      await ctx.store.save([project])
-    }
+    return await createOrUpdateProject(ctx, address, id, newId, name, symbol)
   } else {
-    const project = new Project({
-      id: newId,
-      address: address,
-      name: 'ZOOBATTLE-PLACEHOLDER',
-      symbol: 'ZOOBATTLE',
-    })
 
-    await ctx.store.save([project])
-  }
-
-  return {
-    project: await ctx.store.findOneBy(Project, {
-      address: address,
-    }),
-    token,
-    id,
+    return await createOrUpdateProject(ctx, address, id, newId, 'ZOOBATTLE-PLACEHOLDER', 'ZOOBATTLE')
   }
 }
 

@@ -48,7 +48,7 @@ const calculateLeague = async (ctx: Context, transfersData: {
 
     for(let i=0; i < transfersData.length; i++){
       const {e, block} = transfersData[i]
-      
+
       const stakingPositionId = e.stakingPositionId.toString()
 
       const stakedPosition = await ctx.store.findOneBy(CreatedStakerPosition, {
@@ -78,7 +78,8 @@ const calculateLeague = async (ctx: Context, transfersData: {
     }
   }
       
-  await ctx.store.save(updatedLequiesPositions)
+  if(updatedLequiesPositions.length > 0)
+    await ctx.store.save(updatedLequiesPositions)
 }
 
 export async function saveAddedDai<T>(

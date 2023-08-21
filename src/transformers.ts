@@ -44,14 +44,16 @@ const calculateLeague = async (ctx: Context, transfersData: {
     event: LogContext
     block: IBlockHeader
   }[]) => {
-  const updatedLequiesPositions:CreatedStakerPosition[] = []
+  const updatedLequiesPositions: {
+    [id: string]: CreatedStakerPosition
+  } = {}
 
     for(let i=0; i < transfersData.length; i++){
       const {e, block} = transfersData[i]
 
       const stakingPositionId = e.stakingPositionId.toString()
 
-      const stakedPosition = await ctx.store.findOneBy(CreatedStakerPosition, {
+      const stakedPosition = updatedLequiesPositions[stakingPositionId] ||  await ctx.store.findOneBy(CreatedStakerPosition, {
         stakingPositionId: BigInt(stakingPositionId),
       })
     
@@ -73,13 +75,13 @@ const calculateLeague = async (ctx: Context, transfersData: {
 
         if(newLeague !== stakedPosition.league){
           stakedPosition.league = newLeague
-          updatedLequiesPositions.push(stakedPosition)
+          updatedLequiesPositions[stakingPositionId] = stakedPosition
         }
     }
   }
       
-  if(updatedLequiesPositions.length > 0)
-    await ctx.store.save(updatedLequiesPositions)
+  if(Object.keys(updatedLequiesPositions).length > 0)
+    await ctx.store.save(Object.values(updatedLequiesPositions))
 }
 
 export async function saveAddedDai<T>(

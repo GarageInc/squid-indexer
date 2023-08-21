@@ -39,28 +39,46 @@ import { Context, IBlockHeader, LogContext } from './configs'
 const makeId = (event: LogContext) =>
   `${getHash(event)}-${event.transactionIndex}-${event.id}-${event.logIndex}`
 
-const calculateLeague = async (ctx: Context, block: IBlockHeader, stakingPositionId: string) => {
-  const stakedPosition = await ctx.store.findOneBy(CreatedStakerPosition, {
-    stakingPositionId: BigInt(stakingPositionId),
-  })
+const calculateLeague = async (ctx: Context, transfersData: {
+    e: any
+    event: LogContext
+    block: IBlockHeader
+  }[]) => {
+  const updatedLequiesPositions:CreatedStakerPosition[] = []
 
-  if(stakedPosition){
-    const staker = new functionsAbi.Contract(ctx, { height: block.height }, BATTLE_FUNCTIONS_ARBITRUM)
+    for(let i=0; i < transfersData.length; i++){
+      const {e, block} = transfersData[i]
+      
+      const stakingPositionId = e.stakingPositionId.toString()
 
-    const positions = await ctx.store.find(CreatedVotingPosition, {
-      where: {
+      const stakedPosition = await ctx.store.findOneBy(CreatedStakerPosition, {
         stakingPositionId: BigInt(stakingPositionId),
-        isDeleted: false
-      }
-    })
-  
-    const allVotes = positions.reduce((acc, item) => {
-      return acc + item.votes
-    }, BigInt(0))
+      })
+    
+      if(stakedPosition){
+        const staker = new functionsAbi.Contract(ctx, { height: block.height }, BATTLE_FUNCTIONS_ARBITRUM)
+    
+        const positions = await ctx.store.find(CreatedVotingPosition, {
+          where: {
+            stakingPositionId: BigInt(stakingPositionId),
+            isDeleted: false
+          }
+        })
+      
+        const allVotes = positions.reduce((acc, item) => {
+          return acc + item.votes
+        }, BigInt(0))
+    
+        const newLeague = await staker.getNftLeague(allVotes)
 
-    stakedPosition.league = await staker.getNftLeague(allVotes)
-    await ctx.store.save([stakedPosition])
+        if(newLeague !== stakedPosition.league){
+          stakedPosition.league = newLeague
+          updatedLequiesPositions.push(stakedPosition)
+        }
+    }
   }
+      
+  await ctx.store.save(updatedLequiesPositions)
 }
 
 export async function saveAddedDai<T>(
@@ -93,10 +111,7 @@ export async function saveAddedDai<T>(
 
   await ctx.store.save([...transfers])
 
-  transfersData.forEach(async (transferData) => {
-    const { e,  block } = transferData
-    await calculateLeague(ctx, block, e.stakingPositionId.toString())
-  })
+  await calculateLeague(ctx, transfersData)
 }
 
 export async function saveAddedZoo(
@@ -129,10 +144,7 @@ export async function saveAddedZoo(
 
   await ctx.store.save([...transfers])
 
-  transfersData.forEach(async (transferData) => {
-    const { e,  block } = transferData
-    await calculateLeague(ctx, block, e.stakingPositionId.toString())
-  })
+  await calculateLeague(ctx, transfersData)
 }
 
 export async function saveWithdrawedZoo(
@@ -165,10 +177,7 @@ export async function saveWithdrawedZoo(
 
   await ctx.store.save([...transfers])
 
-  transfersData.forEach(async (transferData) => {
-    const { e,  block } = transferData
-    await calculateLeague(ctx, block, e.stakingPositionId.toString())
-  })
+  await calculateLeague(ctx, transfersData)
 }
 
 export async function saveWithdrawedDai(
@@ -201,10 +210,7 @@ export async function saveWithdrawedDai(
 
   await ctx.store.save([...transfers])
 
-  transfersData.forEach(async (transferData) => {
-    const { e,  block } = transferData
-    await calculateLeague(ctx, block, e.stakingPositionId.toString())
-  })
+  await calculateLeague(ctx, transfersData)
 }
 
 export async function savePaired(

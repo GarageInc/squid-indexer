@@ -45,7 +45,7 @@ export class CreatedStakerPosition {
     @Column_("int4", {nullable: false})
     league!: number
 
-    @OneToMany_(() => CreatedVotingPosition, e => e.stakingPosition)
+    @OneToMany_(() => CreatedVotingPosition, e => e.stakedPosition)
     votingPositions!: CreatedVotingPosition[]
 
     @OneToMany_(() => PairedNft, e => e.fighterPosition1)

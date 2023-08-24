@@ -12,7 +12,6 @@ import {
   PairedNft,
   Project,
   RemovedStakerPosition,
-  Stats,
   TransferErc20,
   TransferErc721,
   WithdrawedDaiFromVoting,
@@ -231,7 +230,9 @@ export async function savePaired(
     const transfer = new PairedNft({
       id: makeId(event),
       fighter1: BigInt(e.fighter1.toString()),
+      fighterPosition1: await getStakingPosition(ctx, e.fighter1.toString()),
       fighter2: BigInt(e.fighter2.toString()),
+      fighterPosition2: await getStakingPosition(ctx, e.fighter2.toString()),
       project1: targetProject1,
       project2: targetProject2,
       currentEpoch: BigInt(e.currentEpoch.toString()),
@@ -510,9 +511,7 @@ export async function saveVoted(
       timestamp: new Date(block.timestamp),
       transactionHash: getHash(event),
       project: targetProject,
-      stakingPosition: await ctx.store.findOneBy(CreatedStakerPosition, {
-        stakingPositionId: BigInt(e.stakingPositionId.toString()),
-      })
+      stakingPosition: await getStakingPosition(ctx, e.stakingPositionId.toString())
     })
 
     if (targetProject) {
@@ -523,6 +522,12 @@ export async function saveVoted(
   }
 
   await ctx.store.save([...transfers])
+}
+
+async function getStakingPosition(ctx: Context, stakingPositionId: string)  {
+  return await ctx.store.findOneBy(CreatedStakerPosition, {
+    stakingPositionId: BigInt(stakingPositionId),
+  })
 }
 
 export async function liquidateVoted(

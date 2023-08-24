@@ -1,6 +1,7 @@
 import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, Index as Index_, ManyToOne as ManyToOne_} from "typeorm"
 import * as marshal from "./marshal"
 import {Project} from "./project.model"
+import {CreatedStakerPosition} from "./createdStakerPosition.model"
 
 @Entity_()
 export class PairedNft {
@@ -40,4 +41,12 @@ export class PairedNft {
 
     @Column_("text", {nullable: false})
     transactionHash!: string
+
+    @Index_()
+    @ManyToOne_(() => CreatedStakerPosition, {nullable: true})
+    fighterPosition1!: CreatedStakerPosition
+
+    @Index_()
+    @ManyToOne_(() => CreatedStakerPosition, {nullable: true})
+    fighterPosition2!: CreatedStakerPosition
 }

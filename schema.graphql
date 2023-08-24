@@ -57,6 +57,8 @@ type CreatedStakerPosition @entity {
   author: String! @index
   league: Int!
   votingPositions: [CreatedVotingPosition!] @derivedFrom(field: "stakingPosition")
+  fighters1: [PairedNft!] @derivedFrom(field: "fighterPosition1")
+  fighters2: [PairedNft!] @derivedFrom(field: "fighterPosition2")
 }
 
 type CreatedVotingPosition @entity {
@@ -98,6 +100,9 @@ type PairedNft @entity {
   pairIndex: BigInt!
   timestamp: DateTime! @index
   transactionHash: String!
+  
+  fighterPosition1: CreatedStakerPosition!
+  fighterPosition2: CreatedStakerPosition!
 }
 
 type RemovedStakerPosition @entity {

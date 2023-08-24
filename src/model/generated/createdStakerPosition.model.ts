@@ -2,6 +2,7 @@ import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, I
 import * as marshal from "./marshal"
 import {Project} from "./project.model"
 import {CreatedVotingPosition} from "./createdVotingPosition.model"
+import {PairedNft} from "./pairedNft.model"
 
 @Entity_()
 export class CreatedStakerPosition {
@@ -46,4 +47,10 @@ export class CreatedStakerPosition {
 
     @OneToMany_(() => CreatedVotingPosition, e => e.stakingPosition)
     votingPositions!: CreatedVotingPosition[]
+
+    @OneToMany_(() => PairedNft, e => e.fighterPosition1)
+    fighters1!: PairedNft[]
+
+    @OneToMany_(() => PairedNft, e => e.fighterPosition2)
+    fighters2!: PairedNft[]
 }

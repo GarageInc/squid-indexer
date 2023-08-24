@@ -511,7 +511,7 @@ export async function saveVoted(
       timestamp: new Date(block.timestamp),
       transactionHash: getHash(event),
       project: targetProject,
-      stakingPosition: await getStakingPosition(ctx, e.stakingPositionId.toString())
+      stakedPosition: await getStakingPosition(ctx, e.stakingPositionId.toString())
     })
 
     if (targetProject) {

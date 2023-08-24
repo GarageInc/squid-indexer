@@ -51,5 +51,5 @@ export class CreatedVotingPosition {
 
     @Index_()
     @ManyToOne_(() => CreatedStakerPosition, {nullable: true})
-    stakingPosition!: CreatedStakerPosition
+    stakedPosition!: CreatedStakerPosition
 }

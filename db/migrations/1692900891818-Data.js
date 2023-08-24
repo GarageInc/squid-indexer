@@ -1,5 +1,5 @@
-module.exports = class Data1692896054930 {
-    name = 'Data1692896054930'
+module.exports = class Data1692900891818 {
+    name = 'Data1692900891818'
 
     async up(db) {
         await db.query(`CREATE TABLE "added_dai_to_voting" ("id" character varying NOT NULL, "current_epoch" numeric NOT NULL, "voter" text NOT NULL, "staking_position_id" numeric NOT NULL, "voting_position_id" numeric NOT NULL, "amount" numeric NOT NULL, "votes" numeric NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, CONSTRAINT "PK_9e1e399cbc921bb8d6aedb65ad5" PRIMARY KEY ("id"))`)
@@ -16,12 +16,12 @@ module.exports = class Data1692896054930 {
         await db.query(`CREATE INDEX "IDX_a690e45e1a07bb659032aae2b4" ON "chosen_winner" ("fighter1") `)
         await db.query(`CREATE INDEX "IDX_d526c1302a941f6995ff9dceb1" ON "chosen_winner" ("fighter2") `)
         await db.query(`CREATE INDEX "IDX_ba74943f62ec5cb7972ffef29e" ON "chosen_winner" ("timestamp") `)
-        await db.query(`CREATE TABLE "created_voting_position" ("id" character varying NOT NULL, "current_epoch" numeric NOT NULL, "voter" text NOT NULL, "staking_position_id" character varying NOT NULL, "dai_amount" numeric NOT NULL, "votes" numeric NOT NULL, "voting_position_id" numeric NOT NULL, "is_deleted" boolean NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, "author" text NOT NULL, "project_id" character varying, CONSTRAINT "PK_9fb98405e3234d450410afc5cdd" PRIMARY KEY ("id"))`)
+        await db.query(`CREATE TABLE "created_voting_position" ("id" character varying NOT NULL, "current_epoch" numeric NOT NULL, "voter" text NOT NULL, "staking_position_id" numeric NOT NULL, "dai_amount" numeric NOT NULL, "votes" numeric NOT NULL, "voting_position_id" numeric NOT NULL, "is_deleted" boolean NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, "author" text NOT NULL, "project_id" character varying, "staked_position_id" character varying, CONSTRAINT "PK_9fb98405e3234d450410afc5cdd" PRIMARY KEY ("id"))`)
         await db.query(`CREATE INDEX "IDX_7e278884deffa2c0c6789f7073" ON "created_voting_position" ("voter") `)
         await db.query(`CREATE INDEX "IDX_f2c64ba2726fbcace5340fa56d" ON "created_voting_position" ("timestamp") `)
         await db.query(`CREATE INDEX "IDX_70d5c61182c716fadd1458e6d4" ON "created_voting_position" ("project_id") `)
         await db.query(`CREATE INDEX "IDX_00f1d1b6ec8295e7ebf7d1275c" ON "created_voting_position" ("author") `)
-        await db.query(`CREATE INDEX "IDX_a3d2c1180b23429811339c1c08" ON "created_voting_position" ("staking_position_id") `)
+        await db.query(`CREATE INDEX "IDX_c414c2384c975f34684a583cfb" ON "created_voting_position" ("staked_position_id") `)
         await db.query(`CREATE TABLE "paired_nft" ("id" character varying NOT NULL, "current_epoch" numeric NOT NULL, "fighter1" numeric NOT NULL, "fighter2" numeric NOT NULL, "pair_index" numeric NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, "project1_id" character varying, "project2_id" character varying, "fighter_position1_id" character varying, "fighter_position2_id" character varying, CONSTRAINT "PK_23ba08ff579bcd1c08f595ae614" PRIMARY KEY ("id"))`)
         await db.query(`CREATE INDEX "IDX_e6ada36bac7b9e54eda16c846e" ON "paired_nft" ("current_epoch") `)
         await db.query(`CREATE INDEX "IDX_fcc3189783e2cd7969cdb7887e" ON "paired_nft" ("fighter1") `)
@@ -93,7 +93,7 @@ module.exports = class Data1692896054930 {
         await db.query(`CREATE INDEX "IDX_2a5184b2d4d20559419990a32f" ON "nft_scan_tokens" ("contract") `)
         await db.query(`CREATE INDEX "IDX_fd63d4c7198cf23aeb186365e2" ON "nft_scan_tokens" ("token_id") `)
         await db.query(`ALTER TABLE "created_voting_position" ADD CONSTRAINT "FK_70d5c61182c716fadd1458e6d40" FOREIGN KEY ("project_id") REFERENCES "project"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`)
-        await db.query(`ALTER TABLE "created_voting_position" ADD CONSTRAINT "FK_a3d2c1180b23429811339c1c08b" FOREIGN KEY ("staking_position_id") REFERENCES "created_staker_position"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`)
+        await db.query(`ALTER TABLE "created_voting_position" ADD CONSTRAINT "FK_c414c2384c975f34684a583cfb2" FOREIGN KEY ("staked_position_id") REFERENCES "created_staker_position"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`)
         await db.query(`ALTER TABLE "paired_nft" ADD CONSTRAINT "FK_de5a515ced9e580dc327dc06135" FOREIGN KEY ("project1_id") REFERENCES "project"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`)
         await db.query(`ALTER TABLE "paired_nft" ADD CONSTRAINT "FK_a6425a1bb4cb93cf585697d347e" FOREIGN KEY ("project2_id") REFERENCES "project"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`)
         await db.query(`ALTER TABLE "paired_nft" ADD CONSTRAINT "FK_eb89e573ed3907e7e3e4c394566" FOREIGN KEY ("fighter_position1_id") REFERENCES "created_staker_position"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`)
@@ -121,7 +121,7 @@ module.exports = class Data1692896054930 {
         await db.query(`DROP INDEX "public"."IDX_f2c64ba2726fbcace5340fa56d"`)
         await db.query(`DROP INDEX "public"."IDX_70d5c61182c716fadd1458e6d4"`)
         await db.query(`DROP INDEX "public"."IDX_00f1d1b6ec8295e7ebf7d1275c"`)
-        await db.query(`DROP INDEX "public"."IDX_a3d2c1180b23429811339c1c08"`)
+        await db.query(`DROP INDEX "public"."IDX_c414c2384c975f34684a583cfb"`)
         await db.query(`DROP TABLE "paired_nft"`)
         await db.query(`DROP INDEX "public"."IDX_e6ada36bac7b9e54eda16c846e"`)
         await db.query(`DROP INDEX "public"."IDX_fcc3189783e2cd7969cdb7887e"`)
@@ -193,7 +193,7 @@ module.exports = class Data1692896054930 {
         await db.query(`DROP INDEX "public"."IDX_2a5184b2d4d20559419990a32f"`)
         await db.query(`DROP INDEX "public"."IDX_fd63d4c7198cf23aeb186365e2"`)
         await db.query(`ALTER TABLE "created_voting_position" DROP CONSTRAINT "FK_70d5c61182c716fadd1458e6d40"`)
-        await db.query(`ALTER TABLE "created_voting_position" DROP CONSTRAINT "FK_a3d2c1180b23429811339c1c08b"`)
+        await db.query(`ALTER TABLE "created_voting_position" DROP CONSTRAINT "FK_c414c2384c975f34684a583cfb2"`)
         await db.query(`ALTER TABLE "paired_nft" DROP CONSTRAINT "FK_de5a515ced9e580dc327dc06135"`)
         await db.query(`ALTER TABLE "paired_nft" DROP CONSTRAINT "FK_a6425a1bb4cb93cf585697d347e"`)
         await db.query(`ALTER TABLE "paired_nft" DROP CONSTRAINT "FK_eb89e573ed3907e7e3e4c394566"`)

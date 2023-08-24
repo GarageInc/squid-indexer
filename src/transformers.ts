@@ -27,6 +27,7 @@ import * as erc20 from './abi/generated/erc20'
 import { ZooUnlocked } from './model/generated/zooUnlocked.model'
 import { VotedForCollection } from './model/generated/votedForCollection.model'
 import {
+  BATTLE_ARENA_ARBITRUM,
   BATTLE_FUNCTIONS_ARBITRUM,
   BATTLE_STAKER_ARBITRUM,
   BATTLE_VOTER_ARBITRUM,
@@ -52,25 +53,22 @@ const calculateLeague = async (ctx: Context, transfersData: {
 
       const stakingPositionId = e.stakingPositionId.toString()
 
-      const stakedPosition = updatedLequiesPositions[stakingPositionId] ||  await ctx.store.findOneBy(CreatedStakerPosition, {
-        stakingPositionId: BigInt(stakingPositionId),
-      })
+      const stakedPosition = updatedLequiesPositions[stakingPositionId] ||  await getStakingPosition(ctx, stakingPositionId)
     
       if(stakedPosition){
-        const staker = new functionsAbi.Contract(ctx, { height: block.height }, BATTLE_FUNCTIONS_ARBITRUM)
+        const functions = new functionsAbi.Contract(ctx, { height: block.height }, BATTLE_FUNCTIONS_ARBITRUM)
+        const arena = new arenaAbi.Contract(ctx, { height: block.height }, BATTLE_ARENA_ARBITRUM)
     
-        const positions = await ctx.store.find(CreatedVotingPosition, {
-          where: {
-            stakingPositionId: BigInt(stakingPositionId),
-            isDeleted: false
-          }
-        })
-      
-        const allVotes = positions.reduce((acc, item) => {
-          return acc + item.votes
-        }, BigInt(0))
+        let epoch = await arena.currentEpoch()
+        const currentStage = await arena.getCurrentStage()
+
+        if(currentStage > 2){
+          epoch += BigInt(1)
+        }
+
+        const battleReward = await arena.rewardsForEpoch(stakingPositionId, epoch)
     
-        const newLeague = await staker.getNftLeague(allVotes)
+        const newLeague = await functions.getNftLeague(battleReward.votes)
 
         if(newLeague !== stakedPosition.league){
           stakedPosition.league = newLeague

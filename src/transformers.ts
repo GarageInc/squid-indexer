@@ -520,6 +520,8 @@ export async function saveVoted(
   }
 
   await ctx.store.save([...transfers])
+
+  await calculateLeague(ctx, transfersData)
 }
 
 async function getStakingPosition(ctx: Context, stakingPositionId: string)  {
@@ -570,6 +572,8 @@ export async function liquidateVoted(
 
   await ctx.store.save([...transfers])
   await ctx.store.save([...voted])
+
+  await calculateLeague(ctx, transfersData)
 }
 
 export async function saveZooUnlocked(

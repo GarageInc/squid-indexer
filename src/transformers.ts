@@ -385,7 +385,7 @@ export async function saveStaked(
       isDeleted: false,
       timestamp: new Date(block.timestamp),
       project: targetProject,
-      transactionHash: (event.id),
+      transactionHash: (event.evmTxHash),
       league: 0
     })
 

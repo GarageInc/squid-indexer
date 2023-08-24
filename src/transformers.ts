@@ -510,6 +510,9 @@ export async function saveVoted(
       timestamp: new Date(block.timestamp),
       transactionHash: getHash(event),
       project: targetProject,
+      stakingPosition: await ctx.store.findOneBy(CreatedStakerPosition, {
+        stakingPositionId: BigInt(e.stakingPositionId.toString()),
+      })
     })
 
     if (targetProject) {

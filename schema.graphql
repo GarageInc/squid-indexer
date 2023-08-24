@@ -56,13 +56,14 @@ type CreatedStakerPosition @entity {
   transactionHash: String!
   author: String! @index
   league: Int!
+  votingPositions: [CreatedVotingPosition!] @derivedFrom(field: "stakingPosition")
 }
 
 type CreatedVotingPosition @entity {
   id: ID!
   currentEpoch: BigInt!
   voter: String! @index
-  stakingPositionId: BigInt! @index
+  stakingPositionId: BigInt!
   daiAmount: BigInt!
   votes: BigInt!
   votingPositionId: BigInt!
@@ -71,6 +72,7 @@ type CreatedVotingPosition @entity {
   transactionHash: String!
   project: Project!
   author: String! @index
+  stakingPosition: CreatedStakerPosition!
 }
 
 type LiquidatedVotingPosition @entity {

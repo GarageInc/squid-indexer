@@ -1,6 +1,7 @@
-import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, Index as Index_, ManyToOne as ManyToOne_} from "typeorm"
+import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, Index as Index_, ManyToOne as ManyToOne_, OneToMany as OneToMany_} from "typeorm"
 import * as marshal from "./marshal"
 import {Project} from "./project.model"
+import {CreatedVotingPosition} from "./createdVotingPosition.model"
 
 @Entity_()
 export class CreatedStakerPosition {
@@ -39,4 +40,10 @@ export class CreatedStakerPosition {
     @Index_()
     @Column_("text", {nullable: false})
     author!: string
+
+    @Column_("int4", {nullable: false})
+    league!: number
+
+    @OneToMany_(() => CreatedVotingPosition, e => e.stakingPosition)
+    votingPositions!: CreatedVotingPosition[]
 }

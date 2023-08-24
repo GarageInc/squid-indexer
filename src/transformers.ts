@@ -375,7 +375,7 @@ export async function saveStaked(
     } = await getTargetProject(ctx, e.stakingPositionId.toString(), block, event.id)
 
     const transfer = new CreatedStakerPosition({
-      id: event.id,
+      id: (event.id),
       staker: e.staker.toLowerCase(),
       author: e.staker.toLowerCase(),
       currentEpoch: BigInt(e.currentEpoch.toString()),
@@ -383,13 +383,14 @@ export async function saveStaked(
       isDeleted: false,
       timestamp: new Date(block.timestamp),
       project: targetProject,
-      transactionHash: event.evmTxHash,
+      transactionHash: (event.id),
+      league: 0
     })
 
     transfers.add(transfer)
 
     if (targetProject) {
-      await saveNftScanProject(ctx, event.id, token, id)
+      await saveNftScanProject(ctx, (event.id), token, id)
     }
   }
 
@@ -404,8 +405,8 @@ export async function saveUnStaked(
     block: SubstrateBlock
   }[]
 ) {
-  const removed: Set<RemovedStakerPosition> = new Set()
-  const updated: Set<CreatedStakerPosition> = new Set()
+  const transfers: Set<RemovedStakerPosition> = new Set()
+  const created: Set<CreatedStakerPosition> = new Set()
 
   for (const transferData of transfersData) {
     const { e, event, block } = transferData
@@ -416,7 +417,7 @@ export async function saveUnStaked(
       currentEpoch: BigInt(e.currentEpoch.toString()),
       stakingPositionId: BigInt(e.stakingPositionId.toString()),
       timestamp: new Date(block.timestamp),
-      transactionHash: event.evmTxHash,
+      transactionHash: (event.evmTxHash),
     })
 
     const item = await ctx.store.findOneBy(CreatedStakerPosition, {
@@ -425,14 +426,14 @@ export async function saveUnStaked(
 
     if (item) {
       item.isDeleted = true
-      updated.add(item)
+      created.add(item)
     }
 
-    removed.add(transfer)
+    transfers.add(transfer)
   }
 
-  await ctx.store.save([...removed])
-  await ctx.store.save([...updated])
+  await ctx.store.save([...transfers])
+  await ctx.store.save([...created])
 }
 
 export async function saveVoted(
@@ -465,8 +466,11 @@ export async function saveVoted(
       votingPositionId: BigInt(e.votingPositionId.toString()),
       isDeleted: false,
       timestamp: new Date(block.timestamp),
-      transactionHash: event.evmTxHash,
+      transactionHash: (event.evmTxHash),
       project: targetProject,
+      stakingPosition: await ctx.store.findOneBy(CreatedStakerPosition, {
+        stakingPositionId: BigInt(e.stakingPositionId.toString()),
+      })
     })
 
     if (targetProject) {
@@ -503,7 +507,7 @@ export async function liquidateVoted(
       zooReturned: BigInt(e.zooReturned.toString()),
       daiReceived: BigInt(e.daiReceived.toString()),
       timestamp: new Date(block.timestamp),
-      transactionHash: event.evmTxHash,
+      transactionHash: (event.evmTxHash),
     })
 
     const item = await ctx.store.findOneBy(CreatedVotingPosition, {

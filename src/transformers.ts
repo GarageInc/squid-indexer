@@ -56,29 +56,35 @@ const calculateLeague = async (ctx: Context, transfersData: {
       const stakedPosition = updatedLequiesPositions[stakingPositionId] ||  await getStakingPosition(ctx, stakingPositionId)
     
       if(stakedPosition){
-        const functions = new functionsAbi.Contract(ctx, { height: block.height }, BATTLE_FUNCTIONS_ARBITRUM)
-        const arena = new arenaAbi.Contract(ctx, { height: block.height }, BATTLE_ARENA_ARBITRUM)
-    
-        let epoch = await arena.currentEpoch()
-        const currentStage = await arena.getCurrentStage()
-
-        if(currentStage > 2){
-          epoch += BigInt(1)
-        }
-
-        const battleReward = await arena.rewardsForEpoch(stakingPositionId, epoch)
-    
-        const newLeague = await functions.getNftLeague(battleReward.votes)
-
+        const newLeague = await getStakingPositionLeague(ctx, block, stakedPosition)
+      
         if(newLeague !== stakedPosition.league){
           stakedPosition.league = newLeague
           updatedLequiesPositions[stakingPositionId] = stakedPosition
         }
-    }
+      }
   }
       
   if(Object.keys(updatedLequiesPositions).length > 0)
     await ctx.store.save(Object.values(updatedLequiesPositions))
+}
+
+const getStakingPositionLeague = async (ctx: Context, block: IBlockHeader, stakedPosition: CreatedStakerPosition) => {
+    const functions = new functionsAbi.Contract(ctx, { height: block.height }, BATTLE_FUNCTIONS_ARBITRUM)
+    const arena = new arenaAbi.Contract(ctx, { height: block.height }, BATTLE_ARENA_ARBITRUM)
+
+    let epoch = await arena.currentEpoch()
+    const currentStage = await arena.getCurrentStage()
+
+    if(currentStage > 2){
+      epoch += BigInt(1)
+    }
+
+    const battleReward = await arena.rewardsForEpoch(stakedPosition.stakingPositionId, epoch)
+
+    const newLeague = await functions.getNftLeague(battleReward.votes)
+
+    return newLeague
 }
 
 export async function saveAddedDai<T>(
@@ -225,21 +231,26 @@ export async function savePaired(
     const { project: targetProject1 } = await getTargetProject(ctx, e.fighter1.toString(), block, makeId(event))
     const { project: targetProject2 } = await getTargetProject(ctx, e.fighter2.toString(), block, makeId(event))
 
-    const transfer = new PairedNft({
-      id: makeId(event),
-      fighter1: BigInt(e.fighter1.toString()),
-      fighterPosition1: await getStakingPosition(ctx, e.fighter1.toString()),
-      fighter2: BigInt(e.fighter2.toString()),
-      fighterPosition2: await getStakingPosition(ctx, e.fighter2.toString()),
-      project1: targetProject1,
-      project2: targetProject2,
-      currentEpoch: BigInt(e.currentEpoch.toString()),
-      pairIndex: BigInt(e.pairIndex.toString()),
-      timestamp: new Date(block.timestamp),
-      transactionHash: getHash(event),
-    })
+    const positionFirst = await getStakingPosition(ctx, e.fighter1.toString())
 
-    transfers.add(transfer)
+    if(positionFirst){
+      const transfer = new PairedNft({
+        id: makeId(event),
+        fighter1: BigInt(e.fighter1.toString()),
+        fighterPosition1: await getStakingPosition(ctx, e.fighter1.toString()),
+        fighter2: BigInt(e.fighter2.toString()),
+        fighterPosition2: await getStakingPosition(ctx, e.fighter2.toString()),
+        project1: targetProject1,
+        project2: targetProject2,
+        currentEpoch: BigInt(e.currentEpoch.toString()),
+        pairIndex: BigInt(e.pairIndex.toString()),
+        timestamp: new Date(block.timestamp),
+        transactionHash: getHash(event),
+        league: await getStakingPositionLeague(ctx, block, positionFirst)
+      })
+  
+      transfers.add(transfer)
+    }
   }
 
   await ctx.store.save([...transfers])

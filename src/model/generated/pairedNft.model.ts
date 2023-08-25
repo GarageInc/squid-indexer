@@ -42,6 +42,9 @@ export class PairedNft {
     @Column_("text", {nullable: false})
     transactionHash!: string
 
+    @Column_("int4", {nullable: false})
+    league!: number
+
     @Index_()
     @ManyToOne_(() => CreatedStakerPosition, {nullable: true})
     fighterPosition1!: CreatedStakerPosition

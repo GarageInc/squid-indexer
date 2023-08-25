@@ -1,5 +1,5 @@
-module.exports = class Data1692900891818 {
-    name = 'Data1692900891818'
+module.exports = class Data1692980419647 {
+    name = 'Data1692980419647'
 
     async up(db) {
         await db.query(`CREATE TABLE "added_dai_to_voting" ("id" character varying NOT NULL, "current_epoch" numeric NOT NULL, "voter" text NOT NULL, "staking_position_id" numeric NOT NULL, "voting_position_id" numeric NOT NULL, "amount" numeric NOT NULL, "votes" numeric NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, CONSTRAINT "PK_9e1e399cbc921bb8d6aedb65ad5" PRIMARY KEY ("id"))`)
@@ -22,7 +22,7 @@ module.exports = class Data1692900891818 {
         await db.query(`CREATE INDEX "IDX_70d5c61182c716fadd1458e6d4" ON "created_voting_position" ("project_id") `)
         await db.query(`CREATE INDEX "IDX_00f1d1b6ec8295e7ebf7d1275c" ON "created_voting_position" ("author") `)
         await db.query(`CREATE INDEX "IDX_c414c2384c975f34684a583cfb" ON "created_voting_position" ("staked_position_id") `)
-        await db.query(`CREATE TABLE "paired_nft" ("id" character varying NOT NULL, "current_epoch" numeric NOT NULL, "fighter1" numeric NOT NULL, "fighter2" numeric NOT NULL, "pair_index" numeric NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, "project1_id" character varying, "project2_id" character varying, "fighter_position1_id" character varying, "fighter_position2_id" character varying, CONSTRAINT "PK_23ba08ff579bcd1c08f595ae614" PRIMARY KEY ("id"))`)
+        await db.query(`CREATE TABLE "paired_nft" ("id" character varying NOT NULL, "current_epoch" numeric NOT NULL, "fighter1" numeric NOT NULL, "fighter2" numeric NOT NULL, "pair_index" numeric NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "transaction_hash" text NOT NULL, "league" integer NOT NULL, "project1_id" character varying, "project2_id" character varying, "fighter_position1_id" character varying, "fighter_position2_id" character varying, CONSTRAINT "PK_23ba08ff579bcd1c08f595ae614" PRIMARY KEY ("id"))`)
         await db.query(`CREATE INDEX "IDX_e6ada36bac7b9e54eda16c846e" ON "paired_nft" ("current_epoch") `)
         await db.query(`CREATE INDEX "IDX_fcc3189783e2cd7969cdb7887e" ON "paired_nft" ("fighter1") `)
         await db.query(`CREATE INDEX "IDX_de5a515ced9e580dc327dc0613" ON "paired_nft" ("project1_id") `)

@@ -105,7 +105,7 @@ export const functions = {
         abi, '0x50fd01aa'
     ),
     setLeagueRange: new Func<[amount: Array<bigint>], {amount: Array<bigint>}, []>(
-        abi, '0x23682577'
+        abi, '0x8861051d'
     ),
     setStageDuration: new Func<[stage: number, duration: bigint], {stage: number, duration: bigint}, []>(
         abi, '0x65b2bd47'

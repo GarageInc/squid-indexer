@@ -44,6 +44,9 @@ export const functions = {
     batchClaimRewardsFromVotings: new Func<[votingPositionIds: Array<bigint>, beneficiary: string], {votingPositionIds: Array<bigint>, beneficiary: string}, bigint>(
         abi, '0x5ec86c1c'
     ),
+    batchSwapVotesFromPrositionsForUnstakedNft: new Func<[positions: Array<bigint>], {positions: Array<bigint>}, []>(
+        abi, '0xb0a5e038'
+    ),
     batchWithdrawDaiFromVoting: new Func<[votingPositionIds: Array<bigint>, beneficiary: string, daiNumber: bigint], {votingPositionIds: Array<bigint>, beneficiary: string, daiNumber: bigint}, []>(
         abi, '0xf6277d1a'
     ),
@@ -107,8 +110,8 @@ export const functions = {
     swapVotesFromPositionForOwner: new Func<[votingPositionId: bigint, daiNumber: bigint, newStakingPositionId: bigint, beneficiary: string, newVotingPosition: bigint, allowToSwapVotes: boolean], {votingPositionId: bigint, daiNumber: bigint, newStakingPositionId: bigint, beneficiary: string, newVotingPosition: bigint, allowToSwapVotes: boolean}, []>(
         abi, '0xbeef4d85'
     ),
-    swapVotesFromPositionForUnstackedNft: new Func<[votingPositionId: bigint, daiNumber: bigint], {votingPositionId: bigint, daiNumber: bigint}, []>(
-        abi, '0x298341a7'
+    swapVotesFromPositionForUnstackedNft: new Func<[votingPositionId: bigint], {votingPositionId: bigint}, []>(
+        abi, '0x1537f10a'
     ),
     symbol: new Func<[], {}, string>(
         abi, '0x95d89b41'

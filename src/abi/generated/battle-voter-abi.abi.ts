@@ -283,6 +283,19 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
+        "name": "batchSwapVotesFromPrositionsForUnstakedNft",
+        "constant": false,
+        "payable": false,
+        "inputs": [
+            {
+                "type": "uint256[]",
+                "name": "positions"
+            }
+        ],
+        "outputs": []
+    },
+    {
+        "type": "function",
         "name": "batchWithdrawDaiFromVoting",
         "constant": false,
         "payable": false,
@@ -671,10 +684,6 @@ export const ABI_JSON = [
             {
                 "type": "uint256",
                 "name": "votingPositionId"
-            },
-            {
-                "type": "uint256",
-                "name": "daiNumber"
             }
         ],
         "outputs": []

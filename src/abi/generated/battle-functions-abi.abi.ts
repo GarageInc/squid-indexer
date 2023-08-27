@@ -475,7 +475,7 @@ export const ABI_JSON = [
         "payable": false,
         "inputs": [
             {
-                "type": "uint256[]",
+                "type": "uint256[5]",
                 "name": "amount"
             }
         ],

@@ -70,7 +70,6 @@ const calculateLeague = async (ctx: Context, transfersData: {
 }
 
 const getStakingPositionLeague = async (ctx: Context, block: IBlockHeader, stakedPosition: CreatedStakerPosition) => {
-    const functions = new functionsAbi.Contract(ctx, { height: block.height }, BATTLE_FUNCTIONS_ARBITRUM)
     const arena = new arenaAbi.Contract(ctx, { height: block.height }, BATTLE_ARENA_ARBITRUM)
 
     let epoch = await arena.currentEpoch()
@@ -82,7 +81,7 @@ const getStakingPositionLeague = async (ctx: Context, block: IBlockHeader, stake
 
     const battleReward = await arena.rewardsForEpoch(stakedPosition.stakingPositionId, epoch)
 
-    const newLeague = await functions.getNftLeague(battleReward.votes)
+    const newLeague = battleReward.league
 
     return newLeague
 }

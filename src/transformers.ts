@@ -48,11 +48,19 @@ const calculateLeague = async (ctx: Context, transfersData: {
     [id: string]: CreatedStakerPosition
   } = {}
 
-    for(let i=0; i < transfersData.length; i++){
-      const {e, block} = transfersData[i]
+  for(let i=0; i < transfersData.length; i++){
+    const {e} = transfersData[i]
+    const stakingPositionId = e.stakingPositionId.toString()
 
-      const stakingPositionId = e.stakingPositionId.toString()
+    await updateLeague(transfersData[i], stakingPositionId, updatedLequiesPositions, ctx)
+  }
+      
+  if(Object.keys(updatedLequiesPositions).length > 0)
+    await ctx.store.save(Object.values(updatedLequiesPositions))
+}
 
+ const updateLeague = async (transferData: any,stakingPositionId: string, updatedLequiesPositions: any, ctx: Context) => {
+    const {e, block} = transferData
       const stakedPosition = updatedLequiesPositions[stakingPositionId] ||  await getStakingPosition(ctx, stakingPositionId)
     
       if(stakedPosition){
@@ -63,6 +71,29 @@ const calculateLeague = async (ctx: Context, transfersData: {
           updatedLequiesPositions[stakingPositionId] = stakedPosition
         }
       }
+  }
+
+  const calculateLeaguePaired = async (ctx: Context, transfersData: {
+    e: ReturnType<typeof arenaAbi.events.PairedNft.decode>
+    event: LogContext
+    block: IBlockHeader
+  }[]) => {
+  const updatedLequiesPositions: {
+    [id: string]: CreatedStakerPosition
+  } = {}
+
+  for(let i=0; i < transfersData.length; i++){
+    const {e} = transfersData[i]
+    const stakingPositionId = e.fighter1.toString()
+
+    await updateLeague(transfersData[i], stakingPositionId, updatedLequiesPositions, ctx)
+  }
+      
+  for(let i=0; i < transfersData.length; i++){
+    const {e} = transfersData[i]
+    const stakingPositionId = e.fighter2.toString()
+
+    await updateLeague(transfersData[i], stakingPositionId, updatedLequiesPositions, ctx)
   }
       
   if(Object.keys(updatedLequiesPositions).length > 0)
@@ -246,6 +277,8 @@ export async function savePaired(
   }
 
   await ctx.store.save([...transfers])
+
+  await calculateLeaguePaired(ctx, transfersData)
 }
 
 export async function saveWinner(

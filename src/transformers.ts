@@ -72,18 +72,11 @@ const calculateLeague = async (ctx: Context, transfersData: {
 const getStakingPositionLeague = async (ctx: Context, block: IBlockHeader, stakedPosition: CreatedStakerPosition) => {
     const arena = new arenaAbi.Contract(ctx, { height: block.height }, BATTLE_ARENA_ARBITRUM)
 
-    let epoch = await arena.currentEpoch()
-    const currentStage = await arena.getCurrentStage()
-
-    if(currentStage > 2){
-      epoch += BigInt(1)
-    }
+    const epoch = await arena.currentEpoch()
 
     const battleReward = await arena.rewardsForEpoch(stakedPosition.stakingPositionId, epoch)
 
-    const newLeague = battleReward.league
-
-    return newLeague
+    return battleReward.league
 }
 
 export async function saveAddedDai<T>(

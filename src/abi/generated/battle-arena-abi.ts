@@ -236,7 +236,7 @@ export const functions = {
     updateInfo: new Func<[stakingPositionId: bigint], {stakingPositionId: bigint}, []>(
         abi, '0x316db7f2'
     ),
-    updateInfoAboutStakedNumber: new Func<[collection: string], {collection: string}, []>(
+    updateInfoAboutStakedNumber: new Func<[collection: string], {collection: string}, bigint>(
         abi, '0x873b5fc0'
     ),
     vault: new Func<[], {}, string>(

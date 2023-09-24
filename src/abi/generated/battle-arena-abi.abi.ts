@@ -1630,7 +1630,12 @@ export const ABI_JSON = [
                 "name": "collection"
             }
         ],
-        "outputs": []
+        "outputs": [
+            {
+                "type": "uint256",
+                "name": "actualWeight"
+            }
+        ]
     },
     {
         "type": "function",

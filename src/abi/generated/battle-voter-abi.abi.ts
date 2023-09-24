@@ -31,6 +31,14 @@ export const ABI_JSON = [
             {
                 "type": "address",
                 "name": "_team"
+            },
+            {
+                "type": "address",
+                "name": "_glpRewardRouter"
+            },
+            {
+                "type": "address",
+                "name": "_glpManager"
             }
         ]
     },
@@ -170,6 +178,41 @@ export const ABI_JSON = [
             {
                 "type": "uint256",
                 "name": "amount"
+            }
+        ],
+        "outputs": [
+            {
+                "type": "uint256",
+                "name": "votes"
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "addDaiToPositionStable",
+        "constant": false,
+        "stateMutability": "payable",
+        "payable": true,
+        "inputs": [
+            {
+                "type": "uint256",
+                "name": "votingPositionId"
+            },
+            {
+                "type": "uint256",
+                "name": "amount"
+            },
+            {
+                "type": "address",
+                "name": "token"
+            },
+            {
+                "type": "uint256",
+                "name": "minUsdg"
+            },
+            {
+                "type": "uint256",
+                "name": "minGlp"
             }
         ],
         "outputs": [
@@ -402,6 +445,40 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
+        "name": "createNewVotingPositionStable",
+        "constant": false,
+        "stateMutability": "payable",
+        "payable": true,
+        "inputs": [
+            {
+                "type": "uint256",
+                "name": "stakingPositionId"
+            },
+            {
+                "type": "uint256",
+                "name": "amount"
+            },
+            {
+                "type": "bool",
+                "name": "allowToSwapVotes"
+            },
+            {
+                "type": "address",
+                "name": "token"
+            },
+            {
+                "type": "uint256",
+                "name": "minUsdg"
+            },
+            {
+                "type": "uint256",
+                "name": "minGlp"
+            }
+        ],
+        "outputs": []
+    },
+    {
+        "type": "function",
         "name": "dai",
         "constant": true,
         "stateMutability": "view",
@@ -425,6 +502,32 @@ export const ABI_JSON = [
                 "name": "tokenId"
             }
         ],
+        "outputs": [
+            {
+                "type": "address"
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "glpManager",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [],
+        "outputs": [
+            {
+                "type": "address"
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "glpRewardRouter",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [],
         "outputs": [
             {
                 "type": "address"
@@ -783,6 +886,35 @@ export const ABI_JSON = [
             {
                 "type": "uint256",
                 "name": "daiNumber"
+            }
+        ],
+        "outputs": []
+    },
+    {
+        "type": "function",
+        "name": "withdrawDaiFromVotingPositionStable",
+        "constant": false,
+        "payable": false,
+        "inputs": [
+            {
+                "type": "uint256",
+                "name": "votingPositionId"
+            },
+            {
+                "type": "address",
+                "name": "beneficiary"
+            },
+            {
+                "type": "uint256",
+                "name": "daiNumber"
+            },
+            {
+                "type": "uint256",
+                "name": "minOut"
+            },
+            {
+                "type": "address",
+                "name": "tokenToReceive"
             }
         ],
         "outputs": []

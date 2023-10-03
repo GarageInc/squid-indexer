@@ -62,10 +62,10 @@ export const functions = {
     claimRewardFromVoting: new Func<[votingPositionId: bigint, beneficiary: string], {votingPositionId: bigint, beneficiary: string}, bigint>(
         abi, '0x110f633f'
     ),
-    createNewVotingPosition: new Func<[stakingPositionId: bigint, amount: bigint, allowToSwapVotes: boolean], {stakingPositionId: bigint, amount: bigint, allowToSwapVotes: boolean}, []>(
+    createNewVotingPosition: new Func<[stakingPositionId: bigint, amount: bigint, allowToSwapVotes: boolean], {stakingPositionId: bigint, amount: bigint, allowToSwapVotes: boolean}, bigint>(
         abi, '0x8cedae92'
     ),
-    createNewVotingPositionStable: new Func<[stakingPositionId: bigint, amount: bigint, allowToSwapVotes: boolean, token: string, minUsdg: bigint, minGlp: bigint], {stakingPositionId: bigint, amount: bigint, allowToSwapVotes: boolean, token: string, minUsdg: bigint, minGlp: bigint}, []>(
+    createNewVotingPositionStable: new Func<[stakingPositionId: bigint, amount: bigint, allowToSwapVotes: boolean, token: string, minUsdg: bigint, minGlp: bigint], {stakingPositionId: bigint, amount: bigint, allowToSwapVotes: boolean, token: string, minUsdg: bigint, minGlp: bigint}, bigint>(
         abi, '0xd902c66e'
     ),
     dai: new Func<[], {}, string>(

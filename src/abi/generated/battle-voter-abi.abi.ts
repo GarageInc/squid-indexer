@@ -441,7 +441,12 @@ export const ABI_JSON = [
                 "name": "allowToSwapVotes"
             }
         ],
-        "outputs": []
+        "outputs": [
+            {
+                "type": "uint256",
+                "name": "votes"
+            }
+        ]
     },
     {
         "type": "function",
@@ -475,7 +480,12 @@ export const ABI_JSON = [
                 "name": "minGlp"
             }
         ],
-        "outputs": []
+        "outputs": [
+            {
+                "type": "uint256",
+                "name": "votes"
+            }
+        ]
     },
     {
         "type": "function",

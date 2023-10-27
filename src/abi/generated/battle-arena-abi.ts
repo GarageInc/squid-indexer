@@ -125,9 +125,6 @@ export const functions = {
     fourthStageDuration: new Func<[], {}, bigint>(
         abi, '0x25623a43'
     ),
-    gauge: new Func<[], {}, string>(
-        abi, '0xa6f19c84'
-    ),
     getCurrentStage: new Func<[], {}, number>(
         abi, '0xeedbe31d'
     ),
@@ -143,8 +140,8 @@ export const functions = {
     getStakerPositionsLength: new Func<[], {}, bigint>(
         abi, '0x519ee3e2'
     ),
-    init: new Func<[_veBal: string, _gauge: string, _zooVoteRate: bigint, _zoo: string], {_veBal: string, _gauge: string, _zooVoteRate: bigint, _zoo: string}, []>(
-        abi, '0x4b180da9'
+    init: new Func<[_zooVoteRate: bigint, _zoo: string], {_zooVoteRate: bigint, _zoo: string}, []>(
+        abi, '0xb792e6ec'
     ),
     lastUpdatesOfStakedNumbers: new Func<[_: string], {}, bigint>(
         abi, '0x009174ba'
@@ -242,9 +239,6 @@ export const functions = {
     vault: new Func<[], {}, string>(
         abi, '0xfbfa77cf'
     ),
-    veBal: new Func<[], {}, string>(
-        abi, '0x34bce903'
-    ),
     veZoo: new Func<[], {}, string>(
         abi, '0x1fe52bc3'
     ),
@@ -329,10 +323,6 @@ export class Contract extends ContractBase {
 
     fourthStageDuration(): Promise<bigint> {
         return this.eth_call(functions.fourthStageDuration, [])
-    }
-
-    gauge(): Promise<string> {
-        return this.eth_call(functions.gauge, [])
     }
 
     getCurrentStage(): Promise<number> {
@@ -437,10 +427,6 @@ export class Contract extends ContractBase {
 
     vault(): Promise<string> {
         return this.eth_call(functions.vault, [])
-    }
-
-    veBal(): Promise<string> {
-        return this.eth_call(functions.veBal, [])
     }
 
     veZoo(): Promise<string> {

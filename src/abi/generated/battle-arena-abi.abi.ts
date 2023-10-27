@@ -982,19 +982,6 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
-        "name": "gauge",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [],
-        "outputs": [
-            {
-                "type": "address"
-            }
-        ]
-    },
-    {
-        "type": "function",
         "name": "getCurrentStage",
         "constant": true,
         "stateMutability": "view",
@@ -1091,14 +1078,6 @@ export const ABI_JSON = [
         "constant": false,
         "payable": false,
         "inputs": [
-            {
-                "type": "address",
-                "name": "_veBal"
-            },
-            {
-                "type": "address",
-                "name": "_gauge"
-            },
             {
                 "type": "uint256",
                 "name": "_zooVoteRate"
@@ -1640,19 +1619,6 @@ export const ABI_JSON = [
     {
         "type": "function",
         "name": "vault",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [],
-        "outputs": [
-            {
-                "type": "address"
-            }
-        ]
-    },
-    {
-        "type": "function",
-        "name": "veBal",
         "constant": true,
         "stateMutability": "view",
         "payable": false,

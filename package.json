@@ -27,7 +27,7 @@
     "logs": "npx sqd squid logs",
     "processor": "node -r dotenv/config lib/processor.js",
     "gql": "npx squid-graphql-server",
-    "deploy-prod": "sqd deploy ."
+    "deploy-prod": "sqd deploy --org zoodao ."
   },
   "dependencies": {
     "@ethersproject/abi": "^5.7.0",

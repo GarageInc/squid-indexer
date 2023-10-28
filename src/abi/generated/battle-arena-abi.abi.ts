@@ -1,7 +1,6 @@
 export const ABI_JSON = [
     {
         "type": "constructor",
-        "stateMutability": "undefined",
         "payable": false,
         "inputs": [
             {
@@ -1080,7 +1079,11 @@ export const ABI_JSON = [
         "inputs": [
             {
                 "type": "uint256",
-                "name": "_zooVoteRate"
+                "name": "_zooVoteRateNominator"
+            },
+            {
+                "type": "uint256",
+                "name": "_zooVoteRateDenomibator"
             },
             {
                 "type": "address",
@@ -1833,7 +1836,20 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
-        "name": "zooVoteRate",
+        "name": "zooVoteRateDenominator",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [],
+        "outputs": [
+            {
+                "type": "uint256"
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "zooVoteRateNominator",
         "constant": true,
         "stateMutability": "view",
         "payable": false,

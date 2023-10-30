@@ -189,7 +189,7 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
-        "name": "addDaiToPositionStable",
+        "name": "addDaiToPositionStablecoin",
         "constant": false,
         "stateMutability": "payable",
         "payable": true,
@@ -450,7 +450,7 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
-        "name": "createNewVotingPositionStable",
+        "name": "createNewVotingPositionStablecoin",
         "constant": false,
         "stateMutability": "payable",
         "payable": true,
@@ -902,7 +902,7 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
-        "name": "withdrawDaiFromVotingPositionStable",
+        "name": "withdrawDaiFromVotingPositionStablecoin",
         "constant": false,
         "payable": false,
         "inputs": [

@@ -29,8 +29,8 @@ export const functions = {
     addDaiToPosition: new Func<[votingPositionId: bigint, amount: bigint], {votingPositionId: bigint, amount: bigint}, bigint>(
         abi, '0x3837b833'
     ),
-    addDaiToPositionStable: new Func<[votingPositionId: bigint, amount: bigint, token: string, minUsdg: bigint, minGlp: bigint], {votingPositionId: bigint, amount: bigint, token: string, minUsdg: bigint, minGlp: bigint}, bigint>(
-        abi, '0xfc4db6c1'
+    addDaiToPositionStablecoin: new Func<[votingPositionId: bigint, amount: bigint, token: string, minUsdg: bigint, minGlp: bigint], {votingPositionId: bigint, amount: bigint, token: string, minUsdg: bigint, minGlp: bigint}, bigint>(
+        abi, '0x5e2dccbb'
     ),
     addZooToPosition: new Func<[votingPositionId: bigint, amount: bigint], {votingPositionId: bigint, amount: bigint}, bigint>(
         abi, '0x9b6bdd87'
@@ -65,8 +65,8 @@ export const functions = {
     createNewVotingPosition: new Func<[stakingPositionId: bigint, amount: bigint, allowToSwapVotes: boolean], {stakingPositionId: bigint, amount: bigint, allowToSwapVotes: boolean}, bigint>(
         abi, '0x8cedae92'
     ),
-    createNewVotingPositionStable: new Func<[stakingPositionId: bigint, amount: bigint, allowToSwapVotes: boolean, token: string, minUsdg: bigint, minGlp: bigint], {stakingPositionId: bigint, amount: bigint, allowToSwapVotes: boolean, token: string, minUsdg: bigint, minGlp: bigint}, bigint>(
-        abi, '0xd902c66e'
+    createNewVotingPositionStablecoin: new Func<[stakingPositionId: bigint, amount: bigint, allowToSwapVotes: boolean, token: string, minUsdg: bigint, minGlp: bigint], {stakingPositionId: bigint, amount: bigint, allowToSwapVotes: boolean, token: string, minUsdg: bigint, minGlp: bigint}, bigint>(
+        abi, '0x20694903'
     ),
     dai: new Func<[], {}, string>(
         abi, '0xf4b9fa75'
@@ -143,8 +143,8 @@ export const functions = {
     withdrawDaiFromVotingPosition: new Func<[votingPositionId: bigint, beneficiary: string, daiNumber: bigint], {votingPositionId: bigint, beneficiary: string, daiNumber: bigint}, []>(
         abi, '0x17f84552'
     ),
-    withdrawDaiFromVotingPositionStable: new Func<[votingPositionId: bigint, beneficiary: string, daiNumber: bigint, minOut: bigint, tokenToReceive: string], {votingPositionId: bigint, beneficiary: string, daiNumber: bigint, minOut: bigint, tokenToReceive: string}, []>(
-        abi, '0x91d4d477'
+    withdrawDaiFromVotingPositionStablecoin: new Func<[votingPositionId: bigint, beneficiary: string, daiNumber: bigint, minOut: bigint, tokenToReceive: string], {votingPositionId: bigint, beneficiary: string, daiNumber: bigint, minOut: bigint, tokenToReceive: string}, []>(
+        abi, '0xf4c02594'
     ),
     withdrawZooFromVotingPosition: new Func<[votingPositionId: bigint, zooNumber: bigint, beneficiary: string], {votingPositionId: bigint, zooNumber: bigint, beneficiary: string}, []>(
         abi, '0xb8bb0856'

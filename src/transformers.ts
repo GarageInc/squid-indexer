@@ -52,15 +52,34 @@ const calculateLeague = async (ctx: Context, transfersData: {
     const {e} = transfersData[i]
     const stakingPositionId = e.stakingPositionId.toString()
 
-    await updateLeague(transfersData[i], stakingPositionId, updatedLequiesPositions, ctx)
+    await updateLeague(transfersData[i].block, stakingPositionId, updatedLequiesPositions, ctx)
   }
       
   if(Object.keys(updatedLequiesPositions).length > 0)
     await ctx.store.save(Object.values(updatedLequiesPositions))
 }
 
- const updateLeague = async (transferData: any,stakingPositionId: string, updatedLequiesPositions: any, ctx: Context) => {
-    const {e, block} = transferData
+const calculateLeaguesForAllStakeds = async (ctx: Context, block: IBlockHeader) => {
+  const updatedLequiesPositions: {
+    [id: string]: CreatedStakerPosition
+  } = {}
+
+  const items = await ctx.store.findBy(CreatedStakerPosition, {
+    isDeleted: false
+  })
+
+  for(let i=0; i < items.length; i++){
+    const e = items[i]
+    const stakingPositionId = e.stakingPositionId.toString()
+
+    await updateLeague(block, stakingPositionId, updatedLequiesPositions, ctx)
+  }
+      
+  if(Object.keys(updatedLequiesPositions).length > 0)
+    await ctx.store.save(Object.values(updatedLequiesPositions))
+}
+
+ const updateLeague = async (block: IBlockHeader, stakingPositionId: string, updatedLequiesPositions: any, ctx: Context) => {
       const stakedPosition = updatedLequiesPositions[stakingPositionId] ||  await getStakingPosition(ctx, stakingPositionId)
     
       if(stakedPosition){
@@ -86,14 +105,14 @@ const calculateLeague = async (ctx: Context, transfersData: {
     const {e} = transfersData[i]
     const stakingPositionId = e.fighter1.toString()
 
-    await updateLeague(transfersData[i], stakingPositionId, updatedLequiesPositions, ctx)
+    await updateLeague(transfersData[i].block, stakingPositionId, updatedLequiesPositions, ctx)
   }
       
   for(let i=0; i < transfersData.length; i++){
     const {e} = transfersData[i]
     const stakingPositionId = e.fighter2.toString()
 
-    await updateLeague(transfersData[i], stakingPositionId, updatedLequiesPositions, ctx)
+    await updateLeague(transfersData[i].block, stakingPositionId, updatedLequiesPositions, ctx)
   }
       
   if(Object.keys(updatedLequiesPositions).length > 0)
@@ -279,6 +298,9 @@ export async function savePaired(
   await ctx.store.save([...transfers])
 
   await calculateLeaguePaired(ctx, transfersData)
+
+  if(transfersData.length > 0)
+    await calculateLeaguesForAllStakeds(ctx, transfersData[0].block)
 }
 
 export async function saveWinner(

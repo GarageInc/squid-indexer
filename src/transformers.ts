@@ -101,7 +101,7 @@ const calculateLeague = async (ctx: Context, transfersData: {
 }
 
 const getStakingPositionLeague = async (ctx: Context, block: IBlockHeader, stakedPosition: CreatedStakerPosition) => {
-    const arena = new arenaAbi.Contract(ctx, { height: block.height }, BATTLE_ARENA_ARBITRUM)
+    const arena = new arenaAbi.Contract(ctx, { height: block.height + 1 }, BATTLE_ARENA_ARBITRUM)
 
     const epoch = await arena.currentEpoch()
 

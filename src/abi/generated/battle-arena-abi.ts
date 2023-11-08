@@ -188,6 +188,9 @@ export const functions = {
     pendingVotesEpoch: new Func<[_: bigint], {}, bigint>(
         abi, '0xbd72836d'
     ),
+    playedVotesByEpoch: new Func<[_: bigint], {}, bigint>(
+        abi, '0x104e0b22'
+    ),
     poolWeight: new Func<[_: string, _: bigint], {}, bigint>(
         abi, '0xda452523'
     ),
@@ -402,6 +405,10 @@ export class Contract extends ContractBase {
 
     pendingVotesEpoch(arg0: bigint): Promise<bigint> {
         return this.eth_call(functions.pendingVotesEpoch, [arg0])
+    }
+
+    playedVotesByEpoch(arg0: bigint): Promise<bigint> {
+        return this.eth_call(functions.playedVotesByEpoch, [arg0])
     }
 
     poolWeight(arg0: string, arg1: bigint): Promise<bigint> {

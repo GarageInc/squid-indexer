@@ -1333,6 +1333,23 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
+        "name": "playedVotesByEpoch",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [
+            {
+                "type": "uint256"
+            }
+        ],
+        "outputs": [
+            {
+                "type": "uint256"
+            }
+        ]
+    },
+    {
+        "type": "function",
         "name": "poolWeight",
         "constant": true,
         "stateMutability": "view",

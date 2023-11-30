@@ -1,6 +1,6 @@
 manifestVersion: subsquid.io/v0.1
 name: zoodao # set name
-version: 44 # version, must be an integer
+version: 45 # version, must be an integer
 description: |- # set description
   ZooDAO Arbitrum
 

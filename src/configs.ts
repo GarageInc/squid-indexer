@@ -36,7 +36,7 @@ import {
   Transaction as _Transaction,
 } from '@subsquid/evm-processor'
 
-const FROM = 151281644
+const FROM = 156971526
 
 export const database = new TypeormDatabase()
 

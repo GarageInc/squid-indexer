@@ -540,6 +540,25 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
+        "name": "_calculateVotersYTokensExcludingRewards",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [
+            {
+                "type": "uint256",
+                "name": "votingPositionId"
+            }
+        ],
+        "outputs": [
+            {
+                "type": "uint256",
+                "name": "yTokens"
+            }
+        ]
+    },
+    {
+        "type": "function",
         "name": "_createVotingPosition",
         "constant": false,
         "payable": false,
@@ -1194,11 +1213,7 @@ export const ABI_JSON = [
         "constant": true,
         "stateMutability": "view",
         "payable": false,
-        "inputs": [
-            {
-                "type": "uint256"
-            }
-        ],
+        "inputs": [],
         "outputs": [
             {
                 "type": "uint256"
@@ -1333,11 +1348,31 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
-        "name": "playedVotesByEpoch",
+        "name": "pendingYTokens",
         "constant": true,
         "stateMutability": "view",
         "payable": false,
         "inputs": [
+            {
+                "type": "uint256"
+            }
+        ],
+        "outputs": [
+            {
+                "type": "uint256"
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "playedVotes",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [
+            {
+                "type": "address"
+            },
             {
                 "type": "uint256"
             }
@@ -1452,7 +1487,7 @@ export const ABI_JSON = [
         ],
         "outputs": [
             {
-                "type": "int256",
+                "type": "uint256",
                 "name": "yTokensSaldo"
             },
             {
@@ -1482,6 +1517,10 @@ export const ABI_JSON = [
             {
                 "type": "uint8",
                 "name": "league"
+            },
+            {
+                "type": "bool",
+                "name": "isWinnerChose"
             }
         ]
     },

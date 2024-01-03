@@ -53,6 +53,9 @@ export const events = {
 }
 
 export const functions = {
+    _calculateVotersYTokensExcludingRewards: new Func<[votingPositionId: bigint], {votingPositionId: bigint}, bigint>(
+        abi, '0x7909e685'
+    ),
     _createVotingPosition: new Func<[stakingPositionId: bigint, voter: string, yTokens: bigint, amount: bigint], {stakingPositionId: bigint, voter: string, yTokens: bigint, amount: bigint}, ([votes: bigint, votingPositionId: bigint] & {votes: bigint, votingPositionId: bigint})>(
         abi, '0xf93a6dea'
     ),
@@ -164,8 +167,8 @@ export const functions = {
     numberOfNftsWithNonZeroVotesPending: new Func<[], {}, bigint>(
         abi, '0x0c41ef28'
     ),
-    numberOfPlayedPairsInEpoch: new Func<[_: bigint], {}, bigint>(
-        abi, '0xc58cd7d0'
+    numberOfPlayedPairsInEpoch: new Func<[], {}, bigint>(
+        abi, '0x9d2db6bd'
     ),
     numberOfStakedNftsInCollection: new Func<[_: bigint, _: string], {}, bigint>(
         abi, '0xecd92aea'
@@ -188,8 +191,11 @@ export const functions = {
     pendingVotesEpoch: new Func<[_: bigint], {}, bigint>(
         abi, '0xbd72836d'
     ),
-    playedVotesByEpoch: new Func<[_: bigint], {}, bigint>(
-        abi, '0x104e0b22'
+    pendingYTokens: new Func<[_: bigint], {}, bigint>(
+        abi, '0x0c2c7d3c'
+    ),
+    playedVotes: new Func<[_: string, _: bigint], {}, bigint>(
+        abi, '0x3f71e0f6'
     ),
     poolWeight: new Func<[_: string, _: bigint], {}, bigint>(
         abi, '0xda452523'
@@ -209,7 +215,7 @@ export const functions = {
     requestRandom: new Func<[], {}, []>(
         abi, '0xda9f7550'
     ),
-    rewardsForEpoch: new Func<[_: bigint, _: bigint], {}, ([yTokensSaldo: bigint, votes: bigint, yTokens: bigint, tokensAtBattleStart: bigint, pricePerShareAtBattleStart: bigint, pricePerShareCoef: bigint, zooRewards: bigint, league: number] & {yTokensSaldo: bigint, votes: bigint, yTokens: bigint, tokensAtBattleStart: bigint, pricePerShareAtBattleStart: bigint, pricePerShareCoef: bigint, zooRewards: bigint, league: number})>(
+    rewardsForEpoch: new Func<[_: bigint, _: bigint], {}, ([yTokensSaldo: bigint, votes: bigint, yTokens: bigint, tokensAtBattleStart: bigint, pricePerShareAtBattleStart: bigint, pricePerShareCoef: bigint, zooRewards: bigint, league: number, isWinnerChose: boolean] & {yTokensSaldo: bigint, votes: bigint, yTokens: bigint, tokensAtBattleStart: bigint, pricePerShareAtBattleStart: bigint, pricePerShareCoef: bigint, zooRewards: bigint, league: number, isWinnerChose: boolean})>(
         abi, '0x924298a6'
     ),
     secondStageDuration: new Func<[], {}, bigint>(
@@ -278,6 +284,10 @@ export const functions = {
 }
 
 export class Contract extends ContractBase {
+
+    _calculateVotersYTokensExcludingRewards(votingPositionId: bigint): Promise<bigint> {
+        return this.eth_call(functions._calculateVotersYTokensExcludingRewards, [votingPositionId])
+    }
 
     activeStakerPositions(arg0: bigint): Promise<bigint> {
         return this.eth_call(functions.activeStakerPositions, [arg0])
@@ -379,8 +389,8 @@ export class Contract extends ContractBase {
         return this.eth_call(functions.numberOfNftsWithNonZeroVotesPending, [])
     }
 
-    numberOfPlayedPairsInEpoch(arg0: bigint): Promise<bigint> {
-        return this.eth_call(functions.numberOfPlayedPairsInEpoch, [arg0])
+    numberOfPlayedPairsInEpoch(): Promise<bigint> {
+        return this.eth_call(functions.numberOfPlayedPairsInEpoch, [])
     }
 
     numberOfStakedNftsInCollection(arg0: bigint, arg1: string): Promise<bigint> {
@@ -407,15 +417,19 @@ export class Contract extends ContractBase {
         return this.eth_call(functions.pendingVotesEpoch, [arg0])
     }
 
-    playedVotesByEpoch(arg0: bigint): Promise<bigint> {
-        return this.eth_call(functions.playedVotesByEpoch, [arg0])
+    pendingYTokens(arg0: bigint): Promise<bigint> {
+        return this.eth_call(functions.pendingYTokens, [arg0])
+    }
+
+    playedVotes(arg0: string, arg1: bigint): Promise<bigint> {
+        return this.eth_call(functions.playedVotes, [arg0, arg1])
     }
 
     poolWeight(arg0: string, arg1: bigint): Promise<bigint> {
         return this.eth_call(functions.poolWeight, [arg0, arg1])
     }
 
-    rewardsForEpoch(arg0: bigint, arg1: bigint): Promise<([yTokensSaldo: bigint, votes: bigint, yTokens: bigint, tokensAtBattleStart: bigint, pricePerShareAtBattleStart: bigint, pricePerShareCoef: bigint, zooRewards: bigint, league: number] & {yTokensSaldo: bigint, votes: bigint, yTokens: bigint, tokensAtBattleStart: bigint, pricePerShareAtBattleStart: bigint, pricePerShareCoef: bigint, zooRewards: bigint, league: number})> {
+    rewardsForEpoch(arg0: bigint, arg1: bigint): Promise<([yTokensSaldo: bigint, votes: bigint, yTokens: bigint, tokensAtBattleStart: bigint, pricePerShareAtBattleStart: bigint, pricePerShareCoef: bigint, zooRewards: bigint, league: number, isWinnerChose: boolean] & {yTokensSaldo: bigint, votes: bigint, yTokens: bigint, tokensAtBattleStart: bigint, pricePerShareAtBattleStart: bigint, pricePerShareCoef: bigint, zooRewards: bigint, league: number, isWinnerChose: boolean})> {
         return this.eth_call(functions.rewardsForEpoch, [arg0, arg1])
     }
 

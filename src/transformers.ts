@@ -198,6 +198,7 @@ export async function savePaired(
       pairIndex: BigInt(e.pairIndex.toString()),
       timestamp: new Date(block.timestamp),
       transactionHash: event.evmTxHash,
+      league: 0
     })
 
     transfers.add(transfer)

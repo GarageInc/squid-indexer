@@ -20,7 +20,6 @@ import {
 import * as arenaAbi from './abi/generated/battle-arena-abi'
 import * as voterAbi from './abi/generated/battle-voter-abi'
 import * as stakerAbi from './abi/generated/battle-staker-abi'
-import * as functionsAbi from './abi/generated/battle-functions-abi'
 import * as vemodelAbi from './abi/generated/ve-model-abi'
 import * as erc721 from './abi/generated/erc721'
 import * as erc20 from './abi/generated/erc20'
@@ -28,7 +27,6 @@ import { ZooUnlocked } from './model/generated/zooUnlocked.model'
 import { VotedForCollection } from './model/generated/votedForCollection.model'
 import {
   BATTLE_ARENA_ARBITRUM,
-  BATTLE_FUNCTIONS_ARBITRUM,
   BATTLE_STAKER_ARBITRUM,
   BATTLE_VOTER_ARBITRUM,
   ZERO_ADDRESS,
@@ -80,16 +78,16 @@ const calculateLeaguesForAllStakeds = async (ctx: Context, block: IBlockHeader) 
 }
 
  const updateLeague = async (block: IBlockHeader, stakingPositionId: string, updatedLequiesPositions: any, ctx: Context) => {
-      const stakedPosition = updatedLequiesPositions[stakingPositionId] ||  await getStakingPosition(ctx, stakingPositionId)
+    const stakedPosition = updatedLequiesPositions[stakingPositionId] ||  await getStakingPosition(ctx, stakingPositionId)
+  
+    if(stakedPosition){
+      const newLeague = await getStakingPositionLeague(ctx, block, stakedPosition)
     
-      if(stakedPosition){
-        const newLeague = await getStakingPositionLeague(ctx, block, stakedPosition)
-      
-        if(newLeague !== stakedPosition.league){
-          stakedPosition.league = newLeague
-          updatedLequiesPositions[stakingPositionId] = stakedPosition
-        }
+      if(newLeague !== stakedPosition.league){
+        stakedPosition.league = newLeague
+        updatedLequiesPositions[stakingPositionId] = stakedPosition
       }
+    }
   }
 
   const calculateLeaguePaired = async (ctx: Context, transfersData: {
